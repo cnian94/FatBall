@@ -19,15 +19,13 @@ public class MonsterControl : MonoBehaviour {
     public bool isEnterTheView = false;
 
     public static float max_distance_from_view = 200f;
-    private MonstersSpawnerControl spawnerControl;
-    private GameMaster gameMaster;
+    public MonstersSpawnerControl spawnerControl;
 
     Vector3 temp;
 
     // Use this for initialization
     void Start () {
         spawnerControl = FindObjectOfType<MonstersSpawnerControl>();
-        gameMaster = FindObjectOfType<GameMaster>();
         transform.name = transform.name.Replace("(Clone)", "").Trim();
         gameObject.tag = "spawn";
         target = GameObject.Find ("Player");
@@ -53,16 +51,22 @@ public class MonsterControl : MonoBehaviour {
         {
             movement = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), 0);
             maxSpeed = Random.Range(2f, 12f);
+            if (SceneManager.GetActiveScene().name == "MenuScene")
+            {
+                maxSpeed = Random.Range(0f, 1f);
+            }
             timeLeft += accelerationTime;
 
             Vector3 position = this.rb.gameObject.transform.position;
+            //Debug.Log(position.x + " vs " + Screen.width);
+            //Debug.Log(position.y + " vs " + Screen.height);
 
 
             if(position.x <= -max_distance_from_view || position.x >= Screen.width + max_distance_from_view ||
                 position.y <= -max_distance_from_view || position.y >= Screen.height + max_distance_from_view)
             {
-                spawnerControl.randomSpawnPoint = Random.Range(0, spawnerControl.spawnPoints.Length);
-                this.rb.gameObject.transform.position = new Vector3(spawnerControl.spawnPoints[spawnerControl.randomSpawnPoint].position.x, spawnerControl.spawnPoints[spawnerControl.randomSpawnPoint].position.y, transform.position.z);
+                //Debug.Log("ENEMY's GONE SO FAR!! COME HERE BACK !!");
+                this.rb.gameObject.transform.position = new Vector3(Random.Range(-50f, 0), Random.Range(-50f, 0), transform.position.z);
             }
 
 
@@ -70,6 +74,7 @@ public class MonsterControl : MonoBehaviour {
             if (position.x > 0 && position.x < Screen.width && position.y > 0 && position.y < Screen.height)
             {
                 this.isEnterTheView = true;
+                //Debug.Log("ENEMY ENTERED THE VIEW !! " + this.rb.gameObject.name);
             }
 
             if ((position.x < 0 || position.x > Screen.width || position.y < 0 || position.y > Screen.height) && this.isEnterTheView)
@@ -94,9 +99,12 @@ public class MonsterControl : MonoBehaviour {
 		switch (col.gameObject.name) {
 
 		case "Player":
+			//MonstersSpawnerControl.spawnAllowed = false;
+			//Instantiate (explosion, col.gameObject.transform.position, Quaternion.identity);
 			Destroy (gameObject);
             spawnerControl.num_of_monsters--;
-            gameMaster.SpawnAMonster();
+            //Debug.Log("ACTIVE MONSTERS: " + MonstersSpawnerControl.num_of_monsters);
+            spawnerControl.SpawnAMonster();
             col.gameObject.transform.localScale = new Vector3(col.gameObject.transform.localScale.x + gameObject.transform.localScale.x, col.gameObject.transform.localScale.y + gameObject.transform.localScale.y, gameObject.transform.localScale.z);
 			break;
 		}
