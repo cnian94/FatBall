@@ -9,26 +9,17 @@ public class GameMaster : MonoBehaviour {
     public Camera cam;
     public static GameMaster gm;
 
-   private int spawnDelay = 3;
-   private int spawnCounter = 3;
-
     public GameObject timer;
     public GameObject countDown;
     public GameObject player;
     public GameObject gameOverUI;
     private MonstersSpawnerControl spawnerControl;
     private JokerSpawnerControl jokerSpawnerControl;
-    private int[] jokerWeights = { 20, 20 };
-    private float jokerTimeLeft;
-    private float monsterTimer;
-    public float jokerSpawnTime = 10f;
-    public float monsterSpawnTime = 5f;
 
     void Awake()
     {
-        jokerTimeLeft = jokerSpawnTime + spawnDelay;
-        monsterTimer = monsterSpawnTime + spawnDelay;
         cam.orthographicSize = Screen.height / 2;
+        Debug.Log("GM AWAKE !!!");
         spawnerControl = FindObjectOfType<MonstersSpawnerControl>();
         jokerSpawnerControl = FindObjectOfType<JokerSpawnerControl>();
         countDown.gameObject.SetActive(true);
@@ -38,46 +29,15 @@ public class GameMaster : MonoBehaviour {
     void Start () {
         if (gm == null)
         {
+            Debug.Log("GM START !!!");
             gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>();
             gm.StartCoroutine(gm.SpawnPlayer());
-            //InvokeRepeating("IncreaseMonsterLimit", 5 + spawnDelay, 5 + spawnDelay);
         }
-       
     }
 
-    void Update()
-    {
-        jokerTimeLeft -= Time.deltaTime;
-        //monsterTimer -= Time.deltaTime;
-
-        if (jokerTimeLeft <= 0f)
-        {
-            SpawnAJoker();
-
-            jokerTimeLeft += jokerSpawnTime;
-        }
-
-        
-        /*Debug.Log("MONSTERS ARE GOING TO SPAWN IN " + monsterTimer + " seconds");
-
-        if (monsterTimer <= 0f)
-        {
-            Debug.Log("SPAWNING NEW MONSTERS !!");
-            spawnerControl.monsters_limit = spawnerControl.monsters_limit * 2;
-            //InvokeRepeating("SpawnAMonster", 0f, 1f);
-            SpawnAMonster();
-            monsterTimer += monsterSpawnTime;
-
-        }*/
-    }
-
-    public void IncreaseMonsterLimit()
-    {
-        Debug.Log("INCREASING MONSTER LIMIT !!");
-        spawnerControl.monsters_limit = spawnerControl.monsters_limit * 2;
-        SpawnAMonster();
-    }
-
+    public int spawnDelay = 3;
+    public int spawnCounter = 3;
+	
     public IEnumerator SpawnPlayer()
     {
         yield return new WaitForSeconds(spawnDelay);
@@ -85,23 +45,21 @@ public class GameMaster : MonoBehaviour {
         Vector3 randomPoint = new Vector3(Random.Range(0, Screen.width-(Screen.width/20)), Random.Range(0, Screen.height-(Screen.height/12)), 0);
         player = Instantiate(player, randomPoint, Quaternion.identity);
         timer.SetActive(true);
-        SpawnAMonster();
-        InvokeRepeating("IncreaseMonsterLimit", 5 , 5);
-        //InvokeRepeating("SpawnAMonster", 0f, 1f);
-        SpawnAMonster();
+        InvokeRepeating("SpawnAMonster", 0f, 1f);
+        InvokeRepeating("SpawnAJoker", 0f, 1f);
         player.name = "Player";
-
     }
 
     public void KillPlayer(GameObject player)
     {
         Destroy(player);
         gameOverUI.SetActive(true);
+        //gm.StartCoroutine(gm.SpawnPlayer());
     }
 
     public void SpawnAMonster()
     {
-        while (spawnerControl.num_of_monsters < spawnerControl.monsters_limit)
+        if (spawnerControl.num_of_monsters < spawnerControl.monsters_limit)
         {
             spawnerControl.randomSpawnPoint = Random.Range(0, spawnerControl.spawnPoints.Length);
             spawnerControl.randomMonster = Random.Range(0, spawnerControl.monsters.Length);
@@ -109,51 +67,21 @@ public class GameMaster : MonoBehaviour {
                 Quaternion.identity);
             spawnerControl.monster.name = "Enemy";
             spawnerControl.num_of_monsters++;
+            //Debug.Log("ACTIVE MONSTERS: " + num_of_monsters);
         }
     }
-
-    public int GetSumOfWeights(int[] weights)
-    {
-        var total = 0;
-        for (var i = 0; i < weights.Length; i++)
-        {
-            total += weights[i];
-        }
-        return total;
-    }
-
-    public int GetRandomWeightedIndex(int[] weights)
-    {
-        if (weights == null || weights.Length == 0) return -1;
-        var total = GetSumOfWeights(weights);
-        int i;
-
-        float r = Random.value;
-        float s = 0f;
-
-        for (i = 0; i < weights.Length; i++)
-        {
-            if (weights[i] <= 0f) continue;
-
-            s += (float)weights[i] / total;
-            if (s >= r) return i;
-        }
-
-        return -1;
-    }
-
 
     public void SpawnAJoker()
     {
-            Debug.Log("SELECTED WEIGHT INDEX: " + GetRandomWeightedIndex(jokerWeights));
+        if (jokerSpawnerControl.num_of_jokers < jokerSpawnerControl.joker_limit)
+        {
             jokerSpawnerControl.randomSpawnPoint = Random.Range(0, jokerSpawnerControl.spawnPoints.Length);
-            jokerSpawnerControl.randomJoker = GetRandomWeightedIndex(jokerWeights);
+            jokerSpawnerControl.randomJoker = Random.Range(0, jokerSpawnerControl.jokers.Length);
             jokerSpawnerControl.joker = Instantiate(jokerSpawnerControl.jokers[jokerSpawnerControl.randomJoker], jokerSpawnerControl.spawnPoints[jokerSpawnerControl.randomSpawnPoint].position,
                 Quaternion.identity);
             jokerSpawnerControl.joker.name = "Joker";
             jokerSpawnerControl.num_of_jokers++;
+        }
     }
-
-
 
 }

@@ -12,15 +12,25 @@ public class MonstersSpawnerControl : MonoBehaviour {
 
     public GameObject monster;
     public int num_of_monsters = 0;
-    public int monsters_limit = 3;
+    public int monsters_limit = 50;
 
     // Use this for initialization
     void Start () {
+        InvokeRepeating("SpawnAMonster", 0f, 1f);
     }
 
-    void Update()
-    {
-        
-    }
+
+    public void SpawnAMonster()
+	{
+		if (num_of_monsters < monsters_limit) {
+			randomSpawnPoint = Random.Range (0, spawnPoints.Length);
+			randomMonster = Random.Range (0, monsters.Length);
+			monster = Instantiate (monsters [randomMonster], spawnPoints [randomSpawnPoint].position,
+				Quaternion.identity);
+            monster.name = "Enemy";
+            num_of_monsters++;
+            //Debug.Log("ACTIVE MONSTERS: " + num_of_monsters);
+		}
+	}
 
 }
