@@ -11,6 +11,7 @@ public class JokerSpawnerControl : MonoBehaviour {
 
     public GameObject joker;
     public int num_of_jokers = 0;
+    public int jokerLimit = 3;
 
     // Use this for initialization
     void Start()

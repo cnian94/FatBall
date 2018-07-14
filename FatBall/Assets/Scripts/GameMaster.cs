@@ -56,25 +56,13 @@ public class GameMaster : MonoBehaviour {
 
             jokerTimeLeft += jokerSpawnTime;
         }
-
-        
-        /*Debug.Log("MONSTERS ARE GOING TO SPAWN IN " + monsterTimer + " seconds");
-
-        if (monsterTimer <= 0f)
-        {
-            Debug.Log("SPAWNING NEW MONSTERS !!");
-            spawnerControl.monsters_limit = spawnerControl.monsters_limit * 2;
-            //InvokeRepeating("SpawnAMonster", 0f, 1f);
-            SpawnAMonster();
-            monsterTimer += monsterSpawnTime;
-
-        }*/
     }
 
     public void IncreaseMonsterLimit()
     {
         Debug.Log("INCREASING MONSTER LIMIT !!");
-        spawnerControl.monsters_limit = spawnerControl.monsters_limit * 2;
+        //spawnerControl.monsters_limit = spawnerControl.monsters_limit * 2;
+        spawnerControl.monsters_limit = spawnerControl.monsters_limit * Mathf.Log(spawnerControl.monsters_limit);
         SpawnAMonster();
     }
 
@@ -82,13 +70,13 @@ public class GameMaster : MonoBehaviour {
     {
         yield return new WaitForSeconds(spawnDelay);
         Debug.Log("SPAWNING PLAYER !!");
-        Vector3 randomPoint = new Vector3(Random.Range(0, Screen.width-(Screen.width/20)), Random.Range(0, Screen.height-(Screen.height/12)), 0);
+        Vector3 randomPoint = new Vector3(Random.Range(Screen.width / 10, Screen.width-(Screen.width/10)), Random.Range(Screen.height / 5, Screen.height - (Screen.height / 5)), 0);
         player = Instantiate(player, randomPoint, Quaternion.identity);
         timer.SetActive(true);
         SpawnAMonster();
         InvokeRepeating("IncreaseMonsterLimit", 5 , 5);
         //InvokeRepeating("SpawnAMonster", 0f, 1f);
-        SpawnAMonster();
+        //SpawnAMonster();
         player.name = "Player";
 
     }
@@ -96,6 +84,8 @@ public class GameMaster : MonoBehaviour {
     public void KillPlayer(GameObject player)
     {
         Destroy(player);
+        SoundManagerScript.PlaySound("explosion");
+        CancelInvoke("IncreaseMonsterLimit");
         gameOverUI.SetActive(true);
     }
 
@@ -145,13 +135,16 @@ public class GameMaster : MonoBehaviour {
 
     public void SpawnAJoker()
     {
-            Debug.Log("SELECTED WEIGHT INDEX: " + GetRandomWeightedIndex(jokerWeights));
+            if(jokerSpawnerControl.num_of_jokers < jokerSpawnerControl.jokerLimit)
+        {
             jokerSpawnerControl.randomSpawnPoint = Random.Range(0, jokerSpawnerControl.spawnPoints.Length);
             jokerSpawnerControl.randomJoker = GetRandomWeightedIndex(jokerWeights);
             jokerSpawnerControl.joker = Instantiate(jokerSpawnerControl.jokers[jokerSpawnerControl.randomJoker], jokerSpawnerControl.spawnPoints[jokerSpawnerControl.randomSpawnPoint].position,
                 Quaternion.identity);
             jokerSpawnerControl.joker.name = "Joker";
             jokerSpawnerControl.num_of_jokers++;
+        }
+
     }
 
 

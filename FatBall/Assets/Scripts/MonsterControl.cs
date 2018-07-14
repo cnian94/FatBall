@@ -33,10 +33,10 @@ public class MonsterControl : MonoBehaviour {
         target = GameObject.Find ("Player");
 		rb = GetComponent<Rigidbody2D> ();
         float randomScale = Random.Range(10f, 20f);
-        if (SceneManager.GetActiveScene().name == "MenuScene")
+        /*if (SceneManager.GetActiveScene().name == "MenuScene")
         {
            randomScale = Random.Range(0f, 1f);
-        }
+        }*/
 
         temp = transform.localScale;
         temp.x = randomScale;
@@ -52,8 +52,9 @@ public class MonsterControl : MonoBehaviour {
         if (timeLeft <= 0)
         {
             movement = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), 0);
-            maxSpeed = Random.Range(2f, 12f);
+            maxSpeed = Random.Range(2f, 8f);
             timeLeft += accelerationTime;
+
 
             Vector3 position = this.rb.gameObject.transform.position;
 
@@ -95,9 +96,10 @@ public class MonsterControl : MonoBehaviour {
 
 		case "Player":
 			Destroy (gameObject);
+            SoundManagerScript.PlaySound("enemy");
             spawnerControl.num_of_monsters--;
             gameMaster.SpawnAMonster();
-            col.gameObject.transform.localScale = new Vector3(col.gameObject.transform.localScale.x + gameObject.transform.localScale.x, col.gameObject.transform.localScale.y + gameObject.transform.localScale.y, gameObject.transform.localScale.z);
+            col.gameObject.transform.localScale = new Vector3(col.gameObject.transform.localScale.x + gameObject.transform.localScale.x / 2, col.gameObject.transform.localScale.y + gameObject.transform.localScale.y / 2, gameObject.transform.localScale.z);
 			break;
 		}
 	}

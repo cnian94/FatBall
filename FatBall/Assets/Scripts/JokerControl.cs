@@ -5,8 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class JokerControl : MonoBehaviour {
 
-    //float moveSpeed;
-    //Vector3 directionToTarget;
+ 
 
     Rigidbody2D rb;
     GameObject target;
@@ -30,12 +29,12 @@ public class JokerControl : MonoBehaviour {
     {
         if(gameObject.tag == "rabbit")
         {
-            return Random.Range(5f, 7f);
+            return Random.Range(2f, 4f);
         }
 
         if (gameObject.tag == "turtle")
         {
-            return Random.Range(10f, 20f);
+            return Random.Range(5f, 7f);
         }
 
         return -1;
@@ -64,11 +63,12 @@ public class JokerControl : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        transform.Rotate(0, 0, Random.Range(10f, 15f) / 50);
         timeLeft -= Time.deltaTime;
         if (timeLeft <= 0)
         {
             movement = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), 0);
-            maxSpeed = Random.Range(2f, 12f);
+            maxSpeed = Random.Range(2f, 8f);
 
             timeLeft += accelerationTime;
 
@@ -120,6 +120,7 @@ public class JokerControl : MonoBehaviour {
                 if(gameObject.tag == "rabbit")
                 {
                     gameObject.SetActive(false);
+                    SoundManagerScript.PlaySound("joker");
                     spawnerControl.num_of_jokers--;
                     playerControl.moveForce = playerControl.moveForce * 2;
                     Invoke("RevertJokerEffect", 5.0f);
@@ -129,6 +130,7 @@ public class JokerControl : MonoBehaviour {
                 if (gameObject.tag == "turtle")
                 {
                     gameObject.SetActive(false);
+                    SoundManagerScript.PlaySound("joker");
                     spawnerControl.num_of_jokers--;
                     playerControl.moveForce = playerControl.moveForce / 2;
                     Invoke("RevertJokerEffect", 5.0f);
