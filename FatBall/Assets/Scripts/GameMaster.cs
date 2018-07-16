@@ -18,11 +18,13 @@ public class GameMaster : MonoBehaviour {
     public GameObject gameOverUI;
     private MonstersSpawnerControl spawnerControl;
     private JokerSpawnerControl jokerSpawnerControl;
-    private int[] jokerWeights = { 20, 20 };
+    private int[] jokerWeights = { 1, 1, 20 };
     private float jokerTimeLeft;
     private float monsterTimer;
-    public float jokerSpawnTime = 10f;
+    public float jokerSpawnTime = 5f;
     public float monsterSpawnTime = 5f;
+
+    public bool isBubbleCatched = false;
 
     void Awake()
     {
@@ -62,7 +64,8 @@ public class GameMaster : MonoBehaviour {
     {
         Debug.Log("INCREASING MONSTER LIMIT !!");
         //spawnerControl.monsters_limit = spawnerControl.monsters_limit * 2;
-        spawnerControl.monsters_limit = spawnerControl.monsters_limit * Mathf.Log(spawnerControl.monsters_limit);
+        //spawnerControl.monsters_limit = spawnerControl.monsters_limit * Mathf.Log(spawnerControl.monsters_limit);
+        spawnerControl.monsters_limit++;
         SpawnAMonster();
     }
 

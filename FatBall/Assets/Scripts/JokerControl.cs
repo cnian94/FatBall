@@ -10,6 +10,8 @@ public class JokerControl : MonoBehaviour {
     Rigidbody2D rb;
     GameObject target;
 
+    public GameObject bubble;
+
     public float accelerationTime = 2f;
     public float maxSpeed;
 
@@ -20,7 +22,8 @@ public class JokerControl : MonoBehaviour {
     public JokerSpawnerControl spawnerControl;
     public FloatingPlayer2DController playerControl;
 
-    private bool isCatched = false;
+    //private bool isCatched = false;
+    
 
     Vector3 temp;
 
@@ -35,6 +38,11 @@ public class JokerControl : MonoBehaviour {
         if (gameObject.tag == "turtle")
         {
             return Random.Range(5f, 7f);
+        }
+
+        if (gameObject.tag == "shield")
+        {
+            return Random.Range(7f, 12f);
         }
 
         return -1;
@@ -94,6 +102,7 @@ public class JokerControl : MonoBehaviour {
 
     void RevertJokerEffect()
     {
+        Debug.Log("BUBBLE: " + bubble);
 
         if(gameObject.tag == "rabbit")
         {
@@ -105,6 +114,13 @@ public class JokerControl : MonoBehaviour {
         {
             playerControl.moveForce = 500;
             Destroy(gameObject);
+        }
+
+        if (gameObject.tag == "shield")
+        {
+            Destroy(gameObject);
+            Destroy(bubble);
+            GameMaster.gm.isBubbleCatched = false;
         }
 
 
@@ -135,6 +151,17 @@ public class JokerControl : MonoBehaviour {
                     playerControl.moveForce = playerControl.moveForce / 2;
                     Invoke("RevertJokerEffect", 5.0f);
                 }
+
+                if (gameObject.tag == "shield" && !GameMaster.gm.isBubbleCatched)
+                {
+                    GameMaster.gm.isBubbleCatched = true;
+                    gameObject.SetActive(false);
+                    SoundManagerScript.PlaySound("joker");
+                    Debug.Log("Shield catched !!");
+                    bubble = Instantiate(bubble, target.transform.localPosition, Quaternion.identity);
+                    Invoke("RevertJokerEffect", 5.0f);
+                }
+
                 break;
         }
     }

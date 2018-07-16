@@ -95,11 +95,14 @@ public class MonsterControl : MonoBehaviour {
 		switch (col.gameObject.name) {
 
 		case "Player":
-			Destroy (gameObject);
-            SoundManagerScript.PlaySound("enemy");
-            spawnerControl.num_of_monsters--;
-            gameMaster.SpawnAMonster();
-            col.gameObject.transform.localScale = new Vector3(col.gameObject.transform.localScale.x + gameObject.transform.localScale.x / 2, col.gameObject.transform.localScale.y + gameObject.transform.localScale.y / 2, gameObject.transform.localScale.z);
+                if (!gameMaster.isBubbleCatched)
+                {
+                    Destroy(gameObject);
+                    SoundManagerScript.PlaySound("enemy");
+                    spawnerControl.num_of_monsters--;
+                    gameMaster.SpawnAMonster();
+                    col.gameObject.transform.localScale = new Vector3(col.gameObject.transform.localScale.x + gameObject.transform.localScale.x / 2, col.gameObject.transform.localScale.y + gameObject.transform.localScale.y / 2, gameObject.transform.localScale.z);
+                }
 			break;
 		}
 	}

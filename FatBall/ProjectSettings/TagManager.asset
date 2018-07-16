@@ -8,6 +8,7 @@ TagManager:
   - GM
   - turtle
   - rabbit
+  - shield
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Player
+  - Enemy
   - 
   - 
   - 

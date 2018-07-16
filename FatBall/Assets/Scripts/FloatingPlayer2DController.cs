@@ -29,44 +29,48 @@ public class FloatingPlayer2DController : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        switch (col.gameObject.name)
+        if (!GameMaster.gm.isBubbleCatched)
         {
+            switch (col.gameObject.name)
+            {
 
-            case "TopSpike":
-               GameObject.Find("Timer").SendMessage("Finish");
-               Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
-               Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
-               //gameOverUI.SetActive(true);
-               gameMaster.KillPlayer(gameObject);
-               Destroy(Explosion, 3);
-               break;
+                case "TopSpike":
+                    GameObject.Find("Timer").SendMessage("Finish");
+                    Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
+                    Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
+                    //gameOverUI.SetActive(true);
+                    gameMaster.KillPlayer(gameObject);
+                    Destroy(Explosion, 3);
+                    break;
 
-            case "LeftSpike":
-                GameObject.Find("Timer").SendMessage("Finish");
-                Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
-                Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
-                //gameOverUI.SetActive(true);
-                gameMaster.KillPlayer(gameObject);
-                Destroy(Explosion, 3);
-                break;
+                case "LeftSpike":
+                    GameObject.Find("Timer").SendMessage("Finish");
+                    Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
+                    Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
+                    //gameOverUI.SetActive(true);
+                    gameMaster.KillPlayer(gameObject);
+                    Destroy(Explosion, 3);
+                    break;
 
-            case "BottomSpike":
-                GameObject.Find("Timer").SendMessage("Finish");
-                Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
-                Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
-                //gameOverUI.SetActive(true);
-                gameMaster.KillPlayer(gameObject);
-                Destroy(Explosion, 3);
-                break;
+                case "BottomSpike":
+                    GameObject.Find("Timer").SendMessage("Finish");
+                    Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
+                    Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
+                    //gameOverUI.SetActive(true);
+                    gameMaster.KillPlayer(gameObject);
+                    Destroy(Explosion, 3);
+                    break;
 
-            case "RightSpike":
-                GameObject.Find("Timer").SendMessage("Finish");
-                Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
-                Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
-                //gameOverUI.SetActive(true);
-                gameMaster.KillPlayer(gameObject);
-                Destroy(Explosion, 3);
-                break;
+                case "RightSpike":
+                    GameObject.Find("Timer").SendMessage("Finish");
+                    Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
+                    Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
+                    //gameOverUI.SetActive(true);
+                    gameMaster.KillPlayer(gameObject);
+                    Destroy(Explosion, 3);
+                    break;
+            }
         }
+
     }
 }

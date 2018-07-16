@@ -906,7 +906,7 @@ Prefab:
     - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
         type: 2}
       propertyPath: jokerSpawnTime
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
         type: 2}
@@ -1421,6 +1421,7 @@ MonoBehaviour:
   jokers:
   - {fileID: 1658457293378228, guid: cef4b0c6f0087db43888345f6a15ec55, type: 2}
   - {fileID: 1764594742911764, guid: 23dca65dc0259c945abba1c78cd218d8, type: 2}
+  - {fileID: 1005696137869546, guid: f7c49af1315c3ee4d8063a33debb8d2d, type: 2}
   randomSpawnPoint: 0
   randomJoker: 0
   joker: {fileID: 0}
