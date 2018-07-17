@@ -17,8 +17,9 @@ public class GameMaster : MonoBehaviour {
     public GameObject player;
     public GameObject gameOverUI;
     private MonstersSpawnerControl spawnerControl;
+    private SoundManagerScript soundManager;
     private JokerSpawnerControl jokerSpawnerControl;
-    private int[] jokerWeights = { 1, 1, 20 };
+    private int[] jokerWeights = { 1, 1, 1, 20};
     private float jokerTimeLeft;
     private float monsterTimer;
     public float jokerSpawnTime = 5f;
@@ -33,6 +34,7 @@ public class GameMaster : MonoBehaviour {
         cam.orthographicSize = Screen.height / 2;
         spawnerControl = FindObjectOfType<MonstersSpawnerControl>();
         jokerSpawnerControl = FindObjectOfType<JokerSpawnerControl>();
+        soundManager = FindObjectOfType<SoundManagerScript>();
         countDown.gameObject.SetActive(true);
     }
 
@@ -87,7 +89,7 @@ public class GameMaster : MonoBehaviour {
     public void KillPlayer(GameObject player)
     {
         Destroy(player);
-        SoundManagerScript.PlaySound("explosion");
+        soundManager.PlaySound("Explosion");
         CancelInvoke("IncreaseMonsterLimit");
         gameOverUI.SetActive(true);
     }

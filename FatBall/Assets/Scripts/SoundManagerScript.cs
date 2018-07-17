@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class SoundManagerScript : MonoBehaviour {
 
-    public static AudioClip explosionSound, enemySound, jokerSound;
-    static AudioSource audioSrc;
+    public static AudioClip explosionSound, enemySound, FastjokerSound, ShieldjokerSound, HalfsizejokerSound;
+    public static AudioSource audioSrc;
 
 	// Use this for initialization
 	void Start () {
-        explosionSound = Resources.Load<AudioClip>("explosion");
+        explosionSound = Resources.Load<AudioClip>("Explosion");
         enemySound = Resources.Load<AudioClip>("enemy");
-        jokerSound = Resources.Load<AudioClip>("joker");
+        FastjokerSound = Resources.Load<AudioClip>("Fastjoker");
+        ShieldjokerSound = Resources.Load<AudioClip>("Shieldjoker");
+        HalfsizejokerSound = Resources.Load<AudioClip>("HalfSize");
 
         audioSrc = GetComponent<AudioSource>();
 		
@@ -22,11 +24,11 @@ public class SoundManagerScript : MonoBehaviour {
 		
 	}
 
-    public static void PlaySound(string clip)
+    public void PlaySound(string clip)
     {
         switch (clip)
         {
-            case "explosion":
+            case "Explosion":
                 audioSrc.PlayOneShot(explosionSound);
                 break;
 
@@ -34,8 +36,17 @@ public class SoundManagerScript : MonoBehaviour {
                 audioSrc.PlayOneShot(enemySound);
                 break;
 
-            case "joker":
-                audioSrc.PlayOneShot(jokerSound);
+            case "Fastjoker": 
+                audioSrc.PlayOneShot(FastjokerSound);
+                break;
+
+            case "HalfSize":
+                audioSrc.PlayOneShot(HalfsizejokerSound);
+                break;
+
+            case "Shieldjoker":
+                audioSrc.clip = ShieldjokerSound;
+                audioSrc.Play();
                 break;
         }
     }

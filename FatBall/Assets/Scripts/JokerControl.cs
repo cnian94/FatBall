@@ -9,6 +9,7 @@ public class JokerControl : MonoBehaviour {
 
     Rigidbody2D rb;
     GameObject target;
+    private SoundManagerScript soundManager;
 
     public GameObject bubble;
 
@@ -45,6 +46,11 @@ public class JokerControl : MonoBehaviour {
             return Random.Range(7f, 12f);
         }
 
+        if (gameObject.tag == "HalfSize")
+        {
+            return Random.Range(7f, 12f);
+        }
+
         return -1;
     }
 
@@ -57,6 +63,7 @@ public class JokerControl : MonoBehaviour {
         //gameObject.tag = "spawn";
         target = GameObject.Find("Player");
         rb = GetComponent<Rigidbody2D>();
+        soundManager = FindObjectOfType<SoundManagerScript>();
 
         float randomScale = GetRandomScale();
 
@@ -121,6 +128,8 @@ public class JokerControl : MonoBehaviour {
             Destroy(gameObject);
             Destroy(bubble);
             GameMaster.gm.isBubbleCatched = false;
+            SoundManagerScript.audioSrc.Stop();
+            SoundManagerScript.audioSrc.clip = null;
         }
 
 
@@ -132,11 +141,11 @@ public class JokerControl : MonoBehaviour {
         {
 
             case "Player":
-                Debug.Log("Player catched a " + gameObject.tag + " joker");
+                Debug.Log("Player catched a " + gameObject.tag + "joker");
                 if(gameObject.tag == "rabbit")
                 {
                     gameObject.SetActive(false);
-                    SoundManagerScript.PlaySound("joker");
+                    soundManager.PlaySound("Fastjoker");
                     spawnerControl.num_of_jokers--;
                     playerControl.moveForce = playerControl.moveForce * 2;
                     Invoke("RevertJokerEffect", 5.0f);
@@ -146,7 +155,7 @@ public class JokerControl : MonoBehaviour {
                 if (gameObject.tag == "turtle")
                 {
                     gameObject.SetActive(false);
-                    SoundManagerScript.PlaySound("joker");
+                    soundManager.PlaySound("joker");
                     spawnerControl.num_of_jokers--;
                     playerControl.moveForce = playerControl.moveForce / 2;
                     Invoke("RevertJokerEffect", 5.0f);
@@ -156,13 +165,22 @@ public class JokerControl : MonoBehaviour {
                 {
                     GameMaster.gm.isBubbleCatched = true;
                     gameObject.SetActive(false);
-                    SoundManagerScript.PlaySound("joker");
+                    soundManager.PlaySound("Shieldjoker");
                     Debug.Log("Shield catched !!");
                     bubble = Instantiate(bubble, target.transform.localPosition, Quaternion.identity);
-                    Invoke("RevertJokerEffect", 5.0f);
+                    Invoke("RevertJokerEffect", 8.0f);
                 }
 
-                break;
+                if (gameObject.tag == "HalfSize")
+                {
+                    gameObject.SetActive(false);
+                    soundManager.PlaySound("HalfSize");
+                    spawnerControl.num_of_jokers--;
+                    col.gameObject.transform.localScale = new Vector3(col.gameObject.transform.localScale.x/2 , col.gameObject.transform.localScale.y/2 , col.gameObject.transform.localScale.z);
+                    
+                }
+
+                    break;
         }
     }
 

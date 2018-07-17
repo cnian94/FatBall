@@ -9,6 +9,7 @@ TagManager:
   - turtle
   - rabbit
   - shield
+  - HalfSize
   layers:
   - Default
   - TransparentFX

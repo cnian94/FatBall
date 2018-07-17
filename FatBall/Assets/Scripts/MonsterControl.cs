@@ -10,6 +10,7 @@ public class MonsterControl : MonoBehaviour {
 
     Rigidbody2D rb;
 	GameObject target;
+    private SoundManagerScript soundManager;
 
     public float accelerationTime = 2f;
     public float maxSpeed;
@@ -33,6 +34,7 @@ public class MonsterControl : MonoBehaviour {
         target = GameObject.Find ("Player");
 		rb = GetComponent<Rigidbody2D> ();
         float randomScale = Random.Range(10f, 20f);
+        soundManager = FindObjectOfType<SoundManagerScript>();
         /*if (SceneManager.GetActiveScene().name == "MenuScene")
         {
            randomScale = Random.Range(0f, 1f);
@@ -98,7 +100,7 @@ public class MonsterControl : MonoBehaviour {
                 if (!gameMaster.isBubbleCatched)
                 {
                     Destroy(gameObject);
-                    SoundManagerScript.PlaySound("enemy");
+                    soundManager.PlaySound("enemy");
                     spawnerControl.num_of_monsters--;
                     gameMaster.SpawnAMonster();
                     col.gameObject.transform.localScale = new Vector3(col.gameObject.transform.localScale.x + gameObject.transform.localScale.x / 2, col.gameObject.transform.localScale.y + gameObject.transform.localScale.y / 2, gameObject.transform.localScale.z);
