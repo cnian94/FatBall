@@ -48,50 +48,50 @@ public class SpikeControl : MonoBehaviour {
         float force = Random.Range(10f, 15f);
 
 
-        if (gameObject.name == "TopSpike" && gameObject.transform.position.y >= Screen.height + Screen.height / 24)
+        if (gameObject.name == "TopSpike" && gameObject.transform.position.y >= Screen.height + Screen.height / 40)
         {
             //rb.AddForceAtPosition(new Vector2(0, -force), rb.transform.position);
             rb.velocity = new Vector2(0, -force);
 
         }
 
-        if (gameObject.name == "TopSpike" && gameObject.transform.position.y <= Screen.height - Screen.height / 24)
+        if (gameObject.name == "TopSpike" && gameObject.transform.position.y <= Screen.height - Screen.height / 40)
         {
             //rb.AddForceAtPosition(new Vector2(0, force), rb.transform.position);
             rb.velocity = new Vector2(0, force);
         }
 
-        if (gameObject.name == "LeftSpike" && gameObject.transform.position.x <= -(Screen.width / 40))
+        if (gameObject.name == "LeftSpike" && gameObject.transform.position.x <= -(Screen.width / 24))
         {
             //rb.AddForceAtPosition(new Vector2(force, 0), rb.transform.position);
             rb.velocity = new Vector2(force, 0);
         }
 
-        if (gameObject.name == "LeftSpike" && gameObject.transform.position.x >= Screen.width / 40)
+        if (gameObject.name == "LeftSpike" && gameObject.transform.position.x >= Screen.width / 24)
         {
             //rb.AddForceAtPosition(new Vector2(-force, 0), rb.transform.position);
             rb.velocity = new Vector2(-force, 0);
         }
 
-        if (gameObject.name == "BottomSpike" && gameObject.transform.position.y <= -(Screen.height / 24))
+        if (gameObject.name == "BottomSpike" && gameObject.transform.position.y <= -(Screen.height / 40))
         {
             //rb.AddForceAtPosition(new Vector2(0, force), rb.transform.position);
             rb.velocity = new Vector2(0, force);
         }
 
-        if (gameObject.name == "BottomSpike" && gameObject.transform.position.y >= Screen.height / 24)
+        if (gameObject.name == "BottomSpike" && gameObject.transform.position.y >= Screen.height / 40)
         {
             //rb.AddForceAtPosition(new Vector2(0, -force), rb.transform.position);
             rb.velocity = new Vector2(0, -force);
         }
 
-        if (gameObject.name == "RightSpike" && gameObject.transform.position.x >= Screen.width + Screen.width / 40)
+        if (gameObject.name == "RightSpike" && gameObject.transform.position.x >= Screen.width + Screen.width / 24)
         {
             //rb.AddForceAtPosition(new Vector2(-5f, 0), rb.transform.position);
             rb.velocity = new Vector2(-force, 0);
         }
 
-        if (gameObject.name == "RightSpike" && gameObject.transform.position.x <= Screen.width - Screen.width / 40)
+        if (gameObject.name == "RightSpike" && gameObject.transform.position.x <= Screen.width - Screen.width / 24)
         {
             //rb.AddForceAtPosition(new Vector2(5f, 0), rb.transform.position);
             rb.velocity = new Vector2(force, 0);

@@ -6,12 +6,12 @@ public class SpikeSpawnerControl : MonoBehaviour {
     public static bool spawnAllowed;
     public static Vector3 lastSpikePos;
 
-    public static int big_side_limit = 19  ;
-    public static int small_side_limit = 11 ;
+    public static int big_side_limit = 11  ;
+    public static int small_side_limit = 19 ;
 
-    public static int distance = Screen.width /20;
-    public static int distance2 = Screen.height / 12;
-    public static int start_x = Screen.width/20;
+    public static int distance = Screen.width / 12;
+    public static int distance2 = Screen.height / 20;
+    public static int start_x = Screen.width/ 12;
     public static int start_y = Screen.height;
 
     public int num_of_corners = 4;
@@ -66,7 +66,7 @@ public class SpikeSpawnerControl : MonoBehaviour {
                 {
                     for (int j = 0; j < big_side_limit; j++)
                     {
-                        lastSpikePos = new Vector3(start_x - distance, start_y - distance, 10);
+                        lastSpikePos = new Vector3(start_x - distance, start_y - distance2, 10);
                         spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
                         spike.name = "BottomSpike";
                         spike.transform.Rotate(0, 0, 180);
