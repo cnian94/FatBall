@@ -11,20 +11,62 @@ public class FloatingPlayer2DController : MonoBehaviour {
     public GameMaster gameMaster;
     public GameObject Explosion;
 
+    bool isHalfSizeJokerCatched = false;
+
     // Use this for initialization
     void Start () {
         Debug.Log("PLAYER START CALLED !!");
         gameMaster = FindObjectOfType<GameMaster>();
         myBody = this.GetComponent<Rigidbody2D>();
-	}
+    }
+
+    void Update()
+    {
+        if (isHalfSizeJokerCatched)
+        {
+            StartCoroutine(LerpScale(2f));
+        }
+
+    }
 
     // Update is called once per frame 
-       void FixedUpdate () {
+    void FixedUpdate () {
         Vector2 moveVec = new Vector2(CrossPlatformInputManager.GetAxis("Horizontal"), CrossPlatformInputManager.GetAxis("Vertical")) * moveForce;
         bool isBoosting = CrossPlatformInputManager.GetButton("Boost");
-        //Debug.Log(isBoosting ? boostMultiplier : 1);
         myBody.AddForce(moveVec * (isBoosting ? boostMultiplier : 1));
 	}
+
+
+
+    void SetIsHalfSizeJokerCatched(bool val)
+    {
+        isHalfSizeJokerCatched = val;
+    }
+
+
+    /*void ScaleOverTime(Vector3 destinationScale)
+    {
+        gameObject.transform.localScale = Vector3.Lerp(gameObject.transform.localScale, destinationScale, Time.deltaTime * 10);
+    }*/
+
+
+    IEnumerator LerpScale(float time)
+    {
+        SetIsHalfSizeJokerCatched(false);   
+        Vector3 originalScale = transform.localScale;
+        Vector3 targetScale = new Vector3(gameObject.transform.localScale.x / 2, gameObject.transform.localScale.y / 2, gameObject.transform.localScale.z); ;
+        float originalTime = time;
+
+
+        while (time > 0.0f)
+        {
+            time -= Time.deltaTime;
+
+            transform.localScale = Vector3.Lerp(targetScale, originalScale, time / originalTime);
+            yield return null;
+
+        }
+    }
 
 
     void OnTriggerEnter2D(Collider2D col)

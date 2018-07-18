@@ -19,7 +19,7 @@ public class GameMaster : MonoBehaviour {
     private MonstersSpawnerControl spawnerControl;
     private SoundManagerScript soundManager;
     private JokerSpawnerControl jokerSpawnerControl;
-    private int[] jokerWeights = { 1, 1, 1, 20};
+    private int[] jokerWeights = { 0, 0, 20, 20};
     private float jokerTimeLeft;
     private float monsterTimer;
     public float jokerSpawnTime = 5f;

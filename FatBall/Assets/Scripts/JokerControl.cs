@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class JokerControl : MonoBehaviour {
 
- 
 
     Rigidbody2D rb;
     GameObject target;
@@ -60,7 +59,6 @@ public class JokerControl : MonoBehaviour {
         spawnerControl = FindObjectOfType<JokerSpawnerControl>();
         playerControl = FindObjectOfType<FloatingPlayer2DController>();
         transform.name = transform.name.Replace("(Clone)", "").Trim();
-        //gameObject.tag = "spawn";
         target = GameObject.Find("Player");
         rb = GetComponent<Rigidbody2D>();
         soundManager = FindObjectOfType<SoundManagerScript>();
@@ -97,6 +95,12 @@ public class JokerControl : MonoBehaviour {
                 this.rb.gameObject.transform.position = new Vector3(spawnerControl.spawnPoints[spawnerControl.randomSpawnPoint].position.x, spawnerControl.spawnPoints[spawnerControl.randomSpawnPoint].position.y, transform.position.z);
             }
 
+            /*if (isBubbleEffectActive)
+            {
+                Debug.Log("STARTING BUBBLE EFFECT !!");
+                StartBubbleEffect();
+            }*/
+
         }
    
 
@@ -130,10 +134,10 @@ public class JokerControl : MonoBehaviour {
             GameMaster.gm.isBubbleCatched = false;
             SoundManagerScript.audioSrc.Stop();
             SoundManagerScript.audioSrc.clip = null;
+            bubble.SendMessage("SetIsBubbleEffectActive", false);
         }
-
-
     }
+
 
     void OnTriggerEnter2D(Collider2D col)
     {
@@ -168,7 +172,9 @@ public class JokerControl : MonoBehaviour {
                     soundManager.PlaySound("Shieldjoker");
                     Debug.Log("Shield catched !!");
                     bubble = Instantiate(bubble, target.transform.localPosition, Quaternion.identity);
+                    bubble.SendMessage("SetIsBubbleEffectActive", true);
                     Invoke("RevertJokerEffect", 8.0f);
+                    
                 }
 
                 if (gameObject.tag == "HalfSize")
@@ -176,8 +182,10 @@ public class JokerControl : MonoBehaviour {
                     gameObject.SetActive(false);
                     soundManager.PlaySound("HalfSize");
                     spawnerControl.num_of_jokers--;
-                    col.gameObject.transform.localScale = new Vector3(col.gameObject.transform.localScale.x/2 , col.gameObject.transform.localScale.y/2 , col.gameObject.transform.localScale.z);
-                    
+                    //col.gameObject.transform.localScale = new Vector3(col.gameObject.transform.localScale.x/2 , col.gameObject.transform.localScale.y/2 , col.gameObject.transform.localScale.z);
+                    //col.gameObject.transform.localScale = Vector3.Lerp(col.gameObject.transform.localScale, col.gameObject.transform.localScale / 2, 1f * Time.deltaTime);
+                    //col.gameObject.transform.localScale = Vector3.MoveTowards(col.gameObject.transform.localScale, col.gameObject.transform.localScale / 2, 1f * Time.deltaTime);
+                    target.SendMessage("SetIsHalfSizeJokerCatched", true);
                 }
 
                     break;
