@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 11100000}
   - component: {fileID: 50733865765554538}
   - component: {fileID: 58873672672374380}
-  - component: {fileID: 114508740745405046}
+  - component: {fileID: 114711957962322564}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -113,7 +113,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 2
+  m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
@@ -136,7 +136,7 @@ CircleCollider2D:
   m_Offset: {x: 0.000000059604645, y: 0}
   serializedVersion: 2
   m_Radius: 0.65544784
---- !u!114 &114508740745405046
+--- !u!114 &114711957962322564
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -144,10 +144,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: acd15bc4cb3d6db479bd69ae7fb808b3, type: 3}
+  m_Script: {fileID: 11500000, guid: 4ae5819787c335a4baf6bd607d9c304f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveForce: 500
-  boostMultiplier: 2
+  moveSpeed: 500
   gameMaster: {fileID: 0}
   Explosion: {fileID: 139366, guid: b185c1a9cf067374586d095111b15bd1, type: 2}

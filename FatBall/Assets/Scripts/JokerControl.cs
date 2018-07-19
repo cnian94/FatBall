@@ -20,10 +20,11 @@ public class JokerControl : MonoBehaviour {
 
     public static float max_distance_from_view = 200f;
     public JokerSpawnerControl spawnerControl;
-    public FloatingPlayer2DController playerControl;
+    //public FloatingPlayer2DController playerControl;
+    public PlayerController playerControl;
 
     //private bool isCatched = false;
-    
+
 
     Vector3 temp;
 
@@ -57,7 +58,8 @@ public class JokerControl : MonoBehaviour {
     void Start()
     {
         spawnerControl = FindObjectOfType<JokerSpawnerControl>();
-        playerControl = FindObjectOfType<FloatingPlayer2DController>();
+        //playerControl = FindObjectOfType<FloatingPlayer2DController>();
+        playerControl = FindObjectOfType<PlayerController>();
         transform.name = transform.name.Replace("(Clone)", "").Trim();
         target = GameObject.Find("Player");
         rb = GetComponent<Rigidbody2D>();
@@ -117,13 +119,15 @@ public class JokerControl : MonoBehaviour {
 
         if(gameObject.tag == "rabbit")
         {
-            playerControl.moveForce = 500;
+            //playerControl.moveForce = 500;
+            playerControl.moveSpeed = 500;
             Destroy(gameObject);
         }
 
         if (gameObject.tag == "turtle")
         {
-            playerControl.moveForce = 500;
+            //playerControl.moveForce = 500;
+            playerControl.moveSpeed = 500;
             Destroy(gameObject);
         }
 
@@ -151,7 +155,8 @@ public class JokerControl : MonoBehaviour {
                     gameObject.SetActive(false);
                     soundManager.PlaySound("Fastjoker");
                     spawnerControl.num_of_jokers--;
-                    playerControl.moveForce = playerControl.moveForce * 2;
+                    //playerControl.moveForce = playerControl.moveForce * 2;
+                    playerControl.moveSpeed = playerControl.moveSpeed * 2;
                     Invoke("RevertJokerEffect", 5.0f);
 
                 }
@@ -161,7 +166,8 @@ public class JokerControl : MonoBehaviour {
                     gameObject.SetActive(false);
                     soundManager.PlaySound("joker");
                     spawnerControl.num_of_jokers--;
-                    playerControl.moveForce = playerControl.moveForce / 2;
+                    //playerControl.moveForce = playerControl.moveForce / 2;
+                    playerControl.moveSpeed = playerControl.moveSpeed / 2;
                     Invoke("RevertJokerEffect", 5.0f);
                 }
 
