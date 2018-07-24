@@ -53,13 +53,13 @@ public class PlayerController : MonoBehaviour {
 
         if (Input.GetMouseButtonDown(0))
         {
-                Debug.Log("MOUSE POS: " + Input.mousePosition);
+                //Debug.Log("MOUSE POS: " + Input.mousePosition);
                 previousDistanceToTouchPos = 0;
                 currentDistanceToTouchPos = 0;
                 isMoving = true;
                 touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 touchPosition.z = 0;
-                Debug.Log("TOUCH POS: " + touchPosition);
+                //Debug.Log("TOUCH POS: " + touchPosition);
                 whereToMove = (touchPosition - transform.position).normalized;
                 rb.velocity = new Vector2(whereToMove.x * moveSpeed, whereToMove.y * moveSpeed);
         }

@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class SoundManagerScript : MonoBehaviour {
 
-    public static AudioClip explosionSound, enemySound, FastjokerSound, ShieldjokerSound, HalfsizejokerSound;
+    public static AudioClip startSound, explosionSound, enemySound, FastjokerSound, ShieldjokerSound, HalfsizejokerSound;
     public static AudioSource audioSrc;
 
 	// Use this for initialization
 	void Start () {
+        startSound = Resources.Load<AudioClip>("start");
         explosionSound = Resources.Load<AudioClip>("Explosion");
         enemySound = Resources.Load<AudioClip>("enemy");
         FastjokerSound = Resources.Load<AudioClip>("Fastjoker");
@@ -47,6 +48,10 @@ public class SoundManagerScript : MonoBehaviour {
             case "Shieldjoker":
                 audioSrc.clip = ShieldjokerSound;
                 audioSrc.Play();
+                break;
+
+            case "Start":
+                audioSrc.PlayOneShot(startSound);
                 break;
         }
     }

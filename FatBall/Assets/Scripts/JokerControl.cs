@@ -20,10 +20,7 @@ public class JokerControl : MonoBehaviour {
 
     public static float max_distance_from_view = 200f;
     public JokerSpawnerControl spawnerControl;
-    //public FloatingPlayer2DController playerControl;
     public PlayerController playerControl;
-
-    //private bool isCatched = false;
 
 
     Vector3 temp;
@@ -188,9 +185,6 @@ public class JokerControl : MonoBehaviour {
                     gameObject.SetActive(false);
                     soundManager.PlaySound("HalfSize");
                     spawnerControl.num_of_jokers--;
-                    //col.gameObject.transform.localScale = new Vector3(col.gameObject.transform.localScale.x/2 , col.gameObject.transform.localScale.y/2 , col.gameObject.transform.localScale.z);
-                    //col.gameObject.transform.localScale = Vector3.Lerp(col.gameObject.transform.localScale, col.gameObject.transform.localScale / 2, 1f * Time.deltaTime);
-                    //col.gameObject.transform.localScale = Vector3.MoveTowards(col.gameObject.transform.localScale, col.gameObject.transform.localScale / 2, 1f * Time.deltaTime);
                     target.SendMessage("SetIsHalfSizeJokerCatched", true);
                 }
 

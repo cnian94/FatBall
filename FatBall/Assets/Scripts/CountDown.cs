@@ -27,9 +27,9 @@ public class CountDown : MonoBehaviour {
 
     // Update is called once per frame
     void StartCountDown () {
-        if(Time.timeSinceLevelLoad - startTime >= 1 && Time.timeSinceLevelLoad - startTime < 2)
-        {
 
+        if (Time.timeSinceLevelLoad - startTime >= 1 && Time.timeSinceLevelLoad - startTime < 2)
+        {
             gameObject.GetComponent<Image>().sprite = sprite_two;
         }
 

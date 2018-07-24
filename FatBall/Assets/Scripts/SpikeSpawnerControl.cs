@@ -3,16 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SpikeSpawnerControl : MonoBehaviour {
-    public static bool spawnAllowed;
-    public static Vector3 lastSpikePos;
 
-    public static int big_side_limit = 11  ;
-    public static int small_side_limit = 19 ;
+    //public bool spawnAllowed;
+    public Vector3 lastSpikePos;
 
-    public static int distance = Screen.width / 12;
-    public static int distance2 = Screen.height / 20;
-    public static int start_x = Screen.width/ 12;
-    public static int start_y = Screen.height;
+    public static int big_side_limit = 11;
+    public static int small_side_limit = 18;
+
+
+
+    public float widthOfSpike;
+    public float heightOfSpike;
+    public float distance_x;
+    public float distance_y;
+    public float start_x;
+    public float start_y;
 
     public int num_of_corners = 4;
     private Vector3 movement;
@@ -20,77 +25,155 @@ public class SpikeSpawnerControl : MonoBehaviour {
     public GameObject spike;
 
 
-    // Use this for initialization
-    void Start () {
-        Debug.Log("WİDTH: " + Screen.width);
-        spawnAllowed = true;
-        InvokeRepeating("SpawnASpike", 0f, 0.05f);
+    void Awake()
+    {
+        start_x = 0;
+        start_y = Screen.height;
+        widthOfSpike = spike.GetComponent<SpriteRenderer>().bounds.size.x;
+        heightOfSpike = spike.GetComponent<SpriteRenderer>().bounds.size.y;
     }
 
+    // Use this for initialization
+    void Start () {
+        StartCoroutine(SpawnASpike());
+    }
 
-    void SpawnASpike()
+    public IEnumerator SpawnASpike()
     {
-        float x = Screen.width;
-        float y = Screen.height;
-
-        if (spawnAllowed)
-        {
-            for(int i = 0; i < this.num_of_corners; i++)
+        for (int i = 0; i < this.num_of_corners; i++)
             {
                 if(i == 0)
                 {
-                    for(int j=0; j<big_side_limit; j++)
+                    for (int j=0; j<big_side_limit; j++)
                     {
-                        lastSpikePos = new Vector3(start_x, start_y, 10);
-                        spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
-                        spike.name = "TopSpike";
-                        start_x += distance;
+                        if(j == 0)
+                        {
+                            Debug.Log("startX: " + start_x);
+                            Debug.Log("startY: " + start_y);
+                            lastSpikePos = new Vector3(start_x, start_y, 10);
+                            spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
+                            distance_x = (Screen.width - (spike.GetComponent<SpriteRenderer>().bounds.size.x * 2)) / (big_side_limit - 3);
+                            distance_y = (Screen.height - (spike.GetComponent<SpriteRenderer>().bounds.size.x * 2)) / (small_side_limit - 1);
+                            start_x += widthOfSpike;
+                            spike.name = "TopLeftCornerSpike";
+                            spike.transform.Rotate(0, 0, 45);
+                        }
+
+
+                        if (j == big_side_limit - 1)
+                        {
+                            lastSpikePos = new Vector3(Screen.width, start_y, 10);
+                            spike.transform.position = lastSpikePos;
+                            spike.transform.Rotate(0, 0, -45);
+                            spike.name = "TopRightCornerSpike";
+                            start_x = Screen.width;
+                        }
+                        else
+                        {
+                            lastSpikePos = new Vector3(start_x, start_y, 10);
+                            spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
+                            spike.name = "TopSpike";
+                            start_x += distance_x;
+                        }
                     }
-                    
-                }
+            }
                 
                 if (i == 1)
                 {
-                    for (int j = 0; j < small_side_limit ; j++)
+                yield return new WaitForSeconds(1f);
+
+                for (int j = 0; j < small_side_limit ; j++)
                     {
-                        lastSpikePos = new Vector3(start_x , start_y - distance2, 10);
-                        spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
-                        spike.name = "RightSpike";
-                        spike.transform.Rotate(0, 0, -90);
-                        start_y -= distance2;
+
+                        if (j == 0)
+                        {
+                            start_y -= widthOfSpike;
+                            lastSpikePos = new Vector3(start_x, start_y, 10);
+                            spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
+                            spike.name = "RightSpike";
+                            spike.transform.Rotate(0, 0, -90);
+                        }
+
+                        else
+                        {
+                            start_y -= distance_y;
+                            lastSpikePos = new Vector3(start_x, start_y, 10);
+                            spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
+                            spike.name = "RightSpike";
+                            spike.transform.Rotate(0, 0, -90);
+                        }
+
                     }
-                    
                 }
 
-               if (i == 2)
+                if (i == 2)
                 {
-                    for (int j = 0; j < big_side_limit; j++)
+                yield return new WaitForSeconds(1f);
+
+                for (int j = 0; j < big_side_limit; j++)
                     {
-                        lastSpikePos = new Vector3(start_x - distance, start_y - distance2, 10);
-                        spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
-                        spike.name = "BottomSpike";
-                        spike.transform.Rotate(0, 0, 180);
-                        start_x -= distance;
-                    }
-                    
+
+                        if (j == 0)
+                        {
+                            start_x = Screen.width;
+                            start_y = 0;
+                            lastSpikePos = new Vector3(start_x, start_y, 10);
+                            spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
+                            start_x -= widthOfSpike;
+                            spike.name = "BottomRightCornerSpike";
+                            spike.transform.Rotate(0, 0, -135);
+                        }
+
+                        if(j == big_side_limit - 1)
+                        {
+                            lastSpikePos = new Vector3(0, start_y, 10);
+                            spike.transform.position = lastSpikePos;
+                            spike.name = "BottomLeftCornerSpike";
+                            start_x = 0;
+                            spike.transform.Rotate(0, 0, -45);
+                        }
+
+                        else
+                        {
+                            lastSpikePos = new Vector3(start_x, start_y, 10);
+                            spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
+                            spike.name = "BottomSpike";
+                            start_x -= distance_x;
+                            spike.transform.Rotate(0, 0, 180);
+
+                        }
+                    }                   
                 }
+
 
                 if (i == 3)
                 {
-                    for (int j = 0; j < small_side_limit ; j++)
+                yield return new WaitForSeconds(1f);
+
+                for (int j = 0; j < small_side_limit ; j++)
                     {
-                        
-                        lastSpikePos = new Vector3(start_x - distance, start_y , 10);
-                        spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
-                        spike.name = "LeftSpike";
-                        spike.transform.Rotate(0, 0, 90);
-                        start_y += distance2;
+
+                        if (j == 0)
+                        {
+                            start_y += widthOfSpike;
+                            lastSpikePos = new Vector3(start_x, start_y, 10);
+                            spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
+                            spike.name = "LeftSpike";
+                            spike.transform.Rotate(0, 0, 90);
+                        }
+
+                        else
+                        {
+                            start_y += distance_y;
+                            lastSpikePos = new Vector3(start_x, start_y, 10);
+                            spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
+                            spike.name = "LeftSpike";
+                            spike.transform.Rotate(0, 0, 90);
+                        }
                     }
-                    spawnAllowed = false;
                 }
 
             }
-        }
     }
 
 }
