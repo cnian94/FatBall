@@ -21,6 +21,7 @@ public class JokerControl : MonoBehaviour {
     public static float max_distance_from_view = 200f;
     public JokerSpawnerControl spawnerControl;
     public PlayerController playerControl;
+    public MonstersSpawnerControl monstersSpawnerControl;
 
 
     Vector3 temp;
@@ -48,6 +49,10 @@ public class JokerControl : MonoBehaviour {
             return Random.Range(7f, 12f);
         }
 
+        if (gameObject.tag == "Reset")
+        {
+            return Random.Range(7f, 12f);
+        }
         return -1;
     }
 
@@ -57,6 +62,7 @@ public class JokerControl : MonoBehaviour {
         spawnerControl = FindObjectOfType<JokerSpawnerControl>();
         //playerControl = FindObjectOfType<FloatingPlayer2DController>();
         playerControl = FindObjectOfType<PlayerController>();
+        monstersSpawnerControl = FindObjectOfType<MonstersSpawnerControl>();
         transform.name = transform.name.Replace("(Clone)", "").Trim();
         target = GameObject.Find("Player");
         rb = GetComponent<Rigidbody2D>();
@@ -173,7 +179,7 @@ public class JokerControl : MonoBehaviour {
                     GameMaster.gm.isBubbleCatched = true;
                     gameObject.SetActive(false);
                     soundManager.PlaySound("Shieldjoker");
-                    Debug.Log("Shield catched !!");
+                    //Debug.Log("Shield catched !!");
                     bubble = Instantiate(bubble, target.transform.localPosition, Quaternion.identity);
                     bubble.SendMessage("SetIsBubbleEffectActive", true);
                     Invoke("RevertJokerEffect", 8.0f);
@@ -188,7 +194,23 @@ public class JokerControl : MonoBehaviour {
                     target.SendMessage("SetIsHalfSizeJokerCatched", true);
                 }
 
-                    break;
+                if (gameObject.tag == "Reset")
+                {
+                    gameObject.SetActive(false);
+                    GameObject[] Enemies = GameObject.FindGameObjectsWithTag("spawn");
+                    for (var i = 0; i < Enemies.Length; i++)
+                    {
+                        Destroy(Enemies[i]);
+                    }
+                    monstersSpawnerControl.monsters_limit = 3;
+                    monstersSpawnerControl.num_of_monsters = 0;
+                        
+                    //soundManager.PlaySound("HalfSize");
+                    spawnerControl.num_of_jokers--;
+                    //target.SendMessage("SetIsHalfSizeJokerCatched", true);
+                }
+
+                break;
         }
     }
 

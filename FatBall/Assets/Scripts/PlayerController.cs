@@ -28,7 +28,16 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        Debug.Log("PlayerScale:" + gameObject.transform.localScale);
+        if (gameObject.transform.localScale.x <= 20)
+        {
+            gameMaster.jokerWeights[3] = 0;
+        }
+        if (gameObject.transform.localScale.x > 20)
+        {
+            gameMaster.jokerWeights[3] = 10;
 
+        }
         if (isMoving)
         {
             currentDistanceToTouchPos = (touchPosition - transform.position).magnitude;

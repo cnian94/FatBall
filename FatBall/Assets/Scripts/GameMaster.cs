@@ -20,7 +20,8 @@ public class GameMaster : MonoBehaviour {
     private MonstersSpawnerControl spawnerControl;
     private SoundManagerScript soundManager;
     private JokerSpawnerControl jokerSpawnerControl;
-    private int[] jokerWeights = { 0, 0, 20, 20};
+    public int[] jokerWeights = { 0, 0, 0, 10, 0}; //Jokerlerin çıkma ağırlıkları, Reset'in ağırlığını player controllerdan değiştir.
+    //Public olduğu için Unity'de de ağırlıklarını değiştir. Sırayla Rabbit,Turtle,Shiled,Half,Reset.
     private float jokerTimeLeft;
     private float monsterTimer;
     public float jokerSpawnTime = 5f;
@@ -68,12 +69,12 @@ public class GameMaster : MonoBehaviour {
         soundManager.PlaySound("Start");
     }
 
-    public void IncreaseMonsterLimit()
+    public void IncreaseMonsterLimit() //Monster sayısının artış hızı
     {
         Debug.Log("INCREASING MONSTER LIMIT !!");
         //spawnerControl.monsters_limit = spawnerControl.monsters_limit * 2;
-        //spawnerControl.monsters_limit = spawnerControl.monsters_limit * Mathf.Log(spawnerControl.monsters_limit);
-        spawnerControl.monsters_limit++;
+        spawnerControl.monsters_limit = spawnerControl.monsters_limit + Mathf.Log(spawnerControl.monsters_limit);
+        //spawnerControl.monsters_limit++;
         SpawnAMonster();
     }
 
