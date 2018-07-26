@@ -8,11 +8,11 @@ public class JokerControl : MonoBehaviour {
 
     Rigidbody2D rb;
     GameObject target;
-    private SoundManagerScript soundManager;
+    private SoundManagerScript soundManager;//SoundManagerScript'in kodlarını buraya bağlarken kullanmak için isim verdik.
 
-    public GameObject bubble;
+    public GameObject bubble; //bubble için farklı bir kod olduğu için bu abiyi ayrı tuttuk diye düşünüyorum.
 
-    public float accelerationTime = 2f;
+    public float accelerationTime = 2f; 
     public float maxSpeed;
 
     private Vector3 movement;
@@ -21,13 +21,13 @@ public class JokerControl : MonoBehaviour {
     public static float max_distance_from_view = 200f;
     public JokerSpawnerControl spawnerControl;
     public PlayerController playerControl;
-    public MonstersSpawnerControl monstersSpawnerControl;
+    public MonstersSpawnerControl monstersSpawnerControl; // bu abi neden burda ?
 
 
     Vector3 temp;
 
 
-    public float GetRandomScale()
+    public float GetRandomScale() // Random scale vermişiz. Yeni png formatlarında hepsi aynı boy olursa random boylar da aynı aralık olur.
     {
         if(gameObject.tag == "rabbit")
         {
@@ -120,7 +120,7 @@ public class JokerControl : MonoBehaviour {
     {
         Debug.Log("BUBBLE: " + bubble);
 
-        if(gameObject.tag == "rabbit")
+        if(gameObject.tag == "rabbit") 
         {
             //playerControl.moveForce = 500;
             playerControl.moveSpeed = 500;
@@ -153,18 +153,18 @@ public class JokerControl : MonoBehaviour {
 
             case "Player":
                 Debug.Log("Player catched a " + gameObject.tag + "joker");
-                if(gameObject.tag == "rabbit")
+                if(gameObject.tag == "rabbit") //tavşanı yerse
                 {
                     gameObject.SetActive(false);
-                    soundManager.PlaySound("Fastjoker");
-                    spawnerControl.num_of_jokers--;
+                    soundManager.PlaySound("Fastjoker"); //SoundManagerScrippten çeker
+                    spawnerControl.num_of_jokers--; //yediği için joker sayısı 1 azalır ki yenisi çıkabilsin
                     //playerControl.moveForce = playerControl.moveForce * 2;
-                    playerControl.moveSpeed = playerControl.moveSpeed * 2;
-                    Invoke("RevertJokerEffect", 5.0f);
+                    playerControl.moveSpeed = playerControl.moveSpeed * 2; //movespeed 2 katına çıkar
+                    Invoke("RevertJokerEffect", 5.0f); //5sn sonra efekt gider. Yukarda revert var. Revert aşağıda olsa daha doğru olmaz mı ?
 
                 }
 
-                if (gameObject.tag == "turtle")
+                if (gameObject.tag == "turtle") //tavşanla aynı mantık
                 {
                     gameObject.SetActive(false);
                     soundManager.PlaySound("joker");
@@ -174,15 +174,15 @@ public class JokerControl : MonoBehaviour {
                     Invoke("RevertJokerEffect", 5.0f);
                 }
 
-                if (gameObject.tag == "shield" && !GameMaster.gm.isBubbleCatched)
+                if (gameObject.tag == "shield" && !GameMaster.gm.isBubbleCatched) //beni biraz aştı :D her yerde var
                 {
                     GameMaster.gm.isBubbleCatched = true;
                     gameObject.SetActive(false);
-                    soundManager.PlaySound("Shieldjoker");
+                    soundManager.PlaySound("Shieldjoker"); //SoundManagerScrippten sesi çekiyor.
                     //Debug.Log("Shield catched !!");
                     bubble = Instantiate(bubble, target.transform.localPosition, Quaternion.identity);
                     bubble.SendMessage("SetIsBubbleEffectActive", true);
-                    Invoke("RevertJokerEffect", 8.0f);
+                    Invoke("RevertJokerEffect", 8.0f); //8 saniye sürüyor
                     
                 }
 
@@ -191,19 +191,19 @@ public class JokerControl : MonoBehaviour {
                     gameObject.SetActive(false);
                     soundManager.PlaySound("HalfSize");
                     spawnerControl.num_of_jokers--;
-                    target.SendMessage("SetIsHalfSizeJokerCatched", true);
+                    target.SendMessage("SetIsHalfSizeJokerCatched", true); //Revert değil. Player controller 98. satırda açıklanıyor bu satır.
                 }
 
                 if (gameObject.tag == "Reset")
                 {
                     gameObject.SetActive(false);
-                    GameObject[] Enemies = GameObject.FindGameObjectsWithTag("spawn");
-                    for (var i = 0; i < Enemies.Length; i++)
+                    GameObject[] Enemies = GameObject.FindGameObjectsWithTag("spawn"); //Bütün enemyleri tek yerde topladık.Tag'i spawn.
+                    for (var i = 0; i < Enemies.Length; i++) //bütün enemyler olana kadar.
                     {
-                        Destroy(Enemies[i]);
+                        Destroy(Enemies[i]); //kaç tane enemy varsa i sayısına eşit işte
                     }
-                    monstersSpawnerControl.monsters_limit = 3;
-                    monstersSpawnerControl.num_of_monsters = 0;
+                    monstersSpawnerControl.monsters_limit = 3; //en başa döner monster limit ve monster sayısı. Bunu değiştirirsen MonsterSpawnerControl'ü de değiştir. Hatta hieracy de de değiştir garanti olsun.
+                    monstersSpawnerControl.num_of_monsters = 0; //üsttekinin aynısı geçerli.
                         
                     //soundManager.PlaySound("HalfSize");
                     spawnerControl.num_of_jokers--;

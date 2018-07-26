@@ -6,25 +6,28 @@ public class SpikeControl : MonoBehaviour {
     Rigidbody2D rb;
     float width;
     float height;
+    
 
     // Use this for initialization
     void Start () {
         rb = GetComponent<Rigidbody2D>();
-        width = GetComponent<SpriteRenderer>().bounds.size.x;
-        height = GetComponent<SpriteRenderer>().bounds.size.y;
+        width = GetComponent<SpriteRenderer>().bounds.size.x;   //spike'ın widthini bulur sayı olarak yazar
+        height = GetComponent<SpriteRenderer>().bounds.size.y;  //spike'ın heightını bulur sayı olarak yazar
         //Debug.Log("CENTER OF MASS: " + rb.position);
+        Debug.Log("width:" + width + " - " + height);
+        Debug.Log("height:" + width + " - " + height);
 
         //Debug.Log("SPIKE SIZE 0: " + width + " - " + height);
 
 
         float force = Random.Range(10f, 15f);
 
-        if(rb.name == "TopLeftCornerSpike")
+        if(rb.name == "TopLeftCornerSpike") //Sol üste köşe spike için uygulanan force. Hem x hem de y de hareket edeceği için 2 yönede force var. Hareketin çapraz olmasını aşağıda move kısmında tanımladık diye düşünüyorum.
         {
             rb.velocity = new Vector2(force, -force);
         }
 
-        if (rb.name == "TopSpike")
+        if (rb.name == "TopSpike")  //Top spikelar sadece yukarı aşağıya hareket ettiği için sadece y de force var. Böyle devam...
         {
             rb.velocity = new Vector2(0, force);
         }
@@ -93,18 +96,18 @@ public class SpikeControl : MonoBehaviour {
         }
 
 
-        if (gameObject.name == "TopSpike" && gameObject.transform.position.y >= Screen.height + height / 2)
+        if (gameObject.name == "TopSpike" && gameObject.transform.position.y >= Screen.height + height / 2) //screen height + kendi heightının yarısından yukarı veya eşit olunca aşağıya doğru force başlar.
         {
             rb.velocity = new Vector2(0, -force);
 
         }
 
-        if (gameObject.name == "TopSpike" && gameObject.transform.position.y <= Screen.height - height / 4)
+        if (gameObject.name == "TopSpike" && gameObject.transform.position.y <= Screen.height - height / 4) //screen height - kendi heightının çeyreğinden yukarı veya eşit olunca yukarıya doğru force başlar.
         {
             rb.velocity = new Vector2(0, force);
         }
 
-        if (gameObject.name == "LeftSpike" && gameObject.transform.position.x <= -height)
+        if (gameObject.name == "LeftSpike" && gameObject.transform.position.x <= -height) // heee zaten solda sıfır noktasında o yüzden direk height. Ama height acaba burda spike ın eni mi oluyor. Öyle olması gerek çünkü az çok spike widht height böyle oluyor. Ama sor ????
         {
             rb.velocity = new Vector2(force, 0);
         }

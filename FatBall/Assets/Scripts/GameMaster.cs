@@ -20,7 +20,7 @@ public class GameMaster : MonoBehaviour {
     private MonstersSpawnerControl spawnerControl;
     private SoundManagerScript soundManager;
     private JokerSpawnerControl jokerSpawnerControl;
-    public int[] jokerWeights = { 10, 10, 10, 10, 10}; //Jokerlerin çıkma ağırlıkları, Reset'in ağırlığını player controllerdan değiştir.
+    public int[] jokerWeights = { 0, 0, 0, 10, 0}; //Jokerlerin çıkma ağırlıkları, Reset'in ağırlığını player controllerdan değiştir.
     //Public olduğu için Unity'de de ağırlıklarını değiştir. Sırayla Rabbit,Turtle,Shiled,Half,Reset.
     private float jokerTimeLeft;
     private float monsterTimer;

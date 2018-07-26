@@ -7,7 +7,7 @@ public class SpikeSpawnerControl : MonoBehaviour {
     //public bool spawnAllowed;
     public Vector3 lastSpikePos;
 
-    public static int big_side_limit = 11;
+    public static int big_side_limit = 11;  //isimler ters ama kim takar :D
     public static int small_side_limit = 18;
 
 
@@ -29,8 +29,8 @@ public class SpikeSpawnerControl : MonoBehaviour {
     {
         start_x = 0;
         start_y = Screen.height;
-        widthOfSpike = spike.GetComponent<SpriteRenderer>().bounds.size.x;
-        heightOfSpike = spike.GetComponent<SpriteRenderer>().bounds.size.y;
+        widthOfSpike = spike.GetComponent<SpriteRenderer>().bounds.size.x;  //spike'ın widthini bulur sayı olarak yazar
+        heightOfSpike = spike.GetComponent<SpriteRenderer>().bounds.size.y;  //spike'ın heightını bulur sayı olarak yazar
     }
 
     // Use this for initialization
@@ -44,15 +44,15 @@ public class SpikeSpawnerControl : MonoBehaviour {
             {
                 if(i == 0)
                 {
-                    for (int j=0; j<big_side_limit; j++)
+                    for (int j=0; j<big_side_limit; j++) //big side sayısına gelene kadar teker teker loop olarak yapar.
                     {
-                        if(j == 0)
+                        if(j == 0) //sol köşedeki tek spike için.
                         {
                             Debug.Log("startX: " + start_x);
                             Debug.Log("startY: " + start_y);
-                            lastSpikePos = new Vector3(start_x, start_y, 10);
+                            lastSpikePos = new Vector3(start_x, start_y, 10); // sayfa noyutuna göre ilk spkie'ın pozisyonunu belirler
                             spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
-                            distance_x = (Screen.width - (spike.GetComponent<SpriteRenderer>().bounds.size.x * 2)) / (big_side_limit - 3);
+                            distance_x = (Screen.width - (spike.GetComponent<SpriteRenderer>().bounds.size.x * 2)) / (big_side_limit - 3); //???????
                             distance_y = (Screen.height - (spike.GetComponent<SpriteRenderer>().bounds.size.x * 2)) / (small_side_limit - 1);
                             start_x += widthOfSpike;
                             spike.name = "TopLeftCornerSpike";
@@ -60,17 +60,17 @@ public class SpikeSpawnerControl : MonoBehaviour {
                         }
 
 
-                        if (j == big_side_limit - 1)
-                        {
+                        if (j == big_side_limit - 1) // sağ köşedeki spkike için
+                    {
                             lastSpikePos = new Vector3(Screen.width, start_y, 10);
                             spike.transform.position = lastSpikePos;
                             spike.transform.Rotate(0, 0, -45);
                             spike.name = "TopRightCornerSpike";
                             start_x = Screen.width;
                         }
-                        else
-                        {
-                            lastSpikePos = new Vector3(start_x, start_y, 10);
+                    else // tepe spikelar için
+                    {
+                            lastSpikePos = new Vector3(start_x, start_y, 10); 
                             spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
                             spike.name = "TopSpike";
                             start_x += distance_x;
@@ -80,12 +80,12 @@ public class SpikeSpawnerControl : MonoBehaviour {
                 
                 if (i == 1)
                 {
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(1f); //bir saniye bekliyoruz. AMA SESİ Nasıl koyduk. Saymaya mı koyduk acaba ? Bakeceğim.
 
-                for (int j = 0; j < small_side_limit ; j++)
+                for (int j = 0; j < small_side_limit ; j++) //small side limitine ulaşana kadar devam. Köeşer üstte ve allta olduğu için yok.
                     {
 
-                        if (j == 0)
+                        if (j == 0) //sağ üstteki ilk normal spike'ın yeri bulup bir tane koyuyoruz. Sonrası da aşağıda geliyor.
                         {
                             start_y -= widthOfSpike;
                             lastSpikePos = new Vector3(start_x, start_y, 10);
