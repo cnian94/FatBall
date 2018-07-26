@@ -39,7 +39,7 @@ public class TimerScript : MonoBehaviour {
     public void Finish()
     {
         finished = true;
-        time_btn_obj.GetComponent<Image>().sprite = time_end_sprite;
+        //time_btn_obj.GetComponent<Image>().sprite = time_end_sprite;
     }
 
 }
