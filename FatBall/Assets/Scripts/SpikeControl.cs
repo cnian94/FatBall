@@ -14,8 +14,8 @@ public class SpikeControl : MonoBehaviour {
         width = GetComponent<SpriteRenderer>().bounds.size.x;   //spike'ın widthini bulur sayı olarak yazar
         height = GetComponent<SpriteRenderer>().bounds.size.y;  //spike'ın heightını bulur sayı olarak yazar
         //Debug.Log("CENTER OF MASS: " + rb.position);
-        Debug.Log("width:" + width + " - " + height);
-        Debug.Log("height:" + width + " - " + height);
+        Debug.Log("width , height:" + width + " - " + height);
+        
 
         //Debug.Log("SPIKE SIZE 0: " + width + " - " + height);
 
@@ -107,7 +107,7 @@ public class SpikeControl : MonoBehaviour {
             rb.velocity = new Vector2(0, force);
         }
 
-        if (gameObject.name == "LeftSpike" && gameObject.transform.position.x <= -height) // heee zaten solda sıfır noktasında o yüzden direk height. Ama height acaba burda spike ın eni mi oluyor. Öyle olması gerek çünkü az çok spike widht height böyle oluyor. Ama sor ????
+        if (gameObject.name == "LeftSpike" && gameObject.transform.position.x <= -height) // heee zaten solda sıfır noktasında o yüzden direk height. Ama height acaba burda spike ın eni mi oluyor. Öyle olması gerek çünkü az çok spike widht height böyle oluyor. Ağırlık merkezinden spawn ediyor.
         {
             rb.velocity = new Vector2(force, 0);
         }

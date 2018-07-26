@@ -52,7 +52,7 @@ public class SpikeSpawnerControl : MonoBehaviour {
                             Debug.Log("startY: " + start_y);
                             lastSpikePos = new Vector3(start_x, start_y, 10); // sayfa noyutuna göre ilk spkie'ın pozisyonunu belirler
                             spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
-                            distance_x = (Screen.width - (spike.GetComponent<SpriteRenderer>().bounds.size.x * 2)) / (big_side_limit - 3); //???????
+                            distance_x = (Screen.width - (spike.GetComponent<SpriteRenderer>().bounds.size.x * 2)) / (big_side_limit - 3); 
                             distance_y = (Screen.height - (spike.GetComponent<SpriteRenderer>().bounds.size.x * 2)) / (small_side_limit - 1);
                             start_x += widthOfSpike;
                             spike.name = "TopLeftCornerSpike";
@@ -82,7 +82,7 @@ public class SpikeSpawnerControl : MonoBehaviour {
                 {
                 yield return new WaitForSeconds(1f); //bir saniye bekliyoruz. AMA SESİ Nasıl koyduk. Saymaya mı koyduk acaba ? Bakeceğim.
 
-                for (int j = 0; j < small_side_limit ; j++) //small side limitine ulaşana kadar devam. Köeşer üstte ve allta olduğu için yok.
+                for (int j = 0; j < small_side_limit ; j++) //small side limitine ulaşana kadar devam. Köşeler üstte ve allta olduğu için yok.
                     {
 
                         if (j == 0) //sağ üstteki ilk normal spike'ın yeri bulup bir tane koyuyoruz. Sonrası da aşağıda geliyor.
