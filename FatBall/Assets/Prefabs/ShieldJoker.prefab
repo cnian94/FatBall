@@ -6,17 +6,21 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_TagString
+      value: ShieldJoker
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 0}
+  m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1005696137869546}
-  m_IsPrefabAsset: 1
+  m_IsPrefabParent: 0
 --- !u!1 &1005696137869546
 GameObject:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 6
+  serializedVersion: 5
   m_Component:
   - component: {fileID: 4194658207464944}
   - component: {fileID: 212722492006516766}
@@ -25,7 +29,7 @@ GameObject:
   - component: {fileID: 114732280129224372}
   m_Layer: 0
   m_Name: ShieldJoker
-  m_TagString: shield
+  m_TagString: ShieldJoker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -33,7 +37,7 @@ GameObject:
 --- !u!4 &4194658207464944
 Transform:
   m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1005696137869546}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -47,7 +51,7 @@ Transform:
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1005696137869546}
   m_BodyType: 0
@@ -66,7 +70,7 @@ Rigidbody2D:
 --- !u!60 &60961205596133546
 PolygonCollider2D:
   m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1005696137869546}
   m_Enabled: 1
@@ -266,7 +270,7 @@ PolygonCollider2D:
 --- !u!114 &114732280129224372
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1005696137869546}
   m_Enabled: 1
@@ -279,10 +283,11 @@ MonoBehaviour:
   maxSpeed: 0
   spawnerControl: {fileID: 0}
   playerControl: {fileID: 0}
+  monstersSpawnerControl: {fileID: 0}
 --- !u!212 &212722492006516766
 SpriteRenderer:
   m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1005696137869546}
   m_Enabled: 1
@@ -324,4 +329,3 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0

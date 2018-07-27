@@ -4,17 +4,17 @@ using UnityEngine;
 
 public class SoundManagerScript : MonoBehaviour {
 
-    public static AudioClip startSound, explosionSound, enemySound, FastjokerSound, ShieldjokerSound, HalfsizejokerSound;
+    public static AudioClip StartSound, ExplosionSound, EnemySound, RabbitJokerSound, ShieldJokerSound, HalfSizeJokerSound;
     public static AudioSource audioSrc;
 
 	// Use this for initialization
 	void Start () { // Audio dosyasında olan isimler turuncu olanlar. onlara da kodda isim veriyoruz. Taglerdeki, sound dosyasındaki isimler değişecek !!!
-        startSound = Resources.Load<AudioClip>("start");
-        explosionSound = Resources.Load<AudioClip>("Explosion");
-        enemySound = Resources.Load<AudioClip>("enemy");
-        FastjokerSound = Resources.Load<AudioClip>("Fastjoker");
-        ShieldjokerSound = Resources.Load<AudioClip>("Shieldjoker");
-        HalfsizejokerSound = Resources.Load<AudioClip>("HalfSize");
+        StartSound = Resources.Load<AudioClip>("Start");
+        ExplosionSound = Resources.Load<AudioClip>("Explosion");
+        EnemySound = Resources.Load<AudioClip>("Enemy");
+        RabbitJokerSound = Resources.Load<AudioClip>("RabbitJoker");
+        ShieldJokerSound = Resources.Load<AudioClip>("ShieldJoker");
+        HalfSizeJokerSound = Resources.Load<AudioClip>("HalfSizeJoker");
 
         audioSrc = GetComponent<AudioSource>();
 		
@@ -30,28 +30,28 @@ public class SoundManagerScript : MonoBehaviour {
         switch (clip)
         {
             case "Explosion": //explosion'un bir kere oynaması için.
-                audioSrc.PlayOneShot(explosionSound); //yukarda solda tanımlı olan isim buraya yazılır.
+                audioSrc.PlayOneShot(ExplosionSound); //yukarda solda tanımlı olan isim buraya yazılır.
                 break;
 
-            case "enemy":
-                audioSrc.PlayOneShot(enemySound);
+            case "Enemy":
+                audioSrc.PlayOneShot(EnemySound);
                 break;
 
-            case "Fastjoker": 
-                audioSrc.PlayOneShot(FastjokerSound);
+            case "RabbitJoker": 
+                audioSrc.PlayOneShot(RabbitJokerSound);
                 break;
 
-            case "HalfSize":
-                audioSrc.PlayOneShot(HalfsizejokerSound);
+            case "HalfSizeJoker":
+                audioSrc.PlayOneShot(HalfSizeJokerSound);
                 break;
 
-            case "Shieldjoker": //Shield joker belirli bir süre oynayacağı için PlayOneShot olmaz. 
-                audioSrc.clip = ShieldjokerSound;
+            case "ShieldJoker": //Shield joker belirli bir süre oynayacağı için PlayOneShot olmaz. 
+                audioSrc.clip = ShieldJokerSound;
                 audioSrc.Play();
                 break;
 
             case "Start":
-                audioSrc.PlayOneShot(startSound);
+                audioSrc.PlayOneShot(StartSound);
                 break;
         }
     }

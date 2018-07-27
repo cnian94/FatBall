@@ -2396,6 +2396,26 @@ Prefab:
       propertyPath: gameOverUI
       value: 
       objectReference: {fileID: 149113803}
+    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
+        type: 2}
+      propertyPath: jokerWeights.Array.data[0]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
+        type: 2}
+      propertyPath: jokerWeights.Array.data[1]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
+        type: 2}
+      propertyPath: jokerWeights.Array.data[2]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
+        type: 2}
+      propertyPath: jokerWeights.Array.data[4]
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1a2a91ac2fe13d045a582bc393ce5fde, type: 2}
   m_IsPrefabParent: 0

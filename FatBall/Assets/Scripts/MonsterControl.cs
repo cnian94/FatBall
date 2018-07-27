@@ -30,7 +30,7 @@ public class MonsterControl : MonoBehaviour {
         spawnerControl = FindObjectOfType<MonstersSpawnerControl>();
         gameMaster = FindObjectOfType<GameMaster>();
         transform.name = transform.name.Replace("(Clone)", "").Trim();
-        gameObject.tag = "spawn";
+        //gameObject.tag = "spawn";
         target = GameObject.Find ("Player");
 		rb = GetComponent<Rigidbody2D> ();
         float randomScale = Random.Range(10f, 20f);
@@ -100,7 +100,7 @@ public class MonsterControl : MonoBehaviour {
                 if (!gameMaster.isBubbleCatched)
                 {
                     Destroy(gameObject);
-                    soundManager.PlaySound("enemy");
+                    soundManager.PlaySound("Enemy");
                     spawnerControl.num_of_monsters--;
                     gameMaster.SpawnAMonster();
                     col.gameObject.transform.localScale = new Vector3(col.gameObject.transform.localScale.x + gameObject.transform.localScale.x / 2, col.gameObject.transform.localScale.y + gameObject.transform.localScale.y / 2, gameObject.transform.localScale.z);

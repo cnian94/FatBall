@@ -37,7 +37,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1151137373715956}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1298.6482, y: 514.24786, z: 0}
+  m_LocalPosition: {x: 1009.6741, y: 405.0692, z: 0}
   m_LocalScale: {x: 15, y: 15, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -94,6 +94,7 @@ MonoBehaviour:
   maxSpeed: 0
   spawnerControl: {fileID: 0}
   playerControl: {fileID: 0}
+  monstersSpawnerControl: {fileID: 0}
 --- !u!212 &212256684551823442
 SpriteRenderer:
   m_ObjectHideFlags: 1

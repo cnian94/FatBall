@@ -6,11 +6,12 @@ TagManager:
   tags:
   - spawn
   - GM
-  - turtle
-  - rabbit
-  - shield
-  - HalfSize
   - Reset
+  - HalfSizeJoker
+  - RabbitJoker
+  - ShieldJoker
+  - TurtleJoker
+  - Enemy
   layers:
   - Default
   - TransparentFX

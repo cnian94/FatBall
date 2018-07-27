@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 114756943946418076}
   m_Layer: 0
   m_Name: HalfSizeJoker
-  m_TagString: HalfSize
+  m_TagString: HalfSizeJoker
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -94,6 +94,7 @@ MonoBehaviour:
   maxSpeed: 0
   spawnerControl: {fileID: 0}
   playerControl: {fileID: 0}
+  monstersSpawnerControl: {fileID: 0}
 --- !u!212 &212629269186537470
 SpriteRenderer:
   m_ObjectHideFlags: 1
