@@ -179,6 +179,7 @@ public class JokerControl : MonoBehaviour {
                     GameMaster.gm.isBubbleCatched = true;
                     gameObject.SetActive(false);
                     soundManager.PlaySound("ShieldJoker"); //SoundManagerScrippten sesi çekiyor.
+                    spawnerControl.num_of_jokers--;
                     //Debug.Log("Shield catched !!");
                     bubble = Instantiate(bubble, target.transform.localPosition, Quaternion.identity);
                     bubble.SendMessage("SetIsBubbleEffectActive", true);

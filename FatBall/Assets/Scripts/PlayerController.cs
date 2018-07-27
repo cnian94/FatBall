@@ -99,8 +99,11 @@ public class PlayerController : MonoBehaviour {
     {
         SetIsHalfSizeJokerCatched(false);
         Vector3 originalScale = transform.localScale;
-        Vector3 targetScale = new Vector3(gameObject.transform.localScale.x / 2, gameObject.transform.localScale.y / 2, gameObject.transform.localScale.z); ;
+        Vector3 targetScale = new Vector3(gameObject.transform.localScale.x / 2, gameObject.transform.localScale.y / 2, gameObject.transform.localScale.z);
         float originalTime = time;
+        GameObject bubble = GameObject.Find("Bubble");
+        Vector3 bubbleScale = bubble.transform.localScale;
+        Vector3 bubbleTargetScale = new Vector3(bubbleScale.x / 2, bubbleScale.y / 2, bubbleScale.z); ;
 
 
         while (time > 0.0f)
@@ -108,6 +111,12 @@ public class PlayerController : MonoBehaviour {
             time -= Time.deltaTime;
 
             transform.localScale = Vector3.Lerp(targetScale, originalScale, time / originalTime);
+            
+            if(bubble != null)
+            {
+
+                bubble.transform.localScale = Vector3.Lerp(bubbleTargetScale, bubbleScale, time / originalTime);
+            }
             yield return null;
 
         }

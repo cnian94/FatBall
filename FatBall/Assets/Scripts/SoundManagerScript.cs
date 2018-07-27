@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class SoundManagerScript : MonoBehaviour {
 
-    public static AudioClip StartSound, ExplosionSound, EnemySound, RabbitJokerSound, ShieldJokerSound, HalfSizeJokerSound;
+    public AudioClip StartSound, ExplosionSound, EnemySound, RabbitJokerSound, ShieldJokerSound, HalfSizeJokerSound;
     public static AudioSource audioSrc;
 
-	// Use this for initialization
-	void Start () { // Audio dosyasında olan isimler turuncu olanlar. onlara da kodda isim veriyoruz. Taglerdeki, sound dosyasındaki isimler değişecek !!!
+    private void Awake() // Audio dosyasında olan isimler turuncu olanlar. onlara da kodda isim veriyoruz. Taglerdeki, sound dosyasındaki isimler değişecek !!!
+    {
         StartSound = Resources.Load<AudioClip>("Start");
         ExplosionSound = Resources.Load<AudioClip>("Explosion");
         EnemySound = Resources.Load<AudioClip>("Enemy");
@@ -17,6 +17,10 @@ public class SoundManagerScript : MonoBehaviour {
         HalfSizeJokerSound = Resources.Load<AudioClip>("HalfSizeJoker");
 
         audioSrc = GetComponent<AudioSource>();
+    }
+
+    void Start () { 
+
 		
 	}
 	
