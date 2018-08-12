@@ -14,7 +14,7 @@ public class SpikeControl : MonoBehaviour {
         width = GetComponent<SpriteRenderer>().bounds.size.x;   //spike'ın widthini bulur sayı olarak yazar
         height = GetComponent<SpriteRenderer>().bounds.size.y;  //spike'ın heightını bulur sayı olarak yazar
         //Debug.Log("CENTER OF MASS: " + rb.position);
-        Debug.Log("width , height:" + width + " - " + height);
+        //Debug.Log("width , height:" + width + " - " + height);
         
 
         //Debug.Log("SPIKE SIZE 0: " + width + " - " + height);

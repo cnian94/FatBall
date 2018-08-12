@@ -48,8 +48,8 @@ public class SpikeSpawnerControl : MonoBehaviour {
                     {
                         if(j == 0) //sol köşedeki tek spike için.
                         {
-                            Debug.Log("startX: " + start_x);
-                            Debug.Log("startY: " + start_y);
+                            //Debug.Log("startX: " + start_x);
+                            //Debug.Log("startY: " + start_y);
                             lastSpikePos = new Vector3(start_x, start_y, 10); // sayfa noyutuna göre ilk spkie'ın pozisyonunu belirler
                             spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
                             distance_x = (Screen.width - (spike.GetComponent<SpriteRenderer>().bounds.size.x * 2)) / (big_side_limit - 3); 

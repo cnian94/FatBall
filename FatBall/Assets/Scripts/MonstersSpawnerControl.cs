@@ -12,8 +12,14 @@ public class MonstersSpawnerControl : MonoBehaviour {
 
     public GameObject monster;
     public int num_of_monsters = 0;
-    public float monsters_limit = 3;
+    public float monsters_limit;
     //Jokercontrolde Reset jokerinin altında da değişiklik yap.
+
+     void Awake()
+    {
+        monsters_limit = 5;
+      
+    }
 
     // Use this for initialization
     void Start () {

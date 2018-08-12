@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
     [SerializeField]
-    public float moveSpeed = 50f;
+    public float moveSpeed;
 
     Rigidbody2D rb;
 
@@ -20,6 +20,11 @@ public class PlayerController : MonoBehaviour {
 
     bool isHalfSizeJokerCatched = false;
 
+    void Awake()
+    {
+        moveSpeed = 500f;    
+    }
+
     // Use this for initialization
     void Start () {
         rb = this.GetComponent<Rigidbody2D>();
@@ -28,7 +33,7 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        Debug.Log("PlayerScale:" + gameObject.transform.localScale);
+        //Debug.Log("PlayerScale:" + gameObject.transform.localScale);
         if (gameObject.transform.localScale.x <= 20)
         {
             gameMaster.jokerWeights[3] = 0;
@@ -102,8 +107,6 @@ public class PlayerController : MonoBehaviour {
         Vector3 targetScale = new Vector3(gameObject.transform.localScale.x / 2, gameObject.transform.localScale.y / 2, gameObject.transform.localScale.z);
         float originalTime = time;
         GameObject bubble = GameObject.Find("Bubble");
-        Vector3 bubbleScale = bubble.transform.localScale;
-        Vector3 bubbleTargetScale = new Vector3(bubbleScale.x / 2, bubbleScale.y / 2, bubbleScale.z); ;
 
 
         while (time > 0.0f)
@@ -114,7 +117,8 @@ public class PlayerController : MonoBehaviour {
             
             if(bubble != null)
             {
-
+                Vector3 bubbleScale = bubble.transform.localScale;
+                Vector3 bubbleTargetScale = new Vector3(bubbleScale.x / 2, bubbleScale.y / 2, bubbleScale.z); ;
                 bubble.transform.localScale = Vector3.Lerp(bubbleTargetScale, bubbleScale, time / originalTime);
             }
             yield return null;

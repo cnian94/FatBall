@@ -18,7 +18,7 @@ public class JokerControl : MonoBehaviour {
     private Vector3 movement;
     private float timeLeft;
 
-    public static float max_distance_from_view = 200f;
+    public static float max_distance_from_view = 100f;
     public JokerSpawnerControl spawnerControl;
     public PlayerController playerControl;
     public MonstersSpawnerControl monstersSpawnerControl; // bu abi neden burda ?
@@ -86,28 +86,20 @@ public class JokerControl : MonoBehaviour {
         if (timeLeft <= 0)
         {
             movement = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), 0);
-            maxSpeed = Random.Range(2f, 8f);
+            maxSpeed = Random.Range(2f, 7f);
 
             timeLeft += accelerationTime;
-
-            Vector3 position = this.rb.gameObject.transform.position;
-
-
-            if (position.x <= -max_distance_from_view || position.x >= Screen.width + max_distance_from_view ||
-                position.y <= -max_distance_from_view || position.y >= Screen.height + max_distance_from_view)
-            {
-                spawnerControl.randomSpawnPoint = Random.Range(0, spawnerControl.spawnPoints.Length);
-                this.rb.gameObject.transform.position = new Vector3(spawnerControl.spawnPoints[spawnerControl.randomSpawnPoint].position.x, spawnerControl.spawnPoints[spawnerControl.randomSpawnPoint].position.y, transform.position.z);
-            }
-
-            /*if (isBubbleEffectActive)
-            {
-                Debug.Log("STARTING BUBBLE EFFECT !!");
-                StartBubbleEffect();
-            }*/
-
         }
-   
+
+
+        Vector3 position = this.rb.gameObject.transform.position;
+        if (position.x <= -max_distance_from_view || position.x >= Screen.width + max_distance_from_view ||
+            position.y <= -max_distance_from_view || position.y >= Screen.height + max_distance_from_view)
+        {
+            spawnerControl.randomSpawnPoint = Random.Range(0, spawnerControl.spawnPoints.Length);
+            gameObject.transform.position = new Vector3(spawnerControl.spawnPoints[spawnerControl.randomSpawnPoint].position.x, spawnerControl.spawnPoints[spawnerControl.randomSpawnPoint].position.y, transform.position.z);
+        }
+
 
     }
 
