@@ -31,6 +31,7 @@ public class GameMaster : MonoBehaviour {
 
     void Awake()
     {
+        Application.targetFrameRate = 60;
         jokerTimeLeft = jokerSpawnTime + spawnDelay;
         monsterTimer = monsterSpawnTime + spawnDelay;
         cam.orthographicSize = Screen.height / 2;
