@@ -102,7 +102,7 @@ public class JokerControl : MonoBehaviour {
             Destroy(gameObject);
         }
 
-        if (gameObject.CompareTag("ColaJoker"))
+        if (gameObject.CompareTag("BeerJoker"))
         {
             //playerControl.moveForce = 500;
             playerControl.moveSpeed = 500;
@@ -138,10 +138,10 @@ public class JokerControl : MonoBehaviour {
 
                 }
 
-                if (gameObject.CompareTag("ColaJoker")) //tavşanla aynı mantık
+                if (gameObject.CompareTag("BeerJoker")) //tavşanla aynı mantık
                 {
                     gameObject.SetActive(false);
-                    soundManager.PlaySound("Joker");
+                    soundManager.PlaySound("BeerJoker");
                     spawnerControl.num_of_jokers--;
                     //playerControl.moveForce = playerControl.moveForce / 2;
                     playerControl.moveSpeed = playerControl.moveSpeed / 2;

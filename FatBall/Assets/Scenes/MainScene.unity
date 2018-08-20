@@ -306,9 +306,8 @@ RectTransform:
   - {fileID: 1084820953}
   - {fileID: 1426595751}
   - {fileID: 608541906}
-  - {fileID: 434351109}
   m_Father: {fileID: 1888848519}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -464,7 +463,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &434351109
 RectTransform:
   m_ObjectHideFlags: 0
@@ -472,11 +471,11 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 434351108}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 149113804}
-  m_RootOrder: 5
+  m_Father: {fileID: 1888848519}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1005,7 +1004,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1086770338}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1103,7 +1102,7 @@ MonoBehaviour:
   - {fileID: 72420593}
   jokers:
   - {fileID: 1658457293378228, guid: cef4b0c6f0087db43888345f6a15ec55, type: 2}
-  - {fileID: 1764594742911764, guid: 23dca65dc0259c945abba1c78cd218d8, type: 2}
+  - {fileID: 1272600264370408, guid: b8e68ca85a3a4a541b663a780b143c9f, type: 2}
   - {fileID: 1632207111875900, guid: f7c49af1315c3ee4d8063a33debb8d2d, type: 2}
   - {fileID: 1313610341625108, guid: 6249ab43f4696f2448c9b560dc1b1ec1, type: 2}
   - {fileID: 1151137373715956, guid: fc920befc46c4fa499f431d09ad2497c, type: 2}
@@ -1702,7 +1701,6 @@ MonoBehaviour:
   monsters:
   - {fileID: 1293262495756814, guid: 1c7e21014a6d00749bd6af927bf38659, type: 2}
   - {fileID: 1953286433165440, guid: cd27cb5becf29434fb4908e99f6b7194, type: 2}
-  - {fileID: 1272600264370408, guid: b8e68ca85a3a4a541b663a780b143c9f, type: 2}
   randomSpawnPoint: 0
   randomMonster: 0
   monster: {fileID: 0}
@@ -1793,6 +1791,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
+  - {fileID: 434351109}
   - {fileID: 149113804}
   m_Father: {fileID: 0}
   m_RootOrder: 3
@@ -2003,6 +2002,26 @@ Prefab:
       propertyPath: gameOverUI
       value: 
       objectReference: {fileID: 149113803}
+    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
+        type: 2}
+      propertyPath: jokerWeights.Array.data[0]
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
+        type: 2}
+      propertyPath: jokerWeights.Array.data[2]
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
+        type: 2}
+      propertyPath: jokerWeights.Array.data[3]
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
+        type: 2}
+      propertyPath: jokerWeights.Array.data[4]
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a2a91ac2fe13d045a582bc393ce5fde, type: 2}
   m_IsPrefabAsset: 0
