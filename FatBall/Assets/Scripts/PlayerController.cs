@@ -18,11 +18,22 @@ public class PlayerController : MonoBehaviour {
     public GameMaster gameMaster;
     public GameObject Explosion;
 
-    bool isHalfSizeJokerCatched = false;
+    /*private GameObject[] enemies;
+    private float old_z;
+    private float new_z;
+    private Vector3 ba;
+    private Vector3 bc;
+    private Vector3 ab;
+    private Vector3 ac;
+    private Vector3 playerLastPos;
+    private Vector3 playerCurrentPos;*/
+
 
     void Awake()
     {
-        moveSpeed = 500f;    
+        moveSpeed = 500f;
+        //old_z = 0;
+        //playerLastPos = gameObject.transform.position;
     }
 
     // Use this for initialization
@@ -33,14 +44,17 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //Debug.Log("PlayerScale:" + gameObject.transform.localScale);
+
+        //enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        //playerCurrentPos = gameObject.transform.position;
+
         if (gameObject.transform.localScale.x <= 20)
         {
             gameMaster.jokerWeights[3] = 0;
         }
         if (gameObject.transform.localScale.x > 20)
         {
-            gameMaster.jokerWeights[3] = 10;
+            gameMaster.jokerWeights[3] = 20;
 
         }
         if (isMoving)
@@ -67,13 +81,11 @@ public class PlayerController : MonoBehaviour {
 
         if (Input.GetMouseButtonDown(0))
         {
-                //Debug.Log("MOUSE POS: " + Input.mousePosition);
                 previousDistanceToTouchPos = 0;
                 currentDistanceToTouchPos = 0;
                 isMoving = true;
                 touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 touchPosition.z = 0;
-                //Debug.Log("TOUCH POS: " + touchPosition);
                 whereToMove = (touchPosition - transform.position).normalized;
                 rb.velocity = new Vector2(whereToMove.x * moveSpeed, whereToMove.y * moveSpeed);
         }
@@ -89,27 +101,63 @@ public class PlayerController : MonoBehaviour {
             previousDistanceToTouchPos = (touchPosition - transform.position).magnitude;
         }
 
-        if (isHalfSizeJokerCatched)
+
+        /*for (int i=0; i < enemies.Length - 1; i++)
         {
-            StartCoroutine(LerpScale(2f));
+           for(int j=i+1; j<enemies.Length; j++)
+            {
+                ba = enemies[i].transform.position - enemies[j].transform.position;
+                bc = gameObject.transform.position - enemies[j].transform.position;
+                ab = enemies[j].transform.position - enemies[i].transform.position;
+                ac = gameObject.transform.position - enemies[i].transform.position;
+
+                if (Vector3.Dot(ba, bc) > 0 && Vector3.Dot(ab, ac) > 0)
+                {
+                    //Debug.Log(Vector3.Cross(bc, ba));
+                    new_z = Vector3.Cross(bc, ba).z;
+
+                    if (Mathf.Sign(old_z) != Mathf.Sign(new_z) && old_z != 0)
+                    {
+                        //Debug.Log("OLD Z: " + old_z);
+                        if (enemies[i].transform.position.x > 0 && enemies[i].transform.position.x < Screen.width && enemies[i].transform.position.y > 0
+                            && enemies[i].transform.position.y < Screen.height && enemies[j].transform.position.x > 0 &&
+                            enemies[j].transform.position.x < Screen.width && enemies[j].transform.position.y > 0
+                            && enemies[j].transform.position.y < Screen.height)
+                        {
+                            //Debug.Log("Player passed between enemies !!");
+                            Destroy(enemies[i]);
+                            Destroy(enemies[j]);
+                        }
+
+                    }
+                }
+            }
         }
+        old_z = Vector3.Cross(bc, ba).z;*/
+        //playerLastPos = playerCurrentPos;
     }
 
-    void SetIsHalfSizeJokerCatched(bool val)
+    void SetIsHalfSizeJokerCatched()
     {
-        isHalfSizeJokerCatched = val;
+        StartCoroutine(LerpScale(2f));
     }
 
     IEnumerator LerpScale(float time)
     {
-        SetIsHalfSizeJokerCatched(false);
+        //SetIsHalfSizeJokerCatched(false);
         Vector3 originalScale = transform.localScale;
         Vector3 targetScale = new Vector3(gameObject.transform.localScale.x / 2, gameObject.transform.localScale.y / 2, gameObject.transform.localScale.z);
         float originalTime = time;
+        Vector3 bubbleScale = new Vector3();
+        Vector3 bubbleTargetScale = new Vector3();
         GameObject bubble = GameObject.Find("Bubble");
+        if (bubble)
+        {
+          bubbleScale  = bubble.transform.localScale;
+          bubbleTargetScale   = new Vector3(bubbleScale.x / 2, bubbleScale.y / 2, bubbleScale.z);
+        }
 
-
-        while (time > 0.0f)
+        while (time > 0f)
         {
             time -= Time.deltaTime;
 
@@ -117,15 +165,12 @@ public class PlayerController : MonoBehaviour {
             
             if(bubble != null)
             {
-                Vector3 bubbleScale = bubble.transform.localScale;
-                Vector3 bubbleTargetScale = new Vector3(bubbleScale.x / 2, bubbleScale.y / 2, bubbleScale.z); ;
                 bubble.transform.localScale = Vector3.Lerp(bubbleTargetScale, bubbleScale, time / originalTime);
             }
             yield return null;
 
         }
     }
-
 
     void OnTriggerEnter2D(Collider2D col)
     {

@@ -17,8 +17,32 @@ public class MonstersSpawnerControl : MonoBehaviour {
 
      void Awake()
     {
-        monsters_limit = 5;
-      
+        monsters_limit = Random.Range(2f, 7f);
+        for(int i=0; i < spawnPoints.Length; i++)
+        {
+
+           if(i == 0)
+            {
+                spawnPoints[i].transform.position = new Vector3(Random.Range(0f, Screen.width), -50, 1);
+            }
+          
+            if (i == 1 || i == 2)
+            {
+                spawnPoints[i].transform.position = new Vector3(Screen.width + 50, Random.Range(0f, Screen.height), 1);
+            }
+          
+          if (i == 3)
+          {
+              spawnPoints[i].transform.position = new Vector3(Random.Range(0f, Screen.width), Screen.height + 50, 1);
+          }
+            
+          if (i == 4 || i == 5)
+          {
+              spawnPoints[i].transform.position = new Vector3(-50, Random.Range(0f, Screen.height), 1);
+          } 
+
+        }
+
     }
 
     // Use this for initialization

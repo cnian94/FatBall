@@ -8,21 +8,21 @@ Prefab:
     m_TransformParent: {fileID: 0}
     m_Modifications: []
     m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 0}
+  m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1151137373715956}
-  m_IsPrefabParent: 1
+  m_IsPrefabAsset: 1
 --- !u!1 &1151137373715956
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4698841790522922}
   - component: {fileID: 212256684551823442}
   - component: {fileID: 50632764242182612}
-  - component: {fileID: 58701269193219464}
   - component: {fileID: 114237029661177442}
+  - component: {fileID: 60796231494836024}
   m_Layer: 0
   m_Name: Reset
   m_TagString: Reset
@@ -33,11 +33,11 @@ GameObject:
 --- !u!4 &4698841790522922
 Transform:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1151137373715956}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1009.6741, y: 405.0692, z: 0}
+  m_LocalPosition: {x: 1612.0916, y: 173.44702, z: 0}
   m_LocalScale: {x: 15, y: 15, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -47,7 +47,7 @@ Transform:
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1151137373715956}
   m_BodyType: 0
@@ -63,10 +63,10 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &58701269193219464
-CircleCollider2D:
+--- !u!60 &60796231494836024
+PolygonCollider2D:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1151137373715956}
   m_Enabled: 1
@@ -76,12 +76,39 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 2.56
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1.28, y: 1.28}
+    newSize: {x: 5.12, y: 5.12}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.59429526, y: 0.48904625}
+      - {x: 0.6327962, y: 0.4518097}
+      - {x: 0.63579106, y: 0.41492108}
+      - {x: 0.56744796, y: 0.5308767}
+      - {x: 0.39396974, y: 0.64304304}
+      - {x: 0.20198569, y: 0.64000046}
+      - {x: 0.061889652, y: 0.57261556}
+      - {x: -0.15633139, y: 0.36034548}
+      - {x: -0.6399984, y: -0.16968283}
+      - {x: -0.63202316, y: -0.41606754}
+      - {x: -0.6200033, y: -0.46213484}
+      - {x: -0.46607262, y: -0.5941671}
+      - {x: -0.29731447, y: -0.6514262}
+      - {x: -0.12095541, y: -0.6071503}
+      - {x: -0.07989095, y: -0.57213545}
+      - {x: 0.61, y: 0.089999996}
+      - {x: 0.64, y: 0.16}
+      - {x: 0.64, y: 0.45999998}
 --- !u!114 &114237029661177442
 MonoBehaviour:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1151137373715956}
   m_Enabled: 1
@@ -98,7 +125,7 @@ MonoBehaviour:
 --- !u!212 &212256684551823442
 SpriteRenderer:
   m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1151137373715956}
   m_Enabled: 1
@@ -130,7 +157,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f1023a0d21d839046af3e34378fd58ba, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 30ac7fc996a3cf045bd6b17b48b43e98, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -140,3 +167,4 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
+  m_SpriteSortPoint: 0

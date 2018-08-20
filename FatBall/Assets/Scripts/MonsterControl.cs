@@ -5,19 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class MonsterControl : MonoBehaviour {
 
-    //float moveSpeed;
-    //Vector3 directionToTarget;
-
     Rigidbody2D rb;
-	GameObject target;
     private SoundManagerScript soundManager;
 
     public float accelerationTime;
     public float maxSpeed;
 
     private Vector3 movement;
-    private float timeLeft;
-    //public bool isEnterTheView = false;
 
     public static float max_distance_from_view;
     private MonstersSpawnerControl spawnerControl;
@@ -27,9 +21,9 @@ public class MonsterControl : MonoBehaviour {
 
     void Awake()
     {
-        accelerationTime = Random.Range(1f, 2f);
+
+        accelerationTime = Random.Range(0.5f, 2f);
         max_distance_from_view = 100f;
-        movement = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), 0);
     }
 
     // Use this for initialization
@@ -37,15 +31,10 @@ public class MonsterControl : MonoBehaviour {
         spawnerControl = FindObjectOfType<MonstersSpawnerControl>();
         gameMaster = FindObjectOfType<GameMaster>();
         transform.name = transform.name.Replace("(Clone)", "").Trim();
-        //gameObject.tag = "spawn";
-        target = GameObject.Find ("Player");
 		rb = GetComponent<Rigidbody2D>();
-        float randomScale = Random.Range(10f, 20f);
+        float randomScale = Random.Range(30f, 50f);
         soundManager = FindObjectOfType<SoundManagerScript>();
-        /*if (SceneManager.GetActiveScene().name == "MenuScene")
-        {
-           randomScale = Random.Range(0f, 1f);
-        }*/
+        StartCoroutine(MoveMonster());
 
         temp = transform.localScale;
         temp.x = randomScale;
@@ -54,52 +43,45 @@ public class MonsterControl : MonoBehaviour {
         transform.localScale = temp;
     }
 
+    IEnumerator MoveMonster()
+    {
+        while (true)
+        {
+            movement = new Vector3(-movement.x + Random.Range(-20f, 20f), -movement.y + Random.Range(-20f, 20f), 0);
+            maxSpeed = Random.Range(1f, 2.5f);
+            yield return new WaitForSeconds(accelerationTime);
+
+        }
+    }
+
 
     // Update is called once per frame
     void Update () {
-        timeLeft -= Time.deltaTime;
-        if (timeLeft <= 0)
-        {
-            //movement = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), 0);
-            movement = new Vector3(-movement.x + Random.Range(-5f, 5f), -movement.y + Random.Range(-5f, 5f), 0);
-            maxSpeed = Random.Range(1f, 6f);
-            //Debug.Log("Movement: " + movement);
-            //Debug.Log("Max Speed: " + maxSpeed);
-            //Debug.Log("----------------------");
-            timeLeft += accelerationTime;
-        }
-
+        transform.Rotate(0, 0, Random.Range(10f, 15f) / 50);
         Vector3 position = gameObject.transform.position;
-
 
         if (position.x <= -max_distance_from_view || position.x >= Screen.width + max_distance_from_view ||
             position.y <= -max_distance_from_view || position.y >= Screen.height + max_distance_from_view)
         {
-            //movement = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), 0);
             spawnerControl.randomSpawnPoint = Random.Range(0, spawnerControl.spawnPoints.Length);
             gameObject.transform.position = new Vector3(spawnerControl.spawnPoints[spawnerControl.randomSpawnPoint].position.x, spawnerControl.spawnPoints[spawnerControl.randomSpawnPoint].position.y, transform.position.z);
         }
-
-
-
-        /*if (position.x > 0 && position.x < Screen.width && position.y > 0 && position.y < Screen.height)
-        {
-            this.isEnterTheView = true;
-        }
-
-        if ((position.x < 0 || position.x > Screen.width || position.y < 0 || position.y > Screen.height))
-        {
-            //Debug.Log("ENEMY LEAVED THE VIEW !! " + this.rb.gameObject.name);
-            //this.isEnterTheView = false;
-            //rb.gameObject.SetActive(false);
-            //Destroy(gameObject);
-            this.rb.gameObject.transform.position = new Vector3(-position.x + Screen.width, -position.y + Screen.height, transform.position.z);
-        }*/
     }
 
     void FixedUpdate()
     {
+        //Vector3 position = gameObject.transform.position;
         rb.AddForce(movement * maxSpeed);
+
+        if (rb.velocity.x >= 300 || rb.velocity.y >= 300 || rb.velocity.x <= -300 || rb.velocity.y <= -300)
+        {
+            Invoke("ReduceVelocity", 1f);
+        }
+    }
+
+    void ReduceVelocity()
+    {
+        rb.velocity = new Vector3(20, 20, 20);
     }
 
     void OnTriggerEnter2D (Collider2D col)
@@ -117,18 +99,5 @@ public class MonsterControl : MonoBehaviour {
                 }
 			break;
 		}
-	}
-
-
-    void MoveMonster ()
-	{
-		if (target != null) {
-            //Debug.Log("MONSTER IS MOVING!!!");
-            
-            //directionToTarget = (target.transform.position - transform.position).normalized;
-			//rb.velocity = new Vector2(directionToTarget.x * moveSpeed, directionToTarget.y * moveSpeed);
-        }
-		else
-			rb.velocity = Vector3.zero;
 	}
 }

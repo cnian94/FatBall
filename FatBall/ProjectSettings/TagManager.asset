@@ -12,6 +12,11 @@ TagManager:
   - ShieldJoker
   - TurtleJoker
   - Enemy
+  - Spike
+  - GrapeFruitJoker
+  - ColaJoker
+  - RadishJoker
+  - BroccoliJoker
   layers:
   - Default
   - TransparentFX

@@ -21,9 +21,9 @@ GameObject:
   - component: {fileID: 4463272613271700}
   - component: {fileID: 212540716384812542}
   - component: {fileID: 50657211367141124}
-  - component: {fileID: 58888894920167970}
   - component: {fileID: 114255307346177258}
   - component: {fileID: 250510324801150856}
+  - component: {fileID: 58894339123341072}
   m_Layer: 0
   m_Name: Bubble
   m_TagString: Untagged
@@ -38,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1362125668989964}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 495.6, y: 193.61865, z: 1}
+  m_LocalPosition: {x: 1510.6641, y: 527.0192, z: 1}
   m_LocalScale: {x: 40, y: 40, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -64,7 +64,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &58888894920167970
+--- !u!58 &58894339123341072
 CircleCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -78,7 +78,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1.6136351
+  m_Radius: 0.9142857
 --- !u!114 &114255307346177258
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -148,11 +148,11 @@ PointEffector2D:
   m_ColliderMask:
     serializedVersion: 2
     m_Bits: 512
-  m_ForceMagnitude: 20000
+  m_ForceMagnitude: 10000
   m_ForceVariation: 0
   m_DistanceScale: 0.0001
-  m_ForceSource: 1
-  m_ForceTarget: 1
-  m_ForceMode: 1
+  m_ForceSource: 0
+  m_ForceTarget: 0
+  m_ForceMode: 2
   m_Drag: 0
   m_AngularDrag: 0

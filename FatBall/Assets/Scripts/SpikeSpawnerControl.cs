@@ -23,6 +23,7 @@ public class SpikeSpawnerControl : MonoBehaviour {
     private Vector3 movement;
 
     public GameObject spike;
+    public GameObject[] spikes;
 
 
     void Awake()
@@ -50,7 +51,7 @@ public class SpikeSpawnerControl : MonoBehaviour {
                         {
                             //Debug.Log("startX: " + start_x);
                             //Debug.Log("startY: " + start_y);
-                            lastSpikePos = new Vector3(start_x, start_y, 10); // sayfa noyutuna göre ilk spkie'ın pozisyonunu belirler
+                            lastSpikePos = new Vector3(start_x - heightOfSpike / 3, start_y + heightOfSpike / 3, 10); // sayfa noyutuna göre ilk spkie'ın pozisyonunu belirler
                             spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
                             distance_x = (Screen.width - (spike.GetComponent<SpriteRenderer>().bounds.size.x * 2)) / (big_side_limit - 3); 
                             distance_y = (Screen.height - (spike.GetComponent<SpriteRenderer>().bounds.size.x * 2)) / (small_side_limit - 1);
@@ -62,7 +63,7 @@ public class SpikeSpawnerControl : MonoBehaviour {
 
                         if (j == big_side_limit - 1) // sağ köşedeki spkike için
                     {
-                            lastSpikePos = new Vector3(Screen.width, start_y, 10);
+                            lastSpikePos = new Vector3(Screen.width + heightOfSpike / 3, start_y + heightOfSpike / 3, 10);
                             spike.transform.position = lastSpikePos;
                             spike.transform.Rotate(0, 0, -45);
                             spike.name = "TopRightCornerSpike";
@@ -70,7 +71,7 @@ public class SpikeSpawnerControl : MonoBehaviour {
                         }
                     else // tepe spikelar için
                     {
-                            lastSpikePos = new Vector3(start_x, start_y, 10); 
+                            lastSpikePos = new Vector3(start_x, start_y + heightOfSpike / 2 , 10); 
                             spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
                             spike.name = "TopSpike";
                             start_x += distance_x;
@@ -88,7 +89,7 @@ public class SpikeSpawnerControl : MonoBehaviour {
                         if (j == 0) //sağ üstteki ilk normal spike'ın yeri bulup bir tane koyuyoruz. Sonrası da aşağıda geliyor.
                         {
                             start_y -= widthOfSpike;
-                            lastSpikePos = new Vector3(start_x, start_y, 10);
+                            lastSpikePos = new Vector3(start_x + heightOfSpike / 2, start_y, 10);
                             spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
                             spike.name = "RightSpike";
                             spike.transform.Rotate(0, 0, -90);
@@ -97,7 +98,7 @@ public class SpikeSpawnerControl : MonoBehaviour {
                         else
                         {
                             start_y -= distance_y;
-                            lastSpikePos = new Vector3(start_x, start_y, 10);
+                            lastSpikePos = new Vector3(start_x + heightOfSpike / 2, start_y, 10);
                             spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
                             spike.name = "RightSpike";
                             spike.transform.Rotate(0, 0, -90);
@@ -117,7 +118,7 @@ public class SpikeSpawnerControl : MonoBehaviour {
                         {
                             start_x = Screen.width;
                             start_y = 0;
-                            lastSpikePos = new Vector3(start_x, start_y, 10);
+                            lastSpikePos = new Vector3(start_x + heightOfSpike / 3, start_y - heightOfSpike / 3, 10);
                             spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
                             start_x -= widthOfSpike;
                             spike.name = "BottomRightCornerSpike";
@@ -126,7 +127,7 @@ public class SpikeSpawnerControl : MonoBehaviour {
 
                         if(j == big_side_limit - 1)
                         {
-                            lastSpikePos = new Vector3(0, start_y, 10);
+                            lastSpikePos = new Vector3(0 - heightOfSpike / 3, start_y - heightOfSpike / 3, 10);
                             spike.transform.position = lastSpikePos;
                             spike.name = "BottomLeftCornerSpike";
                             start_x = 0;
@@ -135,7 +136,7 @@ public class SpikeSpawnerControl : MonoBehaviour {
 
                         else
                         {
-                            lastSpikePos = new Vector3(start_x, start_y, 10);
+                            lastSpikePos = new Vector3(start_x, start_y - heightOfSpike / 2, 10);
                             spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
                             spike.name = "BottomSpike";
                             start_x -= distance_x;
@@ -156,7 +157,7 @@ public class SpikeSpawnerControl : MonoBehaviour {
                         if (j == 0)
                         {
                             start_y += widthOfSpike;
-                            lastSpikePos = new Vector3(start_x, start_y, 10);
+                            lastSpikePos = new Vector3(start_x - heightOfSpike / 2, start_y, 10);
                             spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
                             spike.name = "LeftSpike";
                             spike.transform.Rotate(0, 0, 90);
@@ -165,15 +166,15 @@ public class SpikeSpawnerControl : MonoBehaviour {
                         else
                         {
                             start_y += distance_y;
-                            lastSpikePos = new Vector3(start_x, start_y, 10);
+                            lastSpikePos = new Vector3(start_x - heightOfSpike / 2, start_y, 10);
                             spike = Instantiate(spike, lastSpikePos, Quaternion.identity);
                             spike.name = "LeftSpike";
                             spike.transform.Rotate(0, 0, 90);
                         }
                     }
                 }
-
             }
+        spikes = GameObject.FindGameObjectsWithTag("Spike");
     }
 
 }

@@ -12,7 +12,7 @@ public class JokerControl : MonoBehaviour {
 
     public GameObject bubble; //bubble için farklı bir kod olduğu için bu abiyi ayrı tuttuk diye düşünüyorum.
 
-    public float accelerationTime = 2f; 
+    public float accelerationTime; 
     public float maxSpeed;
 
     private Vector3 movement;
@@ -27,40 +27,12 @@ public class JokerControl : MonoBehaviour {
     Vector3 temp;
 
 
-    public float GetRandomScale() // Random scale vermişiz. Yeni png formatlarında hepsi aynı boy olursa random boylar da aynı aralık olur.
-    {
-        if(gameObject.tag == "RabbitJoker")
-        {
-            return Random.Range(2f, 4f);
-        }
-
-        if (gameObject.tag == "TurtleJoker")
-        {
-            return Random.Range(5f, 7f);
-        }
-
-        if (gameObject.tag == "ShieldJoker")
-        {
-            return Random.Range(7f, 12f);
-        }
-
-        if (gameObject.tag == "HalfSizeJoker")
-        {
-            return Random.Range(7f, 12f);
-        }
-
-        if (gameObject.tag == "Reset")
-        {
-            return Random.Range(7f, 12f);
-        }
-        return -1;
-    }
-
     // Use this for initialization
     void Start()
     {
+        accelerationTime = Random.Range(0.5f, 1.5f);
+        //maxSpeed = Random.Range(1f, 4f);
         spawnerControl = FindObjectOfType<JokerSpawnerControl>();
-        //playerControl = FindObjectOfType<FloatingPlayer2DController>();
         playerControl = FindObjectOfType<PlayerController>();
         monstersSpawnerControl = FindObjectOfType<MonstersSpawnerControl>();
         transform.name = transform.name.Replace("(Clone)", "").Trim();
@@ -68,31 +40,43 @@ public class JokerControl : MonoBehaviour {
         rb = GetComponent<Rigidbody2D>();
         soundManager = FindObjectOfType<SoundManagerScript>();
 
-        float randomScale = GetRandomScale();
-
+        float randomScale = Random.Range(25f, 35f);
         temp = transform.localScale;
         temp.x = randomScale;
         temp.y = randomScale;
-
         transform.localScale = temp;
+
+        StartCoroutine(MoveJoker());
+    }
+
+    IEnumerator MoveJoker()
+    {
+        while (true)
+        {
+            movement = new Vector3(-movement.x + Random.Range(-20f, 20f), -movement.y + Random.Range(-20f, 20f), 0);
+            maxSpeed = Random.Range(1f, 2.5f);
+            yield return new WaitForSeconds(accelerationTime);
+
+        }
     }
 
 
     // Update is called once per frame
     void Update()
     {
+        //timeLeft -= Time.deltaTime;
         transform.Rotate(0, 0, Random.Range(10f, 15f) / 50);
-        timeLeft -= Time.deltaTime;
-        if (timeLeft <= 0)
+        Vector3 position = gameObject.transform.position;
+
+        /*if (timeLeft <= 0)
         {
-            movement = new Vector3(Random.Range(-10f, 10f), Random.Range(-10f, 10f), 0);
-            maxSpeed = Random.Range(2f, 7f);
-
+            movement = new Vector3(-movement.x + Random.Range(-20f, 20f), -movement.y + Random.Range(-20f, 20f), 0);
+            maxSpeed = Random.Range(1f, 4f);
             timeLeft += accelerationTime;
-        }
+        }*/
 
 
-        Vector3 position = this.rb.gameObject.transform.position;
+   
         if (position.x <= -max_distance_from_view || position.x >= Screen.width + max_distance_from_view ||
             position.y <= -max_distance_from_view || position.y >= Screen.height + max_distance_from_view)
         {
@@ -110,23 +94,22 @@ public class JokerControl : MonoBehaviour {
 
     void RevertJokerEffect()
     {
-        Debug.Log("BUBBLE: " + bubble);
 
-        if(gameObject.tag == "RabbitJoker") 
+        if(gameObject.CompareTag("GrapeFruitJoker")) 
         {
             //playerControl.moveForce = 500;
             playerControl.moveSpeed = 500;
             Destroy(gameObject);
         }
 
-        if (gameObject.tag == "TurtleJoker")
+        if (gameObject.CompareTag("ColaJoker"))
         {
             //playerControl.moveForce = 500;
             playerControl.moveSpeed = 500;
             Destroy(gameObject);
         }
 
-        if (gameObject.tag == "ShieldJoker")
+        if (gameObject.CompareTag("RadishJoker"))
         {
             Destroy(gameObject);
             Destroy(bubble);
@@ -144,8 +127,7 @@ public class JokerControl : MonoBehaviour {
         {
 
             case "Player":
-                Debug.Log("Player catched a " + gameObject.tag + "joker");
-                if(gameObject.tag == "RabbitJoker") //tavşanı yerse
+                if(gameObject.CompareTag("GrapeFruitJoker")) //tavşanı yerse
                 {
                     gameObject.SetActive(false);
                     soundManager.PlaySound("RabbitJoker"); //SoundManagerScrippten çeker
@@ -156,7 +138,7 @@ public class JokerControl : MonoBehaviour {
 
                 }
 
-                if (gameObject.tag == "TurtleJoker") //tavşanla aynı mantık
+                if (gameObject.CompareTag("ColaJoker")) //tavşanla aynı mantık
                 {
                     gameObject.SetActive(false);
                     soundManager.PlaySound("Joker");
@@ -166,28 +148,27 @@ public class JokerControl : MonoBehaviour {
                     Invoke("RevertJokerEffect", 5.0f);
                 }
 
-                if (gameObject.tag == "ShieldJoker" && !GameMaster.gm.isBubbleCatched) //beni biraz aştı :D her yerde var
+                if (gameObject.CompareTag("RadishJoker") && !GameMaster.gm.isBubbleCatched) //beni biraz aştı :D her yerde var
                 {
                     GameMaster.gm.isBubbleCatched = true;
                     gameObject.SetActive(false);
                     soundManager.PlaySound("ShieldJoker"); //SoundManagerScrippten sesi çekiyor.
                     spawnerControl.num_of_jokers--;
-                    //Debug.Log("Shield catched !!");
                     bubble = Instantiate(bubble, target.transform.localPosition, Quaternion.identity);
                     bubble.SendMessage("SetIsBubbleEffectActive", true);
                     Invoke("RevertJokerEffect", 8.0f); //8 saniye sürüyor
                     
                 }
 
-                if (gameObject.tag == "HalfSizeJoker")
+                if (gameObject.CompareTag("BroccoliJoker"))
                 {
                     gameObject.SetActive(false);
                     soundManager.PlaySound("HalfSizeJoker");
                     spawnerControl.num_of_jokers--;
-                    target.SendMessage("SetIsHalfSizeJokerCatched", true); //Revert değil. Player controller 98. satırda açıklanıyor bu satır.
+                    target.SendMessage("SetIsHalfSizeJokerCatched"); //Revert değil. Player controller 98. satırda açıklanıyor bu satır.
                 }
 
-                if (gameObject.tag == "Reset")
+                if (gameObject.CompareTag("Reset"))
                 {
                     gameObject.SetActive(false);
                     GameObject[] Enemies = GameObject.FindGameObjectsWithTag("Enemy"); //Bütün enemyleri tek yerde topladık.Tag'i spawn.
@@ -198,9 +179,7 @@ public class JokerControl : MonoBehaviour {
                     monstersSpawnerControl.monsters_limit = 3; //en başa döner monster limit ve monster sayısı. Bunu değiştirirsen MonsterSpawnerControl'ü de değiştir. Hatta hieracy de de değiştir garanti olsun.
                     monstersSpawnerControl.num_of_monsters = 0; //üsttekinin aynısı geçerli.
                         
-                    //soundManager.PlaySound("HalfSize");
                     spawnerControl.num_of_jokers--;
-                    //target.SendMessage("SetIsHalfSizeJokerCatched", true);
                 }
 
                 break;
