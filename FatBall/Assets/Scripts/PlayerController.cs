@@ -48,13 +48,13 @@ public class PlayerController : MonoBehaviour {
         //enemies = GameObject.FindGameObjectsWithTag("Enemy");
         //playerCurrentPos = gameObject.transform.position;
 
-        if (gameObject.transform.localScale.x <= 20)
+        if (gameObject.transform.localScale.x <= 39)
         {
             gameMaster.jokerWeights[3] = 0;
         }
-        if (gameObject.transform.localScale.x > 20)
+        if (gameObject.transform.localScale.x > 39)
         {
-            gameMaster.jokerWeights[3] = 20;
+            gameMaster.jokerWeights[3] = 39;
 
         }
         if (isMoving)

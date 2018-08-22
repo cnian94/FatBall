@@ -21,7 +21,7 @@ public class GameMaster : MonoBehaviour
     private MonstersSpawnerControl spawnerControl;
     private SpikeSpawnerControl spikeSpawner;
     private JokerSpawnerControl jokerSpawnerControl;
-    public int[] jokerWeights = { 50, 50, 20, 20, 2 }; //Jokerlerin çıkma ağırlıkları, Reset'in ağırlığını player controllerdan değiştir.
+    public int[] jokerWeights = { 50, 50, 20, 20, 10 }; //Jokerlerin çıkma ağırlıkları, Reset'in ağırlığını player controllerdan değiştir.
     //Public olduğu için Unity'de de ağırlıklarını değiştir. Sırayla Rabbit,Turtle,Shield,Half,Reset.
     private float jokerTimeLeft;
     public float jokerSpawnTime = 5f;
@@ -77,7 +77,7 @@ public class GameMaster : MonoBehaviour
             yield return new WaitForSeconds(5);
             //spawnerControl.monsters_limit = spawnerControl.monsters_limit * 2;
             //spawnerControl.monsters_limit++;
-            spawnerControl.monsters_limit = spawnerControl.monsters_limit + Mathf.Log(spawnerControl.monsters_limit);
+            spawnerControl.monsters_limit = spawnerControl.monsters_limit + Mathf.Log(spawnerControl.monsters_limit)/2;
             SpawnAMonster();
         }
     }
@@ -86,7 +86,7 @@ public class GameMaster : MonoBehaviour
     {
         yield return new WaitForSeconds(spawnDelay);
         CancelInvoke("PlayStartSound");
-        Vector3 randomPoint = new Vector3(Random.Range(Screen.width / 10, Screen.width - (Screen.width / 10)), Random.Range(Screen.height / 5, Screen.height - (Screen.height / 5)), 1);
+        Vector3 randomPoint = new Vector3(Random.Range(Screen.width / 6, Screen.width - (Screen.width / 6)), Random.Range(Screen.height / 3, Screen.height - (Screen.height / 3)), 1);
         player = Instantiate(player, randomPoint, Quaternion.identity);
         player.name = "Player";
         timer.SetActive(true);

@@ -307,7 +307,7 @@ RectTransform:
   - {fileID: 1426595751}
   - {fileID: 608541906}
   m_Father: {fileID: 1888848519}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -475,7 +475,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1888848519}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1791,8 +1791,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 434351109}
   - {fileID: 149113804}
+  - {fileID: 434351109}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1835,6 +1835,7 @@ MonoBehaviour:
   RabbitJokerSound: {fileID: 0}
   ShieldJokerSound: {fileID: 0}
   HalfSizeJokerSound: {fileID: 0}
+  BeerJokerSound: {fileID: 0}
 --- !u!82 &2066540685
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2020,7 +2021,7 @@ Prefab:
     - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
         type: 2}
       propertyPath: jokerWeights.Array.data[4]
-      value: 2
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a2a91ac2fe13d045a582bc393ce5fde, type: 2}
