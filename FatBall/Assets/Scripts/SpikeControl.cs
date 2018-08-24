@@ -21,6 +21,8 @@ public class SpikeControl : MonoBehaviour
 
     public bool isMovingToView = false;
 
+    public GameObject Player;
+
 
     private void Awake()
     {
@@ -32,6 +34,7 @@ public class SpikeControl : MonoBehaviour
         tempEndPos = transform.position;
         endPos = transform.position;
         travelDuration = Random.Range(1f, 3f);
+        
     }
 
     // Use this for initialization
@@ -40,8 +43,10 @@ public class SpikeControl : MonoBehaviour
         string tempName = gameObject.name;
         startPos = gameObject.transform.position;
         CalcEndPos(tempName, startPos);
+        
         StartCoroutine(MoveSpike(startPos, travelDuration));
 
+        
 
 
         /*float force = Random.Range(30f, 50f);
@@ -376,5 +381,23 @@ public class SpikeControl : MonoBehaviour
             transform.position = startPos;
         }
     }
+    /*void OnTriggerEnter2D(Collider2D col)
+    {
+        
+        switch (col.gameObject.tag)
+        {
+
+            case "Player":
+                Player = GameObject.FindGameObjectWithTag("Player");
+                Player.GetComponent<Rigidbody2D>().AddForce(new Vector2(2000, 1000));
+
+
+                break;
+
+
+
+
+        }
+    }*/
 
 }

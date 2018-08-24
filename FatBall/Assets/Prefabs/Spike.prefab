@@ -21,7 +21,8 @@ GameObject:
   - component: {fileID: 4754786835236366}
   - component: {fileID: 212955176612353142}
   - component: {fileID: 50822446281086324}
-  - component: {fileID: 60613294966261724}
+  - component: {fileID: 250511621930848638}
+  - component: {fileID: 60749276590538974}
   - component: {fileID: 114395931321775160}
   m_Layer: 0
   m_Name: Spike
@@ -63,7 +64,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &60613294966261724
+--- !u!60 &60749276590538974
 PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -72,8 +73,8 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_IsTrigger: 1
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
@@ -119,6 +120,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9f2f5fad476ac24d8609adc71583e41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isExtending: 0
+  travelDuration: 0
+  tempEndPos: {x: 0, y: 0, z: 0}
+  endPos: {x: 0, y: 0, z: 0}
+  startPos: {x: 0, y: 0, z: 0}
+  isMovingToView: 0
+  Player: {fileID: 0}
 --- !u!212 &212955176612353142
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -165,3 +173,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!250 &250511621930848638
+PointEffector2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1932373165496314}
+  m_Enabled: 1
+  m_UseColliderMask: 1
+  m_ColliderMask:
+    serializedVersion: 2
+    m_Bits: 1280
+  m_ForceMagnitude: 10000
+  m_ForceVariation: 0
+  m_DistanceScale: 0.0001
+  m_ForceSource: 0
+  m_ForceTarget: 0
+  m_ForceMode: 2
+  m_Drag: 0
+  m_AngularDrag: 0

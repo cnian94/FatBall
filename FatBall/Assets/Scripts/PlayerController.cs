@@ -48,13 +48,13 @@ public class PlayerController : MonoBehaviour {
         //enemies = GameObject.FindGameObjectsWithTag("Enemy");
         //playerCurrentPos = gameObject.transform.position;
 
-        if (gameObject.transform.localScale.x <= 39)
+        if (gameObject.transform.localScale.x <= 45)
         {
             gameMaster.jokerWeights[3] = 0;
         }
-        if (gameObject.transform.localScale.x > 39)
+        if (gameObject.transform.localScale.x > 45)
         {
-            gameMaster.jokerWeights[3] = 39;
+            gameMaster.jokerWeights[3] = 45;
 
         }
         if (isMoving)
@@ -102,7 +102,7 @@ public class PlayerController : MonoBehaviour {
             rb.velocity = Vector2.zero;
         }
 
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0)) //yeni hareket için
         {
             isMoving = false;
             rb.velocity = Vector2.zero;
@@ -188,10 +188,10 @@ public class PlayerController : MonoBehaviour {
     {
         if (!GameMaster.gm.isBubbleCatched)
         {
-            switch (col.gameObject.name)
+            switch (col.gameObject.tag)
             {
 
-                case "TopSpike":
+                case "Spike":
                     GameObject.Find("Timer").SendMessage("Finish");
                     Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
                     Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
@@ -200,7 +200,7 @@ public class PlayerController : MonoBehaviour {
                     Destroy(Explosion, 3);
                     break;
 
-                case "LeftSpike":
+                /*case "LeftSpike":
                     GameObject.Find("Timer").SendMessage("Finish");
                     Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
                     Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
@@ -225,7 +225,7 @@ public class PlayerController : MonoBehaviour {
                     //gameOverUI.SetActive(true);
                     gameMaster.KillPlayer(gameObject);
                     Destroy(Explosion, 3);
-                    break;
+                    break; */
             }
         }
 

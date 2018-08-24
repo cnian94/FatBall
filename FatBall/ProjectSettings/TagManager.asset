@@ -18,6 +18,7 @@ TagManager:
   - RadishJoker
   - BroccoliJoker
   - BeerJoker
+  - Bubble
   layers:
   - Default
   - TransparentFX
@@ -29,7 +30,7 @@ TagManager:
   - 
   - Player
   - Enemy
-  - 
+  - Bubble
   - 
   - 
   - 

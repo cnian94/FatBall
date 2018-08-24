@@ -1829,6 +1829,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 467f304d08278ed4298896088b6cc783, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameSound: {fileID: 0}
   StartSound: {fileID: 0}
   ExplosionSound: {fileID: 0}
   EnemySound: {fileID: 0}
@@ -2011,7 +2012,7 @@ Prefab:
     - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
         type: 2}
       propertyPath: jokerWeights.Array.data[2]
-      value: 20
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
         type: 2}

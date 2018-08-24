@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityEngine;
 
-public class BubbleController : MonoBehaviour {
+public class BubbleController : MonoBehaviour
+{
 
     public GameObject player;
 
@@ -11,10 +12,11 @@ public class BubbleController : MonoBehaviour {
     bool isBubbleEffectActive = false;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         player = GameObject.Find("Player");
-        bubbleRend = GetComponent<SpriteRenderer> ();
-        gameObject.transform.localScale = new Vector3(player.transform.localScale.x, player.transform.localScale.y , player.transform.localScale.z);
+        bubbleRend = GetComponent<SpriteRenderer>();
+        gameObject.transform.localScale = new Vector3(player.transform.localScale.x, player.transform.localScale.y, player.transform.localScale.z);
         transform.name = transform.name.Replace("(Clone)", "").Trim();
     }
 
@@ -40,7 +42,7 @@ public class BubbleController : MonoBehaviour {
             oldColor.a = 1f;
             bubbleRend.material.color = oldColor;
         }
-      
+
     }
 
     public void StartBubbleEffect()
@@ -53,20 +55,23 @@ public class BubbleController : MonoBehaviour {
         oldColor.a = alpha;
         bubbleRend.material.color = oldColor;
     }
-
-
-    void OnTriggerEnter2D(Collider2D col)
+    /*void OnTriggerEnter2D(Collider2D col)
     {
-        switch (col.gameObject.name)
+        
+        switch (col.gameObject.tag)
         {
 
-            case "TopSpike":
-                player.GetComponent<Rigidbody2D>().AddForce(-col.gameObject.GetComponent<Collider2D>().bounds.ClosestPoint(transform.position).normalized * 5000);
+            case "Spike":
+                player.GetComponent<Rigidbody2D>().AddForce(new Vector2(2000, 1000));
+
+
                 break;
 
 
 
 
         }
-    }
+    }*/
+
+
 }
