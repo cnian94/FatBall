@@ -77,6 +77,12 @@ public class PlayerController : MonoBehaviour {
                 rb.velocity = new Vector2(whereToMove.x * moveSpeed, whereToMove.y * moveSpeed);
             }
 
+            if(touch.phase == TouchPhase.Ended)
+            {
+                isMoving = false;
+                rb.velocity = Vector2.zero;
+            }
+
         }
 
         if (Input.GetMouseButtonDown(0))
@@ -91,6 +97,12 @@ public class PlayerController : MonoBehaviour {
         }
 		
         if(currentDistanceToTouchPos > previousDistanceToTouchPos)
+        {
+            isMoving = false;
+            rb.velocity = Vector2.zero;
+        }
+
+        if (Input.GetMouseButtonUp(0))
         {
             isMoving = false;
             rb.velocity = Vector2.zero;
