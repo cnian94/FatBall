@@ -7,7 +7,7 @@ public class SpikeSpawnerControl : MonoBehaviour {
     //public bool spawnAllowed;
     public Vector3 lastSpikePos;
 
-    public static int big_side_limit = 11;  //isimler ters ama kim takar :D
+    public static int big_side_limit = 15;  //isimler ters ama kim takar :D
     public static int small_side_limit = 18;
 
 
@@ -32,6 +32,8 @@ public class SpikeSpawnerControl : MonoBehaviour {
         start_y = Screen.height;
         widthOfSpike = spike.GetComponent<SpriteRenderer>().bounds.size.x;  //spike'ın widthini bulur sayı olarak yazar
         heightOfSpike = spike.GetComponent<SpriteRenderer>().bounds.size.y;  //spike'ın heightını bulur sayı olarak yazar
+
+        Debug.Log(Screen.width + " - " + Screen.height);
     }
 
     // Use this for initialization

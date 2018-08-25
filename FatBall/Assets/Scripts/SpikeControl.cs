@@ -23,11 +23,18 @@ public class SpikeControl : MonoBehaviour
 
     public GameObject Player;
 
+    Vector3 tempScale;
+
 
     private void Awake()
     {
         //rb = GetComponent<Rigidbody2D>();
         //height = GetComponent<SpriteRenderer>().bounds.size.y;  //spike'ın heightını bulur sayı olarak yazar
+        tempScale = transform.localScale;
+        tempScale.x = GetSpikeScaleX();
+        tempScale.y = GetSpikeScaleY();
+
+        transform.localScale = tempScale;
         sWidth = Screen.width;
         sHeight = Screen.height;
         isExtending = false;
@@ -35,6 +42,19 @@ public class SpikeControl : MonoBehaviour
         endPos = transform.position;
         travelDuration = Random.Range(1f, 3f);
         
+    }
+
+
+    float GetSpikeScaleX()
+    {
+        float x = Screen.width / 15;
+        return x;
+    }
+
+    float GetSpikeScaleY()
+    {
+        float y = Screen.height / 8.89f;
+        return y;
     }
 
     // Use this for initialization

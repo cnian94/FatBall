@@ -39,7 +39,7 @@ public class GameMaster : MonoBehaviour
         spikeSpawner = FindObjectOfType<SpikeSpawnerControl>();
         Application.targetFrameRate = 60;
         jokerTimeLeft = jokerSpawnTime + spawnDelay;
-        cam.orthographicSize = Screen.height / 2;
+        //cam.orthographicSize = Screen.height / 2;
         countDown.gameObject.SetActive(true);
         extendTime = Random.Range(6f, 10f);
     }

@@ -154,6 +154,7 @@ GameObject:
   - component: {fileID: 142995594}
   - component: {fileID: 142995598}
   - component: {fileID: 142995597}
+  - component: {fileID: 142995599}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -227,9 +228,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_UiScaleMode: 1
-  m_ReferencePixelsPerUnit: 100
+  m_ReferencePixelsPerUnit: 1
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 640, y: 960}
+  m_ReferenceResolution: {x: 640, y: 1136}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
@@ -256,6 +257,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &142995599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 142995593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5daf733b91d92a34ea0df12d75b83668, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pixelsToUnits: 100
 --- !u!224 &142995600
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1754,7 +1767,7 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 640, y: 960}
+  m_ReferenceResolution: {x: 750, y: 1334}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
