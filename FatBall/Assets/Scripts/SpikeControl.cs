@@ -41,6 +41,7 @@ public class SpikeControl : MonoBehaviour
         tempEndPos = transform.position;
         endPos = transform.position;
         travelDuration = Random.Range(1f, 3f);
+        Debug.Log(gameObject.GetComponent<SpriteRenderer>().bounds.size.x + "--" + gameObject.GetComponent<SpriteRenderer>().bounds.size.y);
         
     }
 
@@ -64,7 +65,7 @@ public class SpikeControl : MonoBehaviour
         startPos = gameObject.transform.position;
         CalcEndPos(tempName, startPos);
         
-        StartCoroutine(MoveSpike(startPos, travelDuration));
+        //StartCoroutine(MoveSpike(startPos, travelDuration));
 
         
 
