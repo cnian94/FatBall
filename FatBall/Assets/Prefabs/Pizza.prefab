@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 50742208786697312}
   - component: {fileID: 60887185755193036}
   - component: {fileID: 114896482073287602}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Pizza
   m_TagString: Enemy
   m_Icon: {fileID: 0}

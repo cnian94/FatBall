@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 50205457482424316}
   - component: {fileID: 114001000237407794}
   - component: {fileID: 60610966455225764}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Hamburger
   m_TagString: Enemy
   m_Icon: {fileID: 0}

@@ -48,7 +48,7 @@ public class JokerControl : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        accelerationTime = Random.Range(0.5f, 1.5f);
+        accelerationTime = Random.Range(Screen.width / 1500f, Screen.width / 500f);
         //maxSpeed = Random.Range(1f, 4f);
         spawnerControl = FindObjectOfType<JokerSpawnerControl>();
         playerControl = FindObjectOfType<PlayerController>();
@@ -58,7 +58,7 @@ public class JokerControl : MonoBehaviour {
         rb = GetComponent<Rigidbody2D>();
         soundManager = FindObjectOfType<SoundManagerScript>();
 
-        float randomScale = Random.Range(25f, 35f);
+        float randomScale = Random.Range(Screen.width / 25f, Screen.width / 18f);
         temp = transform.localScale;
         temp.x = randomScale;
         temp.y = randomScale;
@@ -72,7 +72,7 @@ public class JokerControl : MonoBehaviour {
         while (isJokerMovementAllowed)
         {
             movement = new Vector3(-movement.x + Random.Range(-20f, 20f), -movement.y + Random.Range(-20f, 20f), 0);
-            maxSpeed = Random.Range(1f, 2.5f);
+            maxSpeed = Random.Range(1f, Screen.width / 300f);
             yield return new WaitForSeconds(accelerationTime);
 
         }
@@ -106,14 +106,14 @@ public class JokerControl : MonoBehaviour {
         if(gameObject.CompareTag("GrapeFruitJoker")) 
         {
             //playerControl.moveForce = 500;
-            playerControl.moveSpeed = 500;
+            playerControl.moveSpeed = Screen.width / 1.5f;
             Destroy(gameObject);
         }
 
         if (gameObject.CompareTag("BeerJoker"))
         {
             //playerControl.moveForce = 500;
-            playerControl.moveSpeed = 500;
+            playerControl.moveSpeed = Screen.width / 1.5f;
             Destroy(gameObject);
         }
 

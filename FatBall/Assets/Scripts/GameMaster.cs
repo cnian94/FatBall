@@ -25,7 +25,7 @@ public class GameMaster : MonoBehaviour
     private SpikeSpawnerControl spikeSpawner;
     private JokerSpawnerControl jokerSpawnerControl;
     public int[] jokerWeights = { 60, 50, 45, 20, 10 }; //Jokerlerin çıkma ağırlıkları, Reset'in ağırlığını player controllerdan değiştir.
-    //Public olduğu için Unity'de de ağırlıklarını değiştir. Sırayla Rabbit,Turtle,Shield,Half,Reset.
+    //Public olduğu için Unity'de de ağırlıklarını değiştir. Sırayla Rabbit,Turtle,Shield,Half,Reset. Half size ağırlğını Player controller 81 den değiştir.
     private float jokerTimeLeft;
     public float jokerSpawnTime = 5f;
     public float monsterSpawnTime = 5f;

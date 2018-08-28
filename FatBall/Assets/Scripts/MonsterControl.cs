@@ -41,7 +41,7 @@ public class MonsterControl : MonoBehaviour {
     void Awake()
     {
 
-        accelerationTime = Random.Range(0.5f, 2f);
+        accelerationTime = Random.Range(Screen.width / 1500 , Screen.width / 375);
         max_distance_from_view = 100f;
     }
 
@@ -51,7 +51,7 @@ public class MonsterControl : MonoBehaviour {
         gameMaster = FindObjectOfType<GameMaster>();
         transform.name = transform.name.Replace("(Clone)", "").Trim();
 		rb = GetComponent<Rigidbody2D>();
-        float randomScale = Random.Range(30f, 50f);
+        float randomScale = Random.Range(Screen.width / 15f, Screen.width / 24f);
         soundManager = FindObjectOfType<SoundManagerScript>();
         StartCoroutine(MoveMonster());
 
@@ -67,7 +67,7 @@ public class MonsterControl : MonoBehaviour {
         while (isMonsterMovementAllowed)
         {
             movement = new Vector3(-movement.x + Random.Range(-20f, 20f), -movement.y + Random.Range(-20f, 20f), 0);
-            maxSpeed = Random.Range(1f, 2.5f);
+            maxSpeed = Random.Range(1f , Screen.width / 300);
             yield return new WaitForSeconds(accelerationTime);
 
         }
@@ -92,7 +92,7 @@ public class MonsterControl : MonoBehaviour {
         //Vector3 position = gameObject.transform.position;
         rb.AddForce(movement * maxSpeed);
 
-        if (rb.velocity.x >= 300 || rb.velocity.y >= 300 || rb.velocity.x <= -300 || rb.velocity.y <= -300)
+        if (rb.velocity.x >= Screen.width / 2.5f || rb.velocity.y >= Screen.width / 2.5f || rb.velocity.x <= -Screen.width / 2.5f || rb.velocity.y <= -Screen.width / 2.5f)
         {
             Invoke("ReduceVelocity", 1f);
         }

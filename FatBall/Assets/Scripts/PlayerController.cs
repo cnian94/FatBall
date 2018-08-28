@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     public GameMaster gameMaster;
     public GameObject Explosion;
     public GameObject timer;
+    Vector3 tempScale;
 
 
     // For Acceloremeter
@@ -39,12 +40,21 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        moveSpeed = 500f;
+        moveSpeed = Screen.width/1.5f; //Joker Control 106 dan sonrasını da değiştir
         //old_z = 0;
         //playerLastPos = gameObject.transform.position;
+        tempScale = transform.localScale;
+        tempScale.x = GetPlayerScaleX();
+        tempScale.y = GetPlayerScaleX();
+        transform.localScale = tempScale;
     }
 
     // Use this for initialization
+    float GetPlayerScaleX()
+    {
+        float x = Screen.width / 12.5f;
+        return x;
+    }
     void Start()
     {
         rb = this.GetComponent<Rigidbody2D>();
@@ -53,7 +63,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(dirX, dirY);
+        //rb.velocity = new Vector2(dirX, dirY);
     }
 
     // Update is called once per frame
@@ -62,23 +72,23 @@ public class PlayerController : MonoBehaviour
         //enemies = GameObject.FindGameObjectsWithTag("Enemy");
         //playerCurrentPos = gameObject.transform.position;
 
-        if (gameObject.transform.localScale.x <= 45)
+        if (gameObject.transform.localScale.x <= Screen.width / 10f)
         {
             gameMaster.jokerWeights[3] = 0;
         }
-        if (gameObject.transform.localScale.x > 45)
+        if (gameObject.transform.localScale.x > Screen.width / 10f)
         {
-            gameMaster.jokerWeights[3] = 45;
+            gameMaster.jokerWeights[3] = 20;
         }
 
-        dirX = Input.acceleration.x * moveSpeed;
-        dirY = Input.acceleration.y * moveSpeed;
+        //dirX = Input.acceleration.x * moveSpeed;
+        //dirY = Input.acceleration.y * moveSpeed;
 
         //transform.Translate(Input.acceleration.x * 2, Input.acceleration.y * 2, 1);
 
 
 
-        /*if (!timer.GetComponent<TimerScript>().GetIsPaused())
+        if (!timer.GetComponent<TimerScript>().GetIsPaused())
         {
             if (isMoving)
             {
@@ -135,7 +145,7 @@ public class PlayerController : MonoBehaviour
             {
                 previousDistanceToTouchPos = (touchPosition - transform.position).magnitude;
             }
-        }*/
+        }
 
 
 
