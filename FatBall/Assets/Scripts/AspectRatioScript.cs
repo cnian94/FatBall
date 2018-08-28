@@ -6,17 +6,17 @@ public class AspectRatioScript : MonoBehaviour
 {
 
     public float pixelsToUnits;
-    private Camera camera;
+    //private Camera camera;
 
 
     void Awake()
     {
         pixelsToUnits = 1;
-        camera = Camera.main;
+        //camera = Camera.main;
     }
 
     void Update()
     {
-        camera.orthographicSize = Screen.height / pixelsToUnits / 2;
+        gameObject.GetComponent<Camera>().orthographicSize = Screen.height / pixelsToUnits / 2;
     }
 }

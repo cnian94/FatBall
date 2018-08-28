@@ -10,7 +10,7 @@ public class SpikeControl : MonoBehaviour
     float sWidth;
     float sHeight;
 
-    public bool isExtending;
+    public bool canMove;
 
     public float travelDuration;
 
@@ -37,12 +37,24 @@ public class SpikeControl : MonoBehaviour
         transform.localScale = tempScale;
         sWidth = Screen.width;
         sHeight = Screen.height;
-        isExtending = false;
+        canMove = true;
         tempEndPos = transform.position;
         endPos = transform.position;
         travelDuration = Random.Range(1f, 3f);
-        Debug.Log(gameObject.GetComponent<SpriteRenderer>().bounds.size.x + "--" + gameObject.GetComponent<SpriteRenderer>().bounds.size.y);
         
+    }
+
+    public void SetCanMove(bool val)
+    {
+        if (val)
+        {
+            canMove = val;
+            StartCoroutine(MoveSpike(startPos,travelDuration));
+        }
+        else
+        {
+            canMove = val;
+        }
     }
 
 
@@ -65,7 +77,7 @@ public class SpikeControl : MonoBehaviour
         startPos = gameObject.transform.position;
         CalcEndPos(tempName, startPos);
         
-        //StartCoroutine(MoveSpike(startPos, travelDuration));
+        StartCoroutine(MoveSpike(startPos, travelDuration));
 
         
 
@@ -372,7 +384,7 @@ public class SpikeControl : MonoBehaviour
     private IEnumerator MoveSpike(Vector3 startPos, float travelDuration)
     {
 
-        while (!isExtending)
+        while (canMove)
         {
             // First step, travel from A to B
             float counter = 0f;

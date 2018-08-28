@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
 
-    [SerializeField]
     public float moveSpeed;
 
     Rigidbody2D rb;
@@ -17,6 +18,13 @@ public class PlayerController : MonoBehaviour {
 
     public GameMaster gameMaster;
     public GameObject Explosion;
+    public GameObject timer;
+
+
+    // For Acceloremeter
+    float dirX;
+    float dirY;
+
 
     /*private GameObject[] enemies;
     private float old_z;
@@ -37,14 +45,20 @@ public class PlayerController : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         rb = this.GetComponent<Rigidbody2D>();
         gameMaster = FindObjectOfType<GameMaster>();
     }
-	
-	// Update is called once per frame
-	void Update () {
 
+    private void FixedUpdate()
+    {
+        rb.velocity = new Vector2(dirX, dirY);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
         //enemies = GameObject.FindGameObjectsWithTag("Enemy");
         //playerCurrentPos = gameObject.transform.position;
 
@@ -55,38 +69,47 @@ public class PlayerController : MonoBehaviour {
         if (gameObject.transform.localScale.x > 45)
         {
             gameMaster.jokerWeights[3] = 45;
-
-        }
-        if (isMoving)
-        {
-            currentDistanceToTouchPos = (touchPosition - transform.position).magnitude;
         }
 
-        if(Input.touchCount > 0)
-        {
-            touch = Input.GetTouch(0);
+        dirX = Input.acceleration.x * moveSpeed;
+        dirY = Input.acceleration.y * moveSpeed;
 
-            if (touch.phase == TouchPhase.Began)
+        //transform.Translate(Input.acceleration.x * 2, Input.acceleration.y * 2, 1);
+
+
+
+        /*if (!timer.GetComponent<TimerScript>().GetIsPaused())
+        {
+            if (isMoving)
             {
-                previousDistanceToTouchPos = 0;
-                currentDistanceToTouchPos = 0;
-                isMoving = true;
-                touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
-                touchPosition.z = 0;
-                whereToMove = (touchPosition - transform.position).normalized;
-                rb.velocity = new Vector2(whereToMove.x * moveSpeed, whereToMove.y * moveSpeed);
+                currentDistanceToTouchPos = (touchPosition - transform.position).magnitude;
             }
 
-            if(touch.phase == TouchPhase.Ended)
+            if (Input.touchCount > 0)
             {
-                isMoving = false;
-                rb.velocity = Vector2.zero;
+                touch = Input.GetTouch(0);
+
+                if (touch.phase == TouchPhase.Began)
+                {
+                    previousDistanceToTouchPos = 0;
+                    currentDistanceToTouchPos = 0;
+                    isMoving = true;
+                    touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
+                    touchPosition.z = 0;
+                    whereToMove = (touchPosition - transform.position).normalized;
+                    rb.velocity = new Vector2(whereToMove.x * moveSpeed, whereToMove.y * moveSpeed);
+                }
+
+                if (touch.phase == TouchPhase.Ended)
+                {
+                    isMoving = false;
+                    rb.velocity = Vector2.zero;
+                }
+
             }
 
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
+            if (Input.GetMouseButtonDown(0))
+            {
                 previousDistanceToTouchPos = 0;
                 currentDistanceToTouchPos = 0;
                 isMoving = true;
@@ -94,24 +117,27 @@ public class PlayerController : MonoBehaviour {
                 touchPosition.z = 0;
                 whereToMove = (touchPosition - transform.position).normalized;
                 rb.velocity = new Vector2(whereToMove.x * moveSpeed, whereToMove.y * moveSpeed);
-        }
-		
-        if(currentDistanceToTouchPos > previousDistanceToTouchPos)
-        {
-            isMoving = false;
-            rb.velocity = Vector2.zero;
-        }
+            }
 
-        if (Input.GetMouseButtonUp(0)) //yeni hareket için
-        {
-            isMoving = false;
-            rb.velocity = Vector2.zero;
-        }
+            if (currentDistanceToTouchPos > previousDistanceToTouchPos)
+            {
+                isMoving = false;
+                rb.velocity = Vector2.zero;
+            }
 
-        if (isMoving)
-        {
-            previousDistanceToTouchPos = (touchPosition - transform.position).magnitude;
-        }
+            if (Input.GetMouseButtonUp(0)) //yeni hareket için
+            {
+                isMoving = false;
+                rb.velocity = Vector2.zero;
+            }
+
+            if (isMoving)
+            {
+                previousDistanceToTouchPos = (touchPosition - transform.position).magnitude;
+            }
+        }*/
+
+
 
 
         /*for (int i=0; i < enemies.Length - 1; i++)
@@ -165,8 +191,8 @@ public class PlayerController : MonoBehaviour {
         GameObject bubble = GameObject.Find("Bubble");
         if (bubble)
         {
-          bubbleScale  = bubble.transform.localScale;
-          bubbleTargetScale   = new Vector3(bubbleScale.x / 2, bubbleScale.y / 2, bubbleScale.z);
+            bubbleScale = bubble.transform.localScale;
+            bubbleTargetScale = new Vector3(bubbleScale.x / 2, bubbleScale.y / 2, bubbleScale.z);
         }
 
         while (time > 0f)
@@ -174,8 +200,8 @@ public class PlayerController : MonoBehaviour {
             time -= Time.deltaTime;
 
             transform.localScale = Vector3.Lerp(targetScale, originalScale, time / originalTime);
-            
-            if(bubble != null)
+
+            if (bubble != null)
             {
                 bubble.transform.localScale = Vector3.Lerp(bubbleTargetScale, bubbleScale, time / originalTime);
             }
@@ -200,32 +226,32 @@ public class PlayerController : MonoBehaviour {
                     Destroy(Explosion, 3);
                     break;
 
-                /*case "LeftSpike":
-                    GameObject.Find("Timer").SendMessage("Finish");
-                    Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
-                    Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
-                    //gameOverUI.SetActive(true);
-                    gameMaster.KillPlayer(gameObject);
-                    Destroy(Explosion, 3);
-                    break;
+                    /*case "LeftSpike":
+                        GameObject.Find("Timer").SendMessage("Finish");
+                        Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
+                        Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
+                        //gameOverUI.SetActive(true);
+                        gameMaster.KillPlayer(gameObject);
+                        Destroy(Explosion, 3);
+                        break;
 
-                case "BottomSpike":
-                    GameObject.Find("Timer").SendMessage("Finish");
-                    Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
-                    Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
-                    //gameOverUI.SetActive(true);
-                    gameMaster.KillPlayer(gameObject);
-                    Destroy(Explosion, 3);
-                    break;
+                    case "BottomSpike":
+                        GameObject.Find("Timer").SendMessage("Finish");
+                        Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
+                        Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
+                        //gameOverUI.SetActive(true);
+                        gameMaster.KillPlayer(gameObject);
+                        Destroy(Explosion, 3);
+                        break;
 
-                case "RightSpike":
-                    GameObject.Find("Timer").SendMessage("Finish");
-                    Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
-                    Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
-                    //gameOverUI.SetActive(true);
-                    gameMaster.KillPlayer(gameObject);
-                    Destroy(Explosion, 3);
-                    break; */
+                    case "RightSpike":
+                        GameObject.Find("Timer").SendMessage("Finish");
+                        Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
+                        Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
+                        //gameOverUI.SetActive(true);
+                        gameMaster.KillPlayer(gameObject);
+                        Destroy(Explosion, 3);
+                        break; */
             }
         }
 

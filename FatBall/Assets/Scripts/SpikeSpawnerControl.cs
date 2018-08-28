@@ -34,7 +34,6 @@ public class SpikeSpawnerControl : MonoBehaviour
         widthOfSpike = spike.GetComponent<SpriteRenderer>().bounds.size.x;  //spike'ın widthini bulur sayı olarak yazar
         heightOfSpike = spike.GetComponent<SpriteRenderer>().bounds.size.y;  //spike'ın heightını bulur sayı olarak yazar
 
-        Debug.Log(Screen.width + " - " + Screen.height);
     }
 
     // Use this for initialization
@@ -173,7 +172,6 @@ public class SpikeSpawnerControl : MonoBehaviour
 
                     if (j == 0)
                     {
-                        Debug.Log("start_y :" + start_y);
                         start_y += Screen.height / 19;
                         lastSpikePos = new Vector3(start_x - heightOfSpike / 2, start_y, 10);
                         spike = Instantiate(spike, lastSpikePos, Quaternion.identity);

@@ -18,6 +18,7 @@ public class MonstersSpawnerControl : MonoBehaviour {
      void Awake()
     {
         monsters_limit = Random.Range(2f, 7f);
+        //monsters_limit = 1;
         for(int i=0; i < spawnPoints.Length; i++)
         {
 

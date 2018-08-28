@@ -148,5 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 500
-  gameMaster: {fileID: 0}
+  gameMaster: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
+    type: 2}
   Explosion: {fileID: 139366, guid: b185c1a9cf067374586d095111b15bd1, type: 2}
+  timer: {fileID: 1271555561047184, guid: d13863850adc3d14ea9b554e6341e49c, type: 2}

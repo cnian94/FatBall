@@ -19,6 +19,8 @@ TagManager:
   - BroccoliJoker
   - BeerJoker
   - Bubble
+  - Timer
+  - BackgroundCamera
   layers:
   - Default
   - TransparentFX
@@ -28,10 +30,10 @@ TagManager:
   - UI
   - 
   - 
+  - Background Image
   - Player
   - Enemy
   - Bubble
-  - 
   - 
   - 
   - 

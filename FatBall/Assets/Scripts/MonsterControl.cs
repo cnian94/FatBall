@@ -19,6 +19,25 @@ public class MonsterControl : MonoBehaviour {
 
     Vector3 temp;
 
+    private bool isMonsterMovementAllowed = true;
+
+
+    public void SetIsMonsterMovementAllowed(bool val)
+    {
+        if (!val)
+        {
+            movement = Vector3.zero;
+            maxSpeed = 0;
+            isMonsterMovementAllowed = val;
+        }
+
+        else
+        {
+            isMonsterMovementAllowed = val;
+            StartCoroutine(MoveMonster());
+        }
+    }
+
     void Awake()
     {
 
@@ -45,7 +64,7 @@ public class MonsterControl : MonoBehaviour {
 
     IEnumerator MoveMonster()
     {
-        while (true)
+        while (isMonsterMovementAllowed)
         {
             movement = new Vector3(-movement.x + Random.Range(-20f, 20f), -movement.y + Random.Range(-20f, 20f), 0);
             maxSpeed = Random.Range(1f, 2.5f);

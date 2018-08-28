@@ -25,7 +25,25 @@ public class JokerControl : MonoBehaviour {
 
 
     Vector3 temp;
+    private bool isJokerMovementAllowed = true;
 
+
+    public void SetIsJokerMovementAllowed(bool val)
+    {
+        if (!val)
+        {
+            movement = Vector3.zero;
+            maxSpeed = 0;
+            isJokerMovementAllowed = val;
+        }
+
+        else
+        {
+            isJokerMovementAllowed = val;
+            StartCoroutine(MoveJoker());
+        }
+        
+    }
 
     // Use this for initialization
     void Start()
@@ -51,7 +69,7 @@ public class JokerControl : MonoBehaviour {
 
     IEnumerator MoveJoker()
     {
-        while (true)
+        while (isJokerMovementAllowed)
         {
             movement = new Vector3(-movement.x + Random.Range(-20f, 20f), -movement.y + Random.Range(-20f, 20f), 0);
             maxSpeed = Random.Range(1f, 2.5f);
@@ -64,18 +82,8 @@ public class JokerControl : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        //timeLeft -= Time.deltaTime;
         transform.Rotate(0, 0, Random.Range(10f, 15f) / 50);
         Vector3 position = gameObject.transform.position;
-
-        /*if (timeLeft <= 0)
-        {
-            movement = new Vector3(-movement.x + Random.Range(-20f, 20f), -movement.y + Random.Range(-20f, 20f), 0);
-            maxSpeed = Random.Range(1f, 4f);
-            timeLeft += accelerationTime;
-        }*/
-
-
    
         if (position.x <= -max_distance_from_view || position.x >= Screen.width + max_distance_from_view ||
             position.y <= -max_distance_from_view || position.y >= Screen.height + max_distance_from_view)

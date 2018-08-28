@@ -7,7 +7,6 @@ public class GameMaster : MonoBehaviour
 {
 
 
-    public Camera cam;
     public static GameMaster gm;
 
     private int spawnDelay = 3;
@@ -16,12 +15,16 @@ public class GameMaster : MonoBehaviour
     public GameObject countDown;
     public GameObject player;
     public GameObject gameOverUI;
+    public GameObject gamePausedUI;
+    public GameObject PauseButton;
+
+    public TimerScript timerScript;
 
     private SoundManagerScript soundManager;
     private MonstersSpawnerControl spawnerControl;
     private SpikeSpawnerControl spikeSpawner;
     private JokerSpawnerControl jokerSpawnerControl;
-    public int[] jokerWeights = { 50, 50, 20, 20, 10 }; //Jokerlerin çıkma ağırlıkları, Reset'in ağırlığını player controllerdan değiştir.
+    public int[] jokerWeights = { 60, 50, 45, 20, 10 }; //Jokerlerin çıkma ağırlıkları, Reset'in ağırlığını player controllerdan değiştir.
     //Public olduğu için Unity'de de ağırlıklarını değiştir. Sırayla Rabbit,Turtle,Shield,Half,Reset.
     private float jokerTimeLeft;
     public float jokerSpawnTime = 5f;
@@ -33,13 +36,13 @@ public class GameMaster : MonoBehaviour
 
     void Awake()
     {
+        timerScript = timer.GetComponent<TimerScript>();
         soundManager = FindObjectOfType<SoundManagerScript>();
         spawnerControl = FindObjectOfType<MonstersSpawnerControl>();
         jokerSpawnerControl = FindObjectOfType<JokerSpawnerControl>();
         spikeSpawner = FindObjectOfType<SpikeSpawnerControl>();
         Application.targetFrameRate = 60;
         jokerTimeLeft = jokerSpawnTime + spawnDelay;
-        //cam.orthographicSize = Screen.height / 2;
         countDown.gameObject.SetActive(true);
         extendTime = Random.Range(6f, 10f);
     }
@@ -72,7 +75,7 @@ public class GameMaster : MonoBehaviour
 
     public IEnumerator IncreaseMonsterLimit() //Monster sayısının artış hızı
     {
-        while (true)
+        while (!timerScript.GetIsPaused())
         {
             yield return new WaitForSeconds(5);
             //spawnerControl.monsters_limit = spawnerControl.monsters_limit * 2;
@@ -101,6 +104,60 @@ public class GameMaster : MonoBehaviour
         Destroy(player);
         soundManager.PlaySound("Explosion");
         gameOverUI.SetActive(true);
+        PauseButton.SetActive(false);
+    }
+
+    public void PauseGame()
+    {
+        timer.GetComponent<TimerScript>().SetIsPaused(true);
+        gamePausedUI.SetActive(true);
+        PauseButton.SetActive(false);
+
+        GameObject[] monsters = GameObject.FindGameObjectsWithTag("Enemy");
+        for(int i = 0; i < monsters.Length; i++)
+        {
+            monsters[i].GetComponent<MonsterControl>().SetIsMonsterMovementAllowed(false);
+            monsters[i].GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        }
+
+        /*GameObject[] jokers = GameObject.FindGameObjectsWithTag("Enemy");
+        for (int i = 0; i < monsters.Length; i++)
+        {
+            monsters[i].GetComponent<MonsterControl>().SetIsMonsterMovementAllowed(false);
+        }*/
+
+        GameObject[] spikes = GameObject.FindGameObjectsWithTag("Spike");
+        for (int i = 0; i < spikes.Length; i++)
+        {
+            spikes[i].GetComponent<SpikeControl>().SetCanMove(false);
+        }
+
+    }
+
+    public void ResumeGame()
+    {
+        timer.GetComponent<TimerScript>().SetIsPaused(false);
+        gamePausedUI.SetActive(false);
+        PauseButton.SetActive(true);
+
+        GameObject[] monsters = GameObject.FindGameObjectsWithTag("Enemy");
+        for (int i = 0; i < monsters.Length; i++)
+        {
+            monsters[i].GetComponent<MonsterControl>().SetIsMonsterMovementAllowed(true);
+        }
+
+        /*GameObject[] jokers = GameObject.FindGameObjectsWithTag("Enemy");
+        for (int i = 0; i < monsters.Length; i++)
+        {
+            monsters[i].GetComponent<MonsterControl>().SetIsMonsterMovementAllowed(false);
+        }*/
+
+        GameObject[] spikes = GameObject.FindGameObjectsWithTag("Spike");
+        for (int i = 0; i < spikes.Length; i++)
+        {
+            spikes[i].GetComponent<SpikeControl>().SetCanMove(true);
+        }
+
     }
 
     public void SpawnAMonster()
@@ -245,7 +302,7 @@ public class GameMaster : MonoBehaviour
 
     IEnumerator ExtendSpike()
     {
-        while (true)
+        while (!timerScript.GetIsPaused())
         {
             yield return new WaitForSeconds(extendTime);
             GameObject randomSpike = GetRandomSpike();
@@ -260,9 +317,9 @@ public class GameMaster : MonoBehaviour
 
     IEnumerator ReduceSpikeExtendTime()
     {
-        float reducedBy = Random.Range(0.3f, 1f);
+        float reducedBy = Random.Range(0.6f, 1.5f);
 
-        while (true)
+        while (!timerScript.GetIsPaused())
         {
             yield return new WaitForSeconds(10f);
             if(extendTime >= 1f)
