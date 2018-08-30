@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class JokerControl : MonoBehaviour {
+public class JokerControl : MonoBehaviour
+{
 
 
     Rigidbody2D rb;
     GameObject target;
-    private SoundManagerScript soundManager;//SoundManagerScript'in kodlarını buraya bağlarken kullanmak için isim verdik.
+
+    public GameObject soundManager;//SoundManagerScript'in kodlarını buraya bağlarken kullanmak için isim verdik.
+    private SoundManagerScript soundManagerScript;
 
     public GameObject bubble; //bubble için farklı bir kod olduğu için bu abiyi ayrı tuttuk diye düşünüyorum.
 
-    public float accelerationTime; 
+    public float accelerationTime;
     public float maxSpeed;
 
     private Vector3 movement;
@@ -42,12 +45,13 @@ public class JokerControl : MonoBehaviour {
             isJokerMovementAllowed = val;
             StartCoroutine(MoveJoker());
         }
-        
+
     }
 
     // Use this for initialization
     void Start()
     {
+        soundManagerScript = soundManager.GetComponent<SoundManagerScript>();
         accelerationTime = Random.Range(Screen.width / 1500f, Screen.width / 500f);
         //maxSpeed = Random.Range(1f, 4f);
         spawnerControl = FindObjectOfType<JokerSpawnerControl>();
@@ -56,7 +60,6 @@ public class JokerControl : MonoBehaviour {
         transform.name = transform.name.Replace("(Clone)", "").Trim();
         target = GameObject.Find("Player");
         rb = GetComponent<Rigidbody2D>();
-        soundManager = FindObjectOfType<SoundManagerScript>();
 
         float randomScale = Random.Range(Screen.width / 25f, Screen.width / 18f);
         temp = transform.localScale;
@@ -91,9 +94,8 @@ public class JokerControl : MonoBehaviour {
             spawnerControl.randomSpawnPoint = Random.Range(0, spawnerControl.spawnPoints.Length);
             gameObject.transform.position = new Vector3(spawnerControl.spawnPoints[spawnerControl.randomSpawnPoint].position.x, spawnerControl.spawnPoints[spawnerControl.randomSpawnPoint].position.y, transform.position.z);
         }
-
-
     }
+
 
     void FixedUpdate()
     {
@@ -103,17 +105,17 @@ public class JokerControl : MonoBehaviour {
     void RevertJokerEffect()
     {
 
-        if(gameObject.CompareTag("GrapeFruitJoker")) 
+        if (gameObject.CompareTag("GrapeFruitJoker"))
         {
             //playerControl.moveForce = 500;
-            playerControl.moveSpeed = Screen.width / 1.5f;
+            playerControl.moveSpeed = Screen.width / 1.1f;
             Destroy(gameObject);
         }
 
         if (gameObject.CompareTag("BeerJoker"))
         {
             //playerControl.moveForce = 500;
-            playerControl.moveSpeed = Screen.width / 1.5f;
+            playerControl.moveSpeed = Screen.width / 1.1f;
             Destroy(gameObject);
         }
 
@@ -122,8 +124,8 @@ public class JokerControl : MonoBehaviour {
             Destroy(gameObject);
             Destroy(bubble);
             GameMaster.gm.isBubbleCatched = false;
-            SoundManagerScript.audioSrc.Stop();
-            SoundManagerScript.audioSrc.clip = null;
+            soundManagerScript.audioSrc.Stop();
+            soundManagerScript.audioSrc.clip = null;
             bubble.SendMessage("SetIsBubbleEffectActive", false);
         }
     }
@@ -135,12 +137,12 @@ public class JokerControl : MonoBehaviour {
         {
 
             case "Player":
-                if(gameObject.CompareTag("GrapeFruitJoker")) //tavşanı yerse
+                if (gameObject.CompareTag("GrapeFruitJoker")) //tavşanı yerse
                 {
                     gameObject.SetActive(false);
-                    soundManager.PlaySound("RabbitJoker"); //SoundManagerScrippten çeker
+                    soundManagerScript.PlaySound("RabbitJoker"); //SoundManagerScrippten çeker
                     spawnerControl.num_of_jokers--; //yediği için joker sayısı 1 azalır ki yenisi çıkabilsin
-                    //playerControl.moveForce = playerControl.moveForce * 2;
+                                                    //playerControl.moveForce = playerControl.moveForce * 2;
                     playerControl.moveSpeed = playerControl.moveSpeed * 2; //movespeed 2 katına çıkar
                     Invoke("RevertJokerEffect", 5.0f); //5sn sonra efekt gider. Yukarda revert var. Revert aşağıda olsa daha doğru olmaz mı ?
 
@@ -149,7 +151,7 @@ public class JokerControl : MonoBehaviour {
                 if (gameObject.CompareTag("BeerJoker")) //tavşanla aynı mantık
                 {
                     gameObject.SetActive(false);
-                    soundManager.PlaySound("BeerJoker");
+                    soundManagerScript.PlaySound("BeerJoker");
                     spawnerControl.num_of_jokers--;
                     //playerControl.moveForce = playerControl.moveForce / 2;
                     playerControl.moveSpeed = playerControl.moveSpeed / 2;
@@ -160,18 +162,18 @@ public class JokerControl : MonoBehaviour {
                 {
                     GameMaster.gm.isBubbleCatched = true;
                     gameObject.SetActive(false);
-                    soundManager.PlaySound("ShieldJoker"); //SoundManagerScrippten sesi çekiyor.
+                    soundManagerScript.PlaySound("ShieldJoker"); //SoundManagerScrippten sesi çekiyor.
                     spawnerControl.num_of_jokers--;
                     bubble = Instantiate(bubble, target.transform.localPosition, Quaternion.identity);
                     bubble.SendMessage("SetIsBubbleEffectActive", true);
                     Invoke("RevertJokerEffect", 8.0f); //8 saniye sürüyor
-                    
+
                 }
 
                 if (gameObject.CompareTag("BroccoliJoker"))
                 {
                     gameObject.SetActive(false);
-                    soundManager.PlaySound("HalfSizeJoker");
+                    soundManagerScript.PlaySound("HalfSizeJoker");
                     spawnerControl.num_of_jokers--;
                     target.SendMessage("SetIsHalfSizeJokerCatched"); //Revert değil. Player controller 98. satırda açıklanıyor bu satır.
                 }
@@ -186,7 +188,7 @@ public class JokerControl : MonoBehaviour {
                     }
                     monstersSpawnerControl.monsters_limit = 3; //en başa döner monster limit ve monster sayısı. Bunu değiştirirsen MonsterSpawnerControl'ü de değiştir. Hatta hieracy de de değiştir garanti olsun.
                     monstersSpawnerControl.num_of_monsters = 0; //üsttekinin aynısı geçerli.
-                        
+
                     spawnerControl.num_of_jokers--;
                 }
 

@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviour
     float dirX;
     float dirY;
 
+    private Vector2 dirInit = Vector2.zero;
+
 
     /*private GameObject[] enemies;
     private float old_z;
@@ -40,13 +42,14 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        moveSpeed = Screen.width/1.5f; //Joker Control 106 dan sonrasını da değiştir
+        moveSpeed = Screen.width / 1.1f; //Joker Control 106 dan sonrasını da değiştir
         //old_z = 0;
         //playerLastPos = gameObject.transform.position;
         tempScale = transform.localScale;
         tempScale.x = GetPlayerScaleX();
         tempScale.y = GetPlayerScaleX();
         transform.localScale = tempScale;
+        Input.gyro.enabled = true;
     }
 
     // Use this for initialization
@@ -59,6 +62,11 @@ public class PlayerController : MonoBehaviour
     {
         rb = this.GetComponent<Rigidbody2D>();
         gameMaster = FindObjectOfType<GameMaster>();
+
+
+        //dirInit.x = Input.acceleration.x;
+        //dirInit.y = Input.acceleration.y;
+
     }
 
     private void FixedUpdate()
@@ -81,10 +89,24 @@ public class PlayerController : MonoBehaviour
             gameMaster.jokerWeights[3] = 20;
         }
 
-        //dirX = Input.acceleration.x * moveSpeed;
-        //dirY = Input.acceleration.y * moveSpeed;
+        
+        /*
+        //new accelerometer
+        Vector2 dir = Vector2.zero;
 
-        //transform.Translate(Input.acceleration.x * 2, Input.acceleration.y * 2, 1);
+        // you need to send the difference of your current accelerometer position to the initial state.
+        dir.x = Input.acceleration.x - dirInit.x;
+        dir.y = Input.acceleration.y - dirInit.y;
+        //dir.z = transform.position.z;
+        if (dir.sqrMagnitude > 1)
+        {
+            dir.Normalize();
+        }
+
+        dir *= Time.deltaTime;
+        transform.Translate(dir * moveSpeed);
+        */
+
 
 
 
@@ -148,41 +170,6 @@ public class PlayerController : MonoBehaviour
         }
 
 
-
-
-        /*for (int i=0; i < enemies.Length - 1; i++)
-        {
-           for(int j=i+1; j<enemies.Length; j++)
-            {
-                ba = enemies[i].transform.position - enemies[j].transform.position;
-                bc = gameObject.transform.position - enemies[j].transform.position;
-                ab = enemies[j].transform.position - enemies[i].transform.position;
-                ac = gameObject.transform.position - enemies[i].transform.position;
-
-                if (Vector3.Dot(ba, bc) > 0 && Vector3.Dot(ab, ac) > 0)
-                {
-                    //Debug.Log(Vector3.Cross(bc, ba));
-                    new_z = Vector3.Cross(bc, ba).z;
-
-                    if (Mathf.Sign(old_z) != Mathf.Sign(new_z) && old_z != 0)
-                    {
-                        //Debug.Log("OLD Z: " + old_z);
-                        if (enemies[i].transform.position.x > 0 && enemies[i].transform.position.x < Screen.width && enemies[i].transform.position.y > 0
-                            && enemies[i].transform.position.y < Screen.height && enemies[j].transform.position.x > 0 &&
-                            enemies[j].transform.position.x < Screen.width && enemies[j].transform.position.y > 0
-                            && enemies[j].transform.position.y < Screen.height)
-                        {
-                            //Debug.Log("Player passed between enemies !!");
-                            Destroy(enemies[i]);
-                            Destroy(enemies[j]);
-                        }
-
-                    }
-                }
-            }
-        }
-        old_z = Vector3.Cross(bc, ba).z;*/
-        //playerLastPos = playerCurrentPos;
     }
 
     void SetIsHalfSizeJokerCatched()

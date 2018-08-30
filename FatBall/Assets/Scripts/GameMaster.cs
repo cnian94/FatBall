@@ -24,7 +24,7 @@ public class GameMaster : MonoBehaviour
     private MonstersSpawnerControl spawnerControl;
     private SpikeSpawnerControl spikeSpawner;
     private JokerSpawnerControl jokerSpawnerControl;
-    public int[] jokerWeights = { 60, 50, 45, 20, 10 }; //Jokerlerin çıkma ağırlıkları, Reset'in ağırlığını player controllerdan değiştir.
+    public int[] jokerWeights = { 80, 70, 45, 20, 10 }; //Jokerlerin çıkma ağırlıkları, Reset'in ağırlığını player controllerdan değiştir.
     //Public olduğu için Unity'de de ağırlıklarını değiştir. Sırayla Rabbit,Turtle,Shield,Half,Reset. Half size ağırlğını Player controller 81 den değiştir.
     private float jokerTimeLeft;
     public float jokerSpawnTime = 5f;
@@ -80,7 +80,7 @@ public class GameMaster : MonoBehaviour
             yield return new WaitForSeconds(5);
             //spawnerControl.monsters_limit = spawnerControl.monsters_limit * 2;
             //spawnerControl.monsters_limit++;
-            spawnerControl.monsters_limit = spawnerControl.monsters_limit + Mathf.Log(spawnerControl.monsters_limit)/2;
+            spawnerControl.monsters_limit = spawnerControl.monsters_limit + Mathf.Log(spawnerControl.monsters_limit)/1.5f;
             SpawnAMonster();
         }
     }
@@ -93,6 +93,7 @@ public class GameMaster : MonoBehaviour
         player = Instantiate(player, randomPoint, Quaternion.identity);
         player.name = "Player";
         timer.SetActive(true);
+        PauseButton.SetActive(true);
         SpawnAMonster();
         StartCoroutine(IncreaseMonsterLimit());
         StartCoroutine(ExtendSpike());
@@ -322,7 +323,7 @@ public class GameMaster : MonoBehaviour
         while (!timerScript.GetIsPaused())
         {
             yield return new WaitForSeconds(10f);
-            if(extendTime >= 1f)
+            if (extendTime >= Random.Range(2f, 3f))
             {
                 extendTime -= reducedBy;
             }

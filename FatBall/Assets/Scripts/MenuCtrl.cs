@@ -16,6 +16,19 @@ public class MenuCtrl : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
+    public void muteSound()
+    {
+        if (soundManager.GetComponent<SoundManagerScript>().isMuted)
+        {
+            soundManager.GetComponent<SoundManagerScript>().isMuted = !soundManager.GetComponent<SoundManagerScript>().isMuted;
+            soundManager.GetComponent<SoundManagerScript>().audioSrc.Stop();
+        }
+        else
+        {
+            soundManager.GetComponent<SoundManagerScript>().isMuted = !soundManager.GetComponent<SoundManagerScript>().isMuted;
+            soundManager.GetComponent<SoundManagerScript>().audioSrc.Play();
+        }
+    }
 
 
     void Awake()

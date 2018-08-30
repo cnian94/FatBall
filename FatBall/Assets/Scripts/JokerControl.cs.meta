@@ -1,11 +1,15 @@
 fileFormatVersion: 2
 guid: d0d8dabef935cf540909633084ded01a
-timeCreated: 1530617827
-licenseType: Free
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - soundManager: {fileID: 1270106360224736, guid: 24c00894793607343be51fb03b0cea75,
+      type: 2}
+  - bubble: {instanceID: 0}
+  - spawnerControl: {instanceID: 0}
+  - playerControl: {instanceID: 0}
+  - monstersSpawnerControl: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

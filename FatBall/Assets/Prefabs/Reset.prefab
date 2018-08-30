@@ -116,6 +116,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0d8dabef935cf540909633084ded01a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundManager: {fileID: 1270106360224736, guid: 24c00894793607343be51fb03b0cea75,
+    type: 2}
   bubble: {fileID: 0}
   accelerationTime: 2
   maxSpeed: 0

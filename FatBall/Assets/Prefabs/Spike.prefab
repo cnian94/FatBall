@@ -23,8 +23,8 @@ GameObject:
   - component: {fileID: 50822446281086324}
   - component: {fileID: 250511621930848638}
   - component: {fileID: 60749276590538974}
-  - component: {fileID: 114395931321775160}
   - component: {fileID: 60363872866329028}
+  - component: {fileID: 114395931321775160}
   m_Layer: 0
   m_Name: Spike
   m_TagString: Spike
@@ -229,8 +229,8 @@ PointEffector2D:
   m_UseColliderMask: 1
   m_ColliderMask:
     serializedVersion: 2
-    m_Bits: 2560
-  m_ForceMagnitude: 10000
+    m_Bits: 512
+  m_ForceMagnitude: 500
   m_ForceVariation: 0
   m_DistanceScale: 0.0001
   m_ForceSource: 0

@@ -9,6 +9,7 @@ using UnityEngine.SceneManagement;
 public class LeaderboardController : MonoBehaviour
 {
 
+    public GameObject SoundManager;
     public GameObject leaderBoardPanel;
     public GameObject leaderBoardContent;
 
@@ -82,6 +83,7 @@ public class LeaderboardController : MonoBehaviour
     {
         CreateRandomLeaderboard();
         //Debug.Log(leaderBoardPanel.GetComponent<ScrollRect>().normalizedPosition);
+        SoundManager.GetComponent<SoundManagerScript>().PlaySound("GameSound");
 
     }
 
