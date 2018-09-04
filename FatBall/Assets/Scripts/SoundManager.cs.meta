@@ -3,7 +3,19 @@ guid: 467f304d08278ed4298896088b6cc783
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - GameSound: {fileID: 8300000, guid: 6a87a6a4979a0d64289b83ad487a18fc, type: 3}
+  - StartSound: {fileID: 8300000, guid: 3492b243779a69544bd2f4938ec2003d, type: 3}
+  - ExplosionSound: {fileID: 8300000, guid: 7c8119121b9099848999644cb1eace8a, type: 3}
+  - EnemySound: {fileID: 8300000, guid: 5d3e0c6e563031c478c9efc66ef6f10a, type: 3}
+  - GrapeFruitJokerSound: {fileID: 8300000, guid: b37a96fc751b3044081e3ad50c8ddf42,
+      type: 3}
+  - RadishJokerSound: {fileID: 8300000, guid: 579709e8633d5134ba460c9d3ee4a599, type: 3}
+  - BroccoliJokerSound: {fileID: 8300000, guid: 611b203ee5661594683ae42ec78b51f1,
+      type: 3}
+  - BeerJokerSound: {fileID: 8300000, guid: e09804541364d594f872e18f9555d4c4, type: 3}
+  - EffectsSource: {instanceID: 0}
+  - MusicSource: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

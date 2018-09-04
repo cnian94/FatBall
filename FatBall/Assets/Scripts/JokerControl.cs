@@ -181,6 +181,7 @@ public class JokerControl : MonoBehaviour
                 {
                     gameObject.SetActive(false);
                     GameObject[] Enemies = GameObject.FindGameObjectsWithTag("Enemy"); //Bütün enemyleri tek yerde topladık.Tag'i spawn.
+                    SoundManager.Instance.Play("Reset");
                     for (var i = 0; i < Enemies.Length; i++) //bütün enemyler olana kadar.
                     {
                         Destroy(Enemies[i]); //kaç tane enemy varsa i sayısına eşit işte

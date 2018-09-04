@@ -20,6 +20,7 @@ public class MenuCtrl : MonoBehaviour
 
     public void loadScene(string sceneName)
     {
+        SoundManager.Instance.Play("Button");
         if (sceneName.Equals("MainScene"))
         {
             SoundManager.Instance.MusicSource.Stop();

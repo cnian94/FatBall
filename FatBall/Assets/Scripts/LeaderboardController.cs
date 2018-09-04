@@ -154,6 +154,7 @@ public class LeaderboardController : MonoBehaviour
     public void loadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
+        SoundManager.Instance.Play("Button");
     }
 
     private void Update()

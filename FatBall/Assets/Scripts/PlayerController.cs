@@ -165,14 +165,14 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    void StartWaneEffect(string tag)
+    void StartWaneEffect(string tag)  //Joker yediği zaman küçülme süresi
     {
-        StartCoroutine(LerpScale(2f, tag));
+        StartCoroutine(LerpScale(1f, tag));
     }
 
-    void StartGetFatEffect(Vector3[] scales)
+    void StartGetFatEffect(Vector3[] scales)  // Monster yediği zaman küçülme süresi
     {
-        StartCoroutine(LerpScaleMonster(2f, scales));
+        StartCoroutine(LerpScaleMonster(1f, scales));
     }
 
 
@@ -228,11 +228,11 @@ public class PlayerController : MonoBehaviour
 
         else
         {
-            Vector3 targetScale = new Vector3(gameObject.transform.localScale.x - gameObject.transform.localScale.x / 6, gameObject.transform.localScale.y - gameObject.transform.localScale.y / 6, gameObject.transform.localScale.z);
+            Vector3 targetScale = new Vector3(gameObject.transform.localScale.x - gameObject.transform.localScale.x / 8, gameObject.transform.localScale.y - gameObject.transform.localScale.y / 8, gameObject.transform.localScale.z);
             if (bubble)
             {
                 bubbleScale = bubble.transform.localScale;
-                bubbleTargetScale = new Vector3(bubbleScale.x / 2, bubbleScale.y / 2, bubbleScale.z);
+                bubbleTargetScale = new Vector3(bubbleScale.x  - bubbleScale.x/8, bubbleScale.y  - bubbleScale.y/8, bubbleScale.z);
             }
 
             while (time > 0f)

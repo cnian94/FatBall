@@ -8,7 +8,7 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
 
-    public AudioClip GameSound, StartSound, ExplosionSound, EnemySound, GrapeFruitJokerSound, RadishJokerSound, BroccoliJokerSound, BeerJokerSound;
+    public AudioClip GameSound, StartSound, ExplosionSound, EnemySound, GrapeFruitJokerSound, RadishJokerSound, BroccoliJokerSound, BeerJokerSound, ResetSound, ButtonSound;
     public bool isMuted = false;
 
 
@@ -71,6 +71,16 @@ public class SoundManager : MonoBehaviour
 
             case "Start":
                 EffectsSource.clip = StartSound;
+                EffectsSource.Play();
+                break;
+
+            case "Reset": 
+                EffectsSource.clip = ResetSound;
+                EffectsSource.Play();
+                break;
+
+            case "Button": 
+                EffectsSource.clip = ButtonSound;
                 EffectsSource.Play();
                 break;
         }
