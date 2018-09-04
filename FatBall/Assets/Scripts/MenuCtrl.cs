@@ -7,39 +7,55 @@ using UnityEngine.UI;
 public class MenuCtrl : MonoBehaviour
 {
 
-    private SoundManagerScript soundManager;
+    public GameObject soundManager;
+
+    public Button soundButton;
+    public Sprite soundOnSprite;
+    public Sprite soundOffSprite;
+
+    //private SoundManagerScript soundManager;
     public static MenuCtrl mc;
+
 
 
     public void loadScene(string sceneName)
     {
+        if (sceneName.Equals("MainScene"))
+        {
+            SoundManager.Instance.MusicSource.Stop();
+        }
         SceneManager.LoadScene(sceneName);
     }
 
+
     public void muteSound()
     {
-        if (soundManager.GetComponent<SoundManagerScript>().isMuted)
+        if (!SoundManager.Instance.isMuted)
         {
-            soundManager.GetComponent<SoundManagerScript>().isMuted = !soundManager.GetComponent<SoundManagerScript>().isMuted;
-            soundManager.GetComponent<SoundManagerScript>().audioSrc.Stop();
+            SoundManager.Instance.isMuted = !SoundManager.Instance.isMuted;
+            soundButton.GetComponent<Image>().sprite = soundOffSprite;
+            soundManager.SetActive(false);
         }
         else
         {
-            soundManager.GetComponent<SoundManagerScript>().isMuted = !soundManager.GetComponent<SoundManagerScript>().isMuted;
-            soundManager.GetComponent<SoundManagerScript>().audioSrc.Play();
+            soundManager.SetActive(true);
+            SoundManager.Instance.isMuted = !SoundManager.Instance.isMuted;
+            soundButton.GetComponent<Image>().sprite = soundOnSprite;
+            SoundManager.Instance.PlayMusic("GameSound");
+
+
         }
     }
 
 
     void Awake()
     {
-        soundManager = FindObjectOfType<SoundManagerScript>();
+        //soundManager = FindObjectOfType<SoundManagerScript>();
     }
 
 
     void Start()
     {
-      soundManager.PlaySound("GameSound");
-
+        SoundManager.Instance.PlayMusic("GameSound");
     }
 }

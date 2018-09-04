@@ -16,7 +16,7 @@ public class BubbleController : MonoBehaviour
     {
         player = GameObject.Find("Player");
         bubbleRend = GetComponent<SpriteRenderer>();
-        gameObject.transform.localScale = new Vector3(player.transform.localScale.x, player.transform.localScale.y, player.transform.localScale.z);
+        gameObject.transform.localScale = new Vector3(player.transform.localScale.x / 1.3f, player.transform.localScale.y / 1.3f, player.transform.localScale.z);
         transform.name = transform.name.Replace("(Clone)", "").Trim();
     }
 

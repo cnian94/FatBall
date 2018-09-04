@@ -20,7 +20,7 @@ public class GameMaster : MonoBehaviour
 
     public TimerScript timerScript;
 
-    private SoundManagerScript soundManager;
+    //private SoundManagerScript soundManager;
     private MonstersSpawnerControl spawnerControl;
     private SpikeSpawnerControl spikeSpawner;
     private JokerSpawnerControl jokerSpawnerControl;
@@ -32,12 +32,13 @@ public class GameMaster : MonoBehaviour
 
     public bool isBubbleCatched = false;
 
+    GameObject randomSpike;
     public float extendTime;
 
     void Awake()
     {
         timerScript = timer.GetComponent<TimerScript>();
-        soundManager = FindObjectOfType<SoundManagerScript>();
+        //soundManager = FindObjectOfType<SoundManagerScript>();
         spawnerControl = FindObjectOfType<MonstersSpawnerControl>();
         jokerSpawnerControl = FindObjectOfType<JokerSpawnerControl>();
         spikeSpawner = FindObjectOfType<SpikeSpawnerControl>();
@@ -53,7 +54,7 @@ public class GameMaster : MonoBehaviour
         if (gm == null)
         {
             gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>();
-            soundManager.PlaySound("Start");
+            SoundManager.Instance.Play("Start");
             gm.StartCoroutine(gm.SpawnPlayer());
 
         }
@@ -80,7 +81,7 @@ public class GameMaster : MonoBehaviour
             yield return new WaitForSeconds(5);
             //spawnerControl.monsters_limit = spawnerControl.monsters_limit * 2;
             //spawnerControl.monsters_limit++;
-            spawnerControl.monsters_limit = spawnerControl.monsters_limit + Mathf.Log(spawnerControl.monsters_limit)/1.5f;
+            spawnerControl.monsters_limit = spawnerControl.monsters_limit + Mathf.Log(spawnerControl.monsters_limit) / 1.5f;
             SpawnAMonster();
         }
     }
@@ -103,7 +104,8 @@ public class GameMaster : MonoBehaviour
     public void KillPlayer(GameObject player)
     {
         Destroy(player);
-        soundManager.PlaySound("Explosion");
+        //soundManager.PlaySound("Explosion");
+        SoundManager.Instance.Play("Explosion");
         gameOverUI.SetActive(true);
         PauseButton.SetActive(false);
     }
@@ -115,7 +117,7 @@ public class GameMaster : MonoBehaviour
         PauseButton.SetActive(false);
 
         GameObject[] monsters = GameObject.FindGameObjectsWithTag("Enemy");
-        for(int i = 0; i < monsters.Length; i++)
+        for (int i = 0; i < monsters.Length; i++)
         {
             monsters[i].GetComponent<MonsterControl>().SetIsMonsterMovementAllowed(false);
             monsters[i].GetComponent<Rigidbody2D>().velocity = Vector2.zero;
@@ -221,22 +223,23 @@ public class GameMaster : MonoBehaviour
 
     }
 
-    GameObject GetRandomSpike()
+    IEnumerator GetRandomSpike()
     {
-
-        GameObject randomSpike = spikeSpawner.spikes[Random.Range(0, spikeSpawner.spikes.Length)];
-        SpikeControl spikeControl = randomSpike.GetComponent<SpikeControl>();
-
-        if (spikeControl.isMovingToView)
+        while (true)
         {
-            return randomSpike;
-        }
+            randomSpike = spikeSpawner.spikes[Random.Range(0, spikeSpawner.spikes.Length)];
+            SpikeControl spikeControl = randomSpike.GetComponent<SpikeControl>();
+            //spikeControl.isMovingToView
+            if (spikeControl.isWaiting)
+            {
 
-        else
-        {
-            return GetRandomSpike();
+                //SpikeControl spikeControl = randomSpike.GetComponent<SpikeControl>();
+                spikeControl.endPos = CalcEndPos(randomSpike.name, spikeControl.startPos);
+                StartCoroutine(NormalizeSpike(randomSpike, spikeControl));
+                break;
+            }
+            yield return null;
         }
-
     }
 
 
@@ -296,7 +299,7 @@ public class GameMaster : MonoBehaviour
 
     IEnumerator NormalizeSpike(GameObject spike, SpikeControl spikeControl)
     {
-        yield return new WaitUntil(() => spike.transform.position == spikeControl.startPos);
+        yield return new WaitForSeconds(spikeControl.travelDuration + 5);
         spikeControl.endPos = spikeControl.tempEndPos;
     }
 
@@ -306,13 +309,7 @@ public class GameMaster : MonoBehaviour
         while (!timerScript.GetIsPaused())
         {
             yield return new WaitForSeconds(extendTime);
-            GameObject randomSpike = GetRandomSpike();
-            SpikeControl spikeControl = randomSpike.GetComponent<SpikeControl>();
-            spikeControl.endPos = CalcEndPos(randomSpike.name, spikeControl.startPos);
-            StartCoroutine(NormalizeSpike(randomSpike, spikeControl));
-
-            //yield return new WaitUntil(() => randomSpike.transform.position == spikeControl.startPos);
-            //spikeControl.endPos = spikeControl.tempEndPos;
+            StartCoroutine(GetRandomSpike());
         }
     }
 

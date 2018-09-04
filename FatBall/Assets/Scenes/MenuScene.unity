@@ -52,7 +52,7 @@ LightmapSettings:
     m_AlbedoBoost: 1
     m_TemporalCoherenceThreshold: 1
     m_EnvironmentLightingMode: 0
-    m_EnableBakedLightmaps: 0
+    m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
     serializedVersion: 10
@@ -89,7 +89,8 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000002, guid: cebfad36bb9ff564aaec8795a46f607e,
+    type: 2}
   m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
@@ -252,7 +253,7 @@ MonoBehaviour:
     m_FadeDuration: 0.1
   m_SpriteState:
     m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 21300000, guid: 5f393014c067b4ee09b975d451aa3385, type: 3}
+    m_PressedSprite: {fileID: 0}
     m_DisabledSprite: {fileID: 0}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
@@ -765,6 +766,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fa69b8bda04e1e47a50cd0789087e29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  soundManager: {fileID: 1246306023}
+  soundButton: {fileID: 610209159}
+  soundOnSprite: {fileID: 21300000, guid: b38084635d70f4ab79ffe4aae48b7a2c, type: 3}
+  soundOffSprite: {fileID: 21300000, guid: 5f393014c067b4ee09b975d451aa3385, type: 3}
 --- !u!4 &1035529895
 Transform:
   m_ObjectHideFlags: 0
@@ -776,7 +781,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1224035397
 GameObject:
@@ -910,9 +915,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1246306026}
   - component: {fileID: 1246306025}
+  - component: {fileID: 1246306027}
   - component: {fileID: 1246306024}
   m_Layer: 0
-  m_Name: SoundManagerMenu
+  m_Name: SoundManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -929,16 +935,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 467f304d08278ed4298896088b6cc783, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameSound: {fileID: 0}
-  StartSound: {fileID: 0}
-  ExplosionSound: {fileID: 0}
-  EnemySound: {fileID: 0}
-  RabbitJokerSound: {fileID: 0}
-  ShieldJokerSound: {fileID: 0}
-  HalfSizeJokerSound: {fileID: 0}
-  BeerJokerSound: {fileID: 0}
-  audioSrc: {fileID: 0}
+  GameSound: {fileID: 8300000, guid: 6a87a6a4979a0d64289b83ad487a18fc, type: 3}
+  StartSound: {fileID: 8300000, guid: 3492b243779a69544bd2f4938ec2003d, type: 3}
+  ExplosionSound: {fileID: 8300000, guid: 7c8119121b9099848999644cb1eace8a, type: 3}
+  EnemySound: {fileID: 8300000, guid: f131d0bb2589af94b8af2f17af780633, type: 3}
+  GrapeFruitJokerSound: {fileID: 8300000, guid: b37a96fc751b3044081e3ad50c8ddf42,
+    type: 3}
+  RadishJokerSound: {fileID: 8300000, guid: 579709e8633d5134ba460c9d3ee4a599, type: 3}
+  BroccoliJokerSound: {fileID: 8300000, guid: 611b203ee5661594683ae42ec78b51f1, type: 3}
+  BeerJokerSound: {fileID: 8300000, guid: e09804541364d594f872e18f9555d4c4, type: 3}
   isMuted: 0
+  EffectsSource: {fileID: 1246306025}
+  MusicSource: {fileID: 1246306027}
 --- !u!82 &1246306025
 AudioSource:
   m_ObjectHideFlags: 0
@@ -948,11 +956,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 6a87a6a4979a0d64289b83ad487a18fc, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1045,8 +1053,103 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1246306027
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1246306023}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 1
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1519400920
 GameObject:
   m_ObjectHideFlags: 0
@@ -1251,7 +1354,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1921317851
 GameObject:
@@ -1468,7 +1571,7 @@ RectTransform:
   - {fileID: 1224035398}
   - {fileID: 1519400921}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

@@ -6,6 +6,7 @@ public class GameOverUI : MonoBehaviour {
 
     private void Awake()
     {
+        SoundManager.Instance.PlayMusic("GameSound");
     }
 
     public void Quit()
@@ -16,7 +17,14 @@ public class GameOverUI : MonoBehaviour {
 
     public void retry()
     {
+        SoundManager.Instance.MusicSource.Stop();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void OpenMenu()
+    {
+        SoundManager.Instance.MusicSource.Stop();
+        SceneManager.LoadScene(0);
     }
 
     public void OpenLeadersBoard()

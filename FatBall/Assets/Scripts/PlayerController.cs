@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
 
+    Vector2 movement;
     public float moveSpeed;
 
     Rigidbody2D rb;
@@ -21,35 +22,18 @@ public class PlayerController : MonoBehaviour
     public GameObject timer;
     Vector3 tempScale;
 
+    public Vector3 dirInit = Vector3.zero;
 
-    // For Acceloremeter
-    float dirX;
-    float dirY;
-
-    private Vector2 dirInit = Vector2.zero;
-
-
-    /*private GameObject[] enemies;
-    private float old_z;
-    private float new_z;
-    private Vector3 ba;
-    private Vector3 bc;
-    private Vector3 ab;
-    private Vector3 ac;
-    private Vector3 playerLastPos;
-    private Vector3 playerCurrentPos;*/
+    Matrix4x4 calibrationMatrix;
 
 
     void Awake()
     {
         moveSpeed = Screen.width / 1.1f; //Joker Control 106 dan sonrasını da değiştir
-        //old_z = 0;
-        //playerLastPos = gameObject.transform.position;
         tempScale = transform.localScale;
         tempScale.x = GetPlayerScaleX();
         tempScale.y = GetPlayerScaleX();
         transform.localScale = tempScale;
-        Input.gyro.enabled = true;
     }
 
     // Use this for initialization
@@ -63,17 +47,39 @@ public class PlayerController : MonoBehaviour
         rb = this.GetComponent<Rigidbody2D>();
         gameMaster = FindObjectOfType<GameMaster>();
 
+        CalibrateAccelerometer();
+    }
 
-        //dirInit.x = Input.acceleration.x;
-        //dirInit.y = Input.acceleration.y;
 
+    //Method for calibration 
+    void CalibrateAccelerometer()
+    {
+        dirInit = Input.acceleration;
+
+        Quaternion rotateQuaternion = Quaternion.FromToRotation(new Vector3(0f, 0f, -1f), dirInit);
+        //create identity matrix ... rotate our matrix to match up with down vec
+        Matrix4x4 matrix = Matrix4x4.TRS(Vector3.zero, rotateQuaternion, new Vector3(1f, 1f, 1f));
+
+        //get the inverse of the matrix
+        calibrationMatrix = matrix.inverse;
+
+    }
+
+    //Method to get the calibrated input 
+    Vector3 FixAcceleration(Vector3 accelerator)
+    {
+        Vector3 accel = this.calibrationMatrix.MultiplyVector(accelerator);
+        return accel;
     }
 
     private void FixedUpdate()
     {
         //rb.velocity = new Vector2(dirX, dirY);
+        //rb.AddForce(movement);
     }
 
+
+    Vector2 _InputDir;
     // Update is called once per frame
     void Update()
     {
@@ -89,23 +95,9 @@ public class PlayerController : MonoBehaviour
             gameMaster.jokerWeights[3] = 20;
         }
 
-        
-        /*
-        //new accelerometer
-        Vector2 dir = Vector2.zero;
 
-        // you need to send the difference of your current accelerometer position to the initial state.
-        dir.x = Input.acceleration.x - dirInit.x;
-        dir.y = Input.acceleration.y - dirInit.y;
-        //dir.z = transform.position.z;
-        if (dir.sqrMagnitude > 1)
-        {
-            dir.Normalize();
-        }
-
-        dir *= Time.deltaTime;
-        transform.Translate(dir * moveSpeed);
-        */
+        //_InputDir = FixAcceleration(Input.acceleration);
+        //movement = new Vector2(_InputDir.x, _InputDir.y) * moveSpeed;
 
 
 
@@ -172,37 +164,89 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    void SetIsHalfSizeJokerCatched()
+
+    void StartWaneEffect(string tag)
     {
-        StartCoroutine(LerpScale(2f));
+        StartCoroutine(LerpScale(2f, tag));
     }
 
-    IEnumerator LerpScale(float time)
+    void StartGetFatEffect(Vector3[] scales)
     {
-        //SetIsHalfSizeJokerCatched(false);
-        Vector3 originalScale = transform.localScale;
-        Vector3 targetScale = new Vector3(gameObject.transform.localScale.x / 2, gameObject.transform.localScale.y / 2, gameObject.transform.localScale.z);
+        StartCoroutine(LerpScaleMonster(2f, scales));
+    }
+
+
+
+    IEnumerator LerpScaleMonster(float time, Vector3[] scales)
+    {
+
         float originalTime = time;
-        Vector3 bubbleScale = new Vector3();
-        Vector3 bubbleTargetScale = new Vector3();
-        GameObject bubble = GameObject.Find("Bubble");
-        if (bubble)
-        {
-            bubbleScale = bubble.transform.localScale;
-            bubbleTargetScale = new Vector3(bubbleScale.x / 2, bubbleScale.y / 2, bubbleScale.z);
-        }
+        Debug.Log("scales: " + scales[0] + " - " + scales[1]);
 
         while (time > 0f)
         {
             time -= Time.deltaTime;
-
-            transform.localScale = Vector3.Lerp(targetScale, originalScale, time / originalTime);
-
-            if (bubble != null)
-            {
-                bubble.transform.localScale = Vector3.Lerp(bubbleTargetScale, bubbleScale, time / originalTime);
-            }
+            transform.localScale = Vector3.Lerp(scales[1], scales[0], time / originalTime);
+            Debug.Log("Timer: " + time);
             yield return null;
+        }
+    }
+
+    IEnumerator LerpScale(float time, string jokerTag)
+    {
+
+        Vector3 originalScale = transform.localScale;
+        float originalTime = time;
+        Vector3 bubbleScale = new Vector3();
+        Vector3 bubbleTargetScale = new Vector3();
+        GameObject bubble = GameObject.Find("Bubble");
+
+        if (jokerTag == "BroccoliJoker")
+        {
+
+            Vector3 targetScale = new Vector3(gameObject.transform.localScale.x / 2, gameObject.transform.localScale.y / 2, gameObject.transform.localScale.z);
+
+            if (bubble)
+            {
+                bubbleScale = bubble.transform.localScale;
+                bubbleTargetScale = new Vector3(bubbleScale.x / 2, bubbleScale.y / 2, bubbleScale.z);
+            }
+
+            while (time > 0f)
+            {
+                time -= Time.deltaTime;
+
+                transform.localScale = Vector3.Lerp(targetScale, originalScale, time / originalTime);
+
+                if (bubble != null)
+                {
+                    bubble.transform.localScale = Vector3.Lerp(bubbleTargetScale, bubbleScale, time / originalTime);
+                }
+                yield return null;
+            }
+        }
+
+        else
+        {
+            Vector3 targetScale = new Vector3(gameObject.transform.localScale.x - gameObject.transform.localScale.x / 6, gameObject.transform.localScale.y - gameObject.transform.localScale.y / 6, gameObject.transform.localScale.z);
+            if (bubble)
+            {
+                bubbleScale = bubble.transform.localScale;
+                bubbleTargetScale = new Vector3(bubbleScale.x / 2, bubbleScale.y / 2, bubbleScale.z);
+            }
+
+            while (time > 0f)
+            {
+                time -= Time.deltaTime;
+
+                transform.localScale = Vector3.Lerp(targetScale, originalScale, time / originalTime);
+
+                if (bubble != null)
+                {
+                    bubble.transform.localScale = Vector3.Lerp(bubbleTargetScale, bubbleScale, time / originalTime);
+                }
+                yield return null;
+            }
 
         }
     }
@@ -223,32 +267,6 @@ public class PlayerController : MonoBehaviour
                     Destroy(Explosion, 3);
                     break;
 
-                    /*case "LeftSpike":
-                        GameObject.Find("Timer").SendMessage("Finish");
-                        Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
-                        Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
-                        //gameOverUI.SetActive(true);
-                        gameMaster.KillPlayer(gameObject);
-                        Destroy(Explosion, 3);
-                        break;
-
-                    case "BottomSpike":
-                        GameObject.Find("Timer").SendMessage("Finish");
-                        Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
-                        Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
-                        //gameOverUI.SetActive(true);
-                        gameMaster.KillPlayer(gameObject);
-                        Destroy(Explosion, 3);
-                        break;
-
-                    case "RightSpike":
-                        GameObject.Find("Timer").SendMessage("Finish");
-                        Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
-                        Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
-                        //gameOverUI.SetActive(true);
-                        gameMaster.KillPlayer(gameObject);
-                        Destroy(Explosion, 3);
-                        break; */
             }
         }
 

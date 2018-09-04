@@ -11,7 +11,7 @@ public class JokerControl : MonoBehaviour
     GameObject target;
 
     public GameObject soundManager;//SoundManagerScript'in kodlarını buraya bağlarken kullanmak için isim verdik.
-    private SoundManagerScript soundManagerScript;
+    //private SoundManagerScript soundManagerScript;
 
     public GameObject bubble; //bubble için farklı bir kod olduğu için bu abiyi ayrı tuttuk diye düşünüyorum.
 
@@ -51,7 +51,6 @@ public class JokerControl : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        soundManagerScript = soundManager.GetComponent<SoundManagerScript>();
         accelerationTime = Random.Range(Screen.width / 1500f, Screen.width / 500f);
         //maxSpeed = Random.Range(1f, 4f);
         spawnerControl = FindObjectOfType<JokerSpawnerControl>();
@@ -85,7 +84,7 @@ public class JokerControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(0, 0, Random.Range(10f, 15f) / 50);
+        transform.Rotate(0, 0, Random.Range(10f, 15f) / 50f);
         Vector3 position = gameObject.transform.position;
    
         if (position.x <= -max_distance_from_view || position.x >= Screen.width + max_distance_from_view ||
@@ -124,8 +123,7 @@ public class JokerControl : MonoBehaviour
             Destroy(gameObject);
             Destroy(bubble);
             GameMaster.gm.isBubbleCatched = false;
-            soundManagerScript.audioSrc.Stop();
-            soundManagerScript.audioSrc.clip = null;
+            SoundManager.Instance.MusicSource.Stop();
             bubble.SendMessage("SetIsBubbleEffectActive", false);
         }
     }
@@ -140,9 +138,10 @@ public class JokerControl : MonoBehaviour
                 if (gameObject.CompareTag("GrapeFruitJoker")) //tavşanı yerse
                 {
                     gameObject.SetActive(false);
-                    soundManagerScript.PlaySound("RabbitJoker"); //SoundManagerScrippten çeker
+                    SoundManager.Instance.Play("GrapeFruitJoker");
                     spawnerControl.num_of_jokers--; //yediği için joker sayısı 1 azalır ki yenisi çıkabilsin
                                                     //playerControl.moveForce = playerControl.moveForce * 2;
+                    target.SendMessage("StartWaneEffect", gameObject.tag); 
                     playerControl.moveSpeed = playerControl.moveSpeed * 2; //movespeed 2 katına çıkar
                     Invoke("RevertJokerEffect", 5.0f); //5sn sonra efekt gider. Yukarda revert var. Revert aşağıda olsa daha doğru olmaz mı ?
 
@@ -151,9 +150,9 @@ public class JokerControl : MonoBehaviour
                 if (gameObject.CompareTag("BeerJoker")) //tavşanla aynı mantık
                 {
                     gameObject.SetActive(false);
-                    soundManagerScript.PlaySound("BeerJoker");
+                    SoundManager.Instance.Play("BeerJoker");
                     spawnerControl.num_of_jokers--;
-                    //playerControl.moveForce = playerControl.moveForce / 2;
+                    target.SendMessage("StartWaneEffect", gameObject.tag);
                     playerControl.moveSpeed = playerControl.moveSpeed / 2;
                     Invoke("RevertJokerEffect", 5.0f);
                 }
@@ -162,7 +161,7 @@ public class JokerControl : MonoBehaviour
                 {
                     GameMaster.gm.isBubbleCatched = true;
                     gameObject.SetActive(false);
-                    soundManagerScript.PlaySound("ShieldJoker"); //SoundManagerScrippten sesi çekiyor.
+                    SoundManager.Instance.PlayMusic("RadishJoker");
                     spawnerControl.num_of_jokers--;
                     bubble = Instantiate(bubble, target.transform.localPosition, Quaternion.identity);
                     bubble.SendMessage("SetIsBubbleEffectActive", true);
@@ -173,9 +172,9 @@ public class JokerControl : MonoBehaviour
                 if (gameObject.CompareTag("BroccoliJoker"))
                 {
                     gameObject.SetActive(false);
-                    soundManagerScript.PlaySound("HalfSizeJoker");
+                    SoundManager.Instance.Play("BroccoliJoker");
                     spawnerControl.num_of_jokers--;
-                    target.SendMessage("SetIsHalfSizeJokerCatched"); //Revert değil. Player controller 98. satırda açıklanıyor bu satır.
+                    target.SendMessage("StartWaneEffect", gameObject.tag); 
                 }
 
                 if (gameObject.CompareTag("Reset"))

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MonsterControl : MonoBehaviour {
+public class MonsterControl : MonoBehaviour
+{
 
     Rigidbody2D rb;
-    private SoundManagerScript soundManager;
+    //private SoundManagerScript soundManager;
 
     public float accelerationTime;
     public float maxSpeed;
@@ -41,18 +42,19 @@ public class MonsterControl : MonoBehaviour {
     void Awake()
     {
 
-        accelerationTime = Random.Range(Screen.width / 1500 , Screen.width / 375);
+        accelerationTime = Random.Range(Screen.width / 1500f, Screen.width / 375f);
         max_distance_from_view = 100f;
     }
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         spawnerControl = FindObjectOfType<MonstersSpawnerControl>();
         gameMaster = FindObjectOfType<GameMaster>();
         transform.name = transform.name.Replace("(Clone)", "").Trim();
-		rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>();
         float randomScale = Random.Range(Screen.width / 15f, Screen.width / 24f);
-        soundManager = FindObjectOfType<SoundManagerScript>();
+        //soundManager = FindObjectOfType<SoundManagerScript>();
         StartCoroutine(MoveMonster());
 
         temp = transform.localScale;
@@ -67,7 +69,7 @@ public class MonsterControl : MonoBehaviour {
         while (isMonsterMovementAllowed)
         {
             movement = new Vector3(-movement.x + Random.Range(-20f, 20f), -movement.y + Random.Range(-20f, 20f), 0);
-            maxSpeed = Random.Range(1f , Screen.width / 300);
+            maxSpeed = Random.Range(1f, Screen.width / 300f);
             yield return new WaitForSeconds(accelerationTime);
 
         }
@@ -75,8 +77,9 @@ public class MonsterControl : MonoBehaviour {
 
 
     // Update is called once per frame
-    void Update () {
-        transform.Rotate(0, 0, Random.Range(10f, 15f) / 50);
+    void Update()
+    {
+        transform.Rotate(0, 0, Random.Range(10f, 15f) / 50f);
         Vector3 position = gameObject.transform.position;
 
         if (position.x <= -max_distance_from_view || position.x >= Screen.width + max_distance_from_view ||
@@ -103,20 +106,24 @@ public class MonsterControl : MonoBehaviour {
         rb.velocity = new Vector3(20, 20, 20);
     }
 
-    void OnTriggerEnter2D (Collider2D col)
-	{
-		switch (col.gameObject.name) {
 
-		case "Player":
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        switch (col.gameObject.tag)
+        {
+
+            case "Player":
                 if (!gameMaster.isBubbleCatched)
                 {
-                    Destroy(gameObject);
-                    soundManager.PlaySound("Enemy");
+                    Vector3 targetScale = new Vector3(col.gameObject.transform.localScale.x + gameObject.transform.localScale.x / 2, col.gameObject.transform.localScale.y + gameObject.transform.localScale.y / 2, gameObject.transform.localScale.z);
+                    SoundManager.Instance.Play("Enemy");
                     spawnerControl.num_of_monsters--;
                     gameMaster.SpawnAMonster();
-                    col.gameObject.transform.localScale = new Vector3(col.gameObject.transform.localScale.x + gameObject.transform.localScale.x / 2, col.gameObject.transform.localScale.y + gameObject.transform.localScale.y / 2, gameObject.transform.localScale.z);
+                    Destroy(gameObject);
+                    Vector3[] scales = { col.gameObject.transform.localScale, targetScale };
+                    col.gameObject.SendMessage("StartGetFatEffect", scales);
                 }
-			break;
-		}
-	}
+                break;
+        }
+    }
 }

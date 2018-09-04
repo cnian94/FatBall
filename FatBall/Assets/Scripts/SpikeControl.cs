@@ -25,6 +25,10 @@ public class SpikeControl : MonoBehaviour
 
     Vector3 tempScale;
 
+    public float counter;
+    public bool isWaiting = false;
+
+
 
     private void Awake()
     {
@@ -40,8 +44,8 @@ public class SpikeControl : MonoBehaviour
         canMove = true;
         tempEndPos = transform.position;
         endPos = transform.position;
-        travelDuration = Random.Range(1f, 3f);
-        
+        travelDuration = Random.Range(3f, 4f);
+
     }
 
     public void SetCanMove(bool val)
@@ -49,7 +53,7 @@ public class SpikeControl : MonoBehaviour
         if (val)
         {
             canMove = val;
-            StartCoroutine(MoveSpike(startPos,travelDuration));
+            StartCoroutine(MoveSpike(startPos, travelDuration));
         }
         else
         {
@@ -76,233 +80,8 @@ public class SpikeControl : MonoBehaviour
         string tempName = gameObject.name;
         startPos = gameObject.transform.position;
         CalcEndPos(tempName, startPos);
-        
+
         StartCoroutine(MoveSpike(startPos, travelDuration));
-
-        
-
-
-        /*float force = Random.Range(30f, 50f);
-
-        if (rb.name == "TopLeftCornerSpike") //Sol üste köşe spike için uygulanan force. Hem x hem de y de hareket edeceği için 2 yönede force var. Hareketin çapraz olmasını aşağıda move kısmında tanımladık diye düşünüyorum.
-        {
-            rb.velocity = new Vector2(force, -force);
-        }
-
-        if (rb.name == "TopSpike")  //Top spikelar sadece yukarı aşağıya hareket ettiği için sadece y de force var. Böyle devam...
-        {
-            rb.velocity = new Vector2(0, force);
-        }
-
-        if (rb.name == "TopRightCornerSpike")
-        {
-            rb.velocity = new Vector2(-force, -force);
-        }
-
-
-        if (rb.name == "LeftSpike")
-        {
-
-            rb.velocity = new Vector2(-force, 0);
-        }
-
-        if (rb.name == "BottomRightCornerSpike")
-        {
-            rb.velocity = new Vector2(-force, force);
-        }
-
-
-        if (rb.name == "BottomSpike")
-        {
-            rb.velocity = new Vector2(0, -force);
-        }
-
-        if (rb.name == "BottomLeftCornerSpike")
-        {
-            rb.velocity = new Vector2(force, force);
-        }
-
-        if (rb.name == "RightSpike")
-        {
-            rb.velocity = new Vector2(force, 0);
-        }*/
-
-
-    }
-
-    void FixedUpdate()
-    {
-        //float force = Random.Range(30f, 50f);
-
-
-        /*if (gameObject.name == "TopLeftCornerSpike" && gameObject.transform.position.y >= Screen.height + height / 3.5)
-        {
-            rb.velocity = new Vector2(force, -force);
-        }
-
-        if (gameObject.name == "TopLeftCornerSpike" && gameObject.transform.position.y <= Screen.height - height / 6.5)
-        {
-            rb.velocity = new Vector2(-force, force);
-        }
-
-        if (gameObject.name == "TopRightCornerSpike" && gameObject.transform.position.y >= Screen.height + height / 3.5)
-        {
-            rb.velocity = new Vector2(-force, -force);
-        }
-
-        if (gameObject.name == "TopRightCornerSpike" && gameObject.transform.position.y <= Screen.height - height / 6.5)
-        {
-            rb.velocity = new Vector2(force, force);
-        }
-
-
-        if (gameObject.name == "TopSpike" && gameObject.transform.position.y >= Screen.height + height / 2) //screen height + kendi heightının yarısından yukarı veya eşit olunca aşağıya doğru force başlar.
-        {
-            rb.velocity = new Vector2(0, -force);
-
-        }
-
-        if (gameObject.name == "TopSpike" && gameObject.transform.position.y <= Screen.height - height / 3.5) //screen height - kendi heightının çeyreğinden yukarı veya eşit olunca yukarıya doğru force başlar.
-        {
-            rb.velocity = new Vector2(0, force);
-        }
-
-        if (gameObject.name == "LeftSpike" && gameObject.transform.position.x <= -height) // heee zaten solda sıfır noktasında o yüzden direk height. Ama height acaba burda spike ın eni mi oluyor. Öyle olması gerek çünkü az çok spike widht height böyle oluyor. Ağırlık merkezinden spawn ediyor.
-        {
-            rb.velocity = new Vector2(force, 0);
-        }
-
-        if (gameObject.name == "LeftSpike" && gameObject.transform.position.x >=  height / 3)
-        {
-            rb.velocity = new Vector2(-force, 0);
-        }
-
-        if (gameObject.name == "BottomRightCornerSpike" && gameObject.transform.position.y <= -height / 3.5)
-        {
-            rb.velocity = new Vector2(-force, force);
-        }
-
-        if (gameObject.name == "BottomRightCornerSpike" && gameObject.transform.position.y >= height / 6.5)
-        {
-            rb.velocity = new Vector2(force, -force);
-        }
-
-
-        if (gameObject.name == "BottomLeftCornerSpike" && gameObject.transform.position.y <= -height / 3.5)
-        {
-            rb.velocity = new Vector2(force, force);
-        }
-
-        if (gameObject.name == "BottomLeftCornerSpike" && gameObject.transform.position.y >= height / 6.5)
-        {
-            rb.velocity = new Vector2(-force, -force);
-        }
-
-        if (gameObject.name == "BottomSpike" && gameObject.transform.position.y <=  -height / 2)
-        {
-            rb.velocity = new Vector2(0, force);
-        }
-
-        if (gameObject.name == "BottomSpike" && gameObject.transform.position.y >= height / 3.5)
-        {
-            rb.velocity = new Vector2(0, -force);
-        }
-
-        if (gameObject.name == "RightSpike" && gameObject.transform.position.x >= Screen.width + height)
-        {
-            rb.velocity = new Vector2(-force, 0);
-        }
-
-        if (gameObject.name == "RightSpike" && gameObject.transform.position.x <= Screen.width - height / 3)
-        {
-            rb.velocity = new Vector2(force, 0);
-        }*/
-
-
-
-        /*if (gameObject.name == "TopLeftCornerSpike" && gameObject.transform.position.y >= sHeight + sHeight / 10.5)
-        {
-            rb.velocity = new Vector2(force, -force);
-        }
-
-        if (gameObject.name == "TopLeftCornerSpike" && gameObject.transform.position.y <= sHeight + sHeight / 18)
-        {
-            rb.velocity = new Vector2(-force, force);
-        }
-
-        if (gameObject.name == "TopRightCornerSpike" && gameObject.transform.position.y >= sHeight + sHeight / 10.5)
-        {
-            rb.velocity = new Vector2(-force, -force);
-        }
-
-        if (gameObject.name == "TopRightCornerSpike" && gameObject.transform.position.y <= sHeight + sHeight / 18)
-        {
-            rb.velocity = new Vector2(force, force);
-        }
-
-
-        if (gameObject.name == "TopSpike" && gameObject.transform.position.y >= sHeight + sHeight / 7.5) //screen height + kendi heightının yarısından yukarı veya eşit olunca aşağıya doğru force başlar.
-        {
-            rb.velocity = new Vector2(0, -force);
-
-        }
-
-        if (gameObject.name == "TopSpike" && gameObject.transform.position.y <= sHeight + sHeight / 12) //screen height - kendi heightının çeyreğinden yukarı veya eşit olunca yukarıya doğru force başlar.
-        {
-            rb.velocity = new Vector2(0, force);
-        }
-
-        if (gameObject.name == "LeftSpike" && gameObject.transform.position.x <= -sHeight / 7.325) // heee zaten solda sıfır noktasında o yüzden direk height. Ama height acaba burda spike ın eni mi oluyor. Öyle olması gerek çünkü az çok spike widht height böyle oluyor. Ağırlık merkezinden spawn ediyor.
-        {
-            rb.velocity = new Vector2(force, 0);
-        }
-
-        if (gameObject.name == "LeftSpike" && gameObject.transform.position.x >= -sHeight / 12)
-        {
-            rb.velocity = new Vector2(-force, 0);
-        }
-
-        if (gameObject.name == "BottomRightCornerSpike" && gameObject.transform.position.y <= -sHeight / 10.5)
-        {
-            rb.velocity = new Vector2(-force, force);
-        }
-
-        if (gameObject.name == "BottomRightCornerSpike" && gameObject.transform.position.y >= -sHeight / 18)
-        {
-            rb.velocity = new Vector2(force, -force);
-        }
-
-
-        if (gameObject.name == "BottomLeftCornerSpike" && gameObject.transform.position.y <= -sHeight / 10.5)
-        {
-            rb.velocity = new Vector2(force, force);
-        }
-
-        if (gameObject.name == "BottomLeftCornerSpike" && gameObject.transform.position.y >= -sHeight / 18)
-        {
-            rb.velocity = new Vector2(-force, -force);
-        }
-
-        if (gameObject.name == "BottomSpike" && gameObject.transform.position.y <= -sHeight / 7.5)
-        {
-            rb.velocity = new Vector2(0, force);
-        }
-
-        if (gameObject.name == "BottomSpike" && gameObject.transform.position.y >= -sHeight / 12)
-        {
-            rb.velocity = new Vector2(0, -force);
-        }
-
-        if (gameObject.name == "RightSpike" && gameObject.transform.position.x >= sWidth + sHeight / 7.325)
-        {
-            rb.velocity = new Vector2(-force, 0);
-        }
-
-        if (gameObject.name == "RightSpike" && gameObject.transform.position.x <= sWidth + sHeight / 12)
-        {
-            rb.velocity = new Vector2(force, 0);
-        }*/
-
     }
 
     void CalcEndPos(string tempName, Vector3 startPos)
@@ -387,12 +166,15 @@ public class SpikeControl : MonoBehaviour
         while (canMove)
         {
             // First step, travel from A to B
-            float counter = 0f;
+            counter = 0f;
+
             while (counter < travelDuration)
             {
+
                 isMovingToView = true;
                 transform.position = Vector3.Lerp(startPos, endPos, counter / travelDuration);
                 counter += Time.deltaTime;
+                //Debug.Log("Counter 1: " + counter);
                 yield return null;
             }
 
@@ -400,37 +182,23 @@ public class SpikeControl : MonoBehaviour
             // wasn't precisely equal to travelDuration at the end
             transform.position = endPos;
 
-
             // Third step, travel back from B to A
             counter = 0f;
             while (counter < travelDuration)
             {
+
                 isMovingToView = false;
                 transform.position = Vector3.Lerp(endPos, startPos, counter / travelDuration);
                 counter += Time.deltaTime;
+                //Debug.Log("Counter 2: " + counter);
                 yield return null;
             }
 
             transform.position = startPos;
+
+            isWaiting = true;
+            yield return new WaitForSeconds(1f);
+            isWaiting = false;
         }
     }
-    /*void OnTriggerEnter2D(Collider2D col)
-    {
-        
-        switch (col.gameObject.tag)
-        {
-
-            case "Player":
-                Player = GameObject.FindGameObjectWithTag("Player");
-                Player.GetComponent<Rigidbody2D>().AddForce(new Vector2(2000, 1000));
-
-
-                break;
-
-
-
-
-        }
-    }*/
-
 }
