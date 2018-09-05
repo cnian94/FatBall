@@ -94,7 +94,7 @@ public class GameMaster : MonoBehaviour
         player = Instantiate(player, randomPoint, Quaternion.identity);
         player.name = "Player";
         timer.SetActive(true);
-        PauseButton.SetActive(true);
+        //PauseButton.SetActive(true);
         SpawnAMonster();
         StartCoroutine(IncreaseMonsterLimit());
         StartCoroutine(ExtendSpike());

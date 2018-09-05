@@ -9,7 +9,6 @@ using UnityEngine.SceneManagement;
 public class LeaderboardController : MonoBehaviour
 {
 
-    //public GameObject SoundManager;
     public GameObject leaderBoardPanel;
     public GameObject leaderBoardContent;
 
