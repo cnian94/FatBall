@@ -75,7 +75,7 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         //rb.velocity = new Vector2(dirX, dirY);
-        //rb.AddForce(movement);
+        rb.AddForce(movement); //tilt control açar
     }
 
 
@@ -96,13 +96,13 @@ public class PlayerController : MonoBehaviour
         }
 
 
-        //_InputDir = FixAcceleration(Input.acceleration);
-        //movement = new Vector2(_InputDir.x, _InputDir.y) * moveSpeed;
+        _InputDir = FixAcceleration(Input.acceleration); //tilt control açar
+        movement = new Vector2(_InputDir.x, _InputDir.y) * moveSpeed;  //tilt control açar
 
 
 
 
-        if (!timer.GetComponent<TimerScript>().GetIsPaused())
+        /*if (!timer.GetComponent<TimerScript>().GetIsPaused())  //dokunmatik oynamak için 
         {
             if (isMoving)
             {
@@ -159,7 +159,7 @@ public class PlayerController : MonoBehaviour
             {
                 previousDistanceToTouchPos = (touchPosition - transform.position).magnitude;
             }
-        }
+        }*/  //buraya kadar dokunmatik oynamak için
 
 
     }

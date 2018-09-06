@@ -1799,16 +1799,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbaecfda61fcf7844acf700f4c36a014, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Player: {fileID: 0}
   charOptionsPanel: {fileID: 1839606399}
   charOptionsContent: {fileID: 2030586793}
   themeOptionsPanel: {fileID: 790095630}
   themeOptionsContent: {fileID: 272274281}
-  charDeskPrefab: {fileID: 114119886315471818, guid: 721df98bc939ec74cbbacf23127492d4,
+  charBtn: {fileID: 262157399}
+  themeBtn: {fileID: 2080976736}
+  charDeskButtonPrefab: {fileID: 114835924007391576, guid: ef19a15bc7ded3741a9495981513b141,
     type: 2}
   charImage: {fileID: 114901171570804472, guid: 59d9b5287be6d974ea5d6ad2b7978be0,
     type: 2}
-  charBtn: {fileID: 262157399}
-  themeBtn: {fileID: 2080976736}
+  lockImage: {fileID: 114698837240350480, guid: 5b6ea7d6bfb074f4a9662098a31cee0f,
+    type: 2}
+  selectedImage: {fileID: 114661013452598834, guid: d5b07bdd7c26c924c9abd1ff55b511ce,
+    type: 2}
+  monsterName: {fileID: 114532557350274560, guid: e3eda7de91aa08f478e90956ec0b7191,
+    type: 2}
   PlayerSprites:
   - {fileID: 21300000, guid: ba5d27ca794d81f458fbae1781d58ddf, type: 3}
   - {fileID: 21300000, guid: 2541110c37aca7b4fb875d0fc133bb18, type: 3}
@@ -1953,7 +1960,7 @@ GameObject:
   - component: {fileID: 2030586795}
   - component: {fileID: 2030586796}
   m_Layer: 5
-  m_Name: OptionsContent
+  m_Name: CharOptionsContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1975,7 +1982,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0.000005722046, y: 475.00003}
-  m_SizeDelta: {x: 580, y: 0}
+  m_SizeDelta: {x: 532, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &2030586795
 MonoBehaviour:
@@ -2009,7 +2016,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 160, y: 160}
+  m_CellSize: {x: 144, y: 144}
   m_Spacing: {x: 50, y: 50}
   m_Constraint: 1
   m_ConstraintCount: 3
