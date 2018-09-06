@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     // Use this for initialization
     float GetPlayerScaleX()
     {
-        float x = Screen.width / 12.5f;  // yeni playerlar için      Screen.width / 25f  olucak
+        float x = Screen.width / 25f;  // yeni playerlar için      Screen.width / 25f  olucak
         return x;
     }
     void Start()

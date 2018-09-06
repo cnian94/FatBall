@@ -16,6 +16,10 @@ public class OptionsController : MonoBehaviour
     public GameObject themeOptionsPanel;
     public GameObject themeOptionsContent;
 
+    public GameObject unlockPanel;
+    public Image coinImage;
+    public Text priceText;
+
     private bool charPanelCreated = false;
     private bool themePanelCreated = false;
 
@@ -38,7 +42,6 @@ public class OptionsController : MonoBehaviour
     public List<Sprite> ThemeSprites = new List<Sprite>();
 
     public Dictionary<string, KeyValuePair<int[], Sprite>> dictionary = new Dictionary<string, KeyValuePair<int[], Sprite>>();
-
 
     Color normalColor;
     Color selectedColor;
@@ -70,10 +73,61 @@ public class OptionsController : MonoBehaviour
 
     }
 
-    public void SelectChar(string name, Button charDesk)
+    public void SelectChar(string name, Sprite charSprite, int purchased, int price)
     {
-        Debug.Log(name);
-        selectedImage = Instantiate(selectedImage, charDeskButton.transform);
+        Debug.Log("SELECTED CHAR: " + name);
+        GameObject selected = GameObject.Find(name);
+
+        if (purchased == 1) 
+        {
+            if (!GameObject.Find("CharSelectedImage"))
+            {
+                selectedImage = Instantiate(selectedImage, selected.transform);
+                selectedImage.name = "CharSelectedImage";
+                Player.GetComponent<SpriteRenderer>().sprite = charSprite;
+                DestroyImmediate(Player.GetComponent<PolygonCollider2D>(), true);
+                Player.AddComponent<PolygonCollider2D>();
+                Player.GetComponent<PolygonCollider2D>().isTrigger = true;
+            }
+
+            if (GameObject.Find("CharSelectedImage"))
+            {
+                selectedImage.transform.SetParent(selected.transform, false);
+                Player.GetComponent<SpriteRenderer>().sprite = charSprite;
+                DestroyImmediate(Player.GetComponent<PolygonCollider2D>(), true);
+                Player.AddComponent<PolygonCollider2D>();
+                Player.GetComponent<PolygonCollider2D>().isTrigger = true;
+            }
+
+        }
+
+        else
+        {
+            Debug.Log("NOT PURCHASED !!");
+            unlockPanel.SetActive(true);
+
+
+            GameObject charToUnlock = new GameObject();
+            Image charToUnlockImage = charToUnlock.AddComponent<Image>();
+
+
+            charToUnlockImage.sprite = charSprite;
+            charToUnlock.transform.localScale = charToUnlock.transform.localScale * 5;
+            charToUnlock = Instantiate(charToUnlock, unlockPanel.transform);
+            monsterName = Instantiate(monsterName, unlockPanel.transform);
+            monsterName.text = name;
+            monsterName.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.7f);
+            monsterName.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 0.7f);
+            monsterName.transform.localScale = monsterName.transform.localScale * 5;
+
+            coinImage = Instantiate(coinImage, unlockPanel.transform);
+            priceText = Instantiate(priceText, unlockPanel.transform);
+            priceText.text = price.ToString();
+
+
+        }
+
+
     }
 
 
@@ -90,15 +144,14 @@ public class OptionsController : MonoBehaviour
                 //Debug.Log("Purchased: " + entry.Value.Key[1]);
                 //Debug.Log("-----------------------------------");
 
-                //charDesk = Instantiate(charDeskPrefab, charOptionsContent.transform);
                 charDeskButton = Instantiate(charDeskButtonPrefab, charOptionsContent.transform);
                 charDeskButton.name = entry.Key;
-                charDeskButton.onClick.AddListener(delegate { SelectChar(entry.Key, charDeskButton); });
-                charImage.GetComponent<Image>().sprite = entry.Value.Value;
+                charDeskButton.onClick.AddListener(delegate { SelectChar(entry.Key, entry.Value.Value, entry.Value.Key[1], entry.Value.Key[0]); });
                 charImage = Instantiate(charImage, charDeskButton.transform);
+                charImage.GetComponent<Image>().sprite = entry.Value.Value;
 
                 monsterName = Instantiate(monsterName, charDeskButton.transform);
-                monsterName.GetComponent<Text>().text = entry.Key;
+                monsterName.text = entry.Key;
 
                 if(entry.Value.Key[1] == 0)
                 {
