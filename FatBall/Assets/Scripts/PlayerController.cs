@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        moveSpeed = Screen.width / 1.1f; //Joker Control 106 dan sonrasını da değiştir
+        moveSpeed = Screen.width / 0.5f; //Joker Control 106 dan sonrasını da değiştir
         tempScale = transform.localScale;
         tempScale.x = GetPlayerScaleX();
         tempScale.y = GetPlayerScaleX();

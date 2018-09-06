@@ -107,14 +107,14 @@ public class JokerControl : MonoBehaviour
         if (gameObject.CompareTag("GrapeFruitJoker"))
         {
             //playerControl.moveForce = 500;
-            playerControl.moveSpeed = Screen.width / 1.1f;
+            playerControl.moveSpeed = Screen.width / 0.5f;
             Destroy(gameObject);
         }
 
         if (gameObject.CompareTag("BeerJoker"))
         {
             //playerControl.moveForce = 500;
-            playerControl.moveSpeed = Screen.width / 1.1f;
+            playerControl.moveSpeed = Screen.width / 0.5f;
             Destroy(gameObject);
         }
 
