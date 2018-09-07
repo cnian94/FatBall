@@ -44,7 +44,7 @@ public class SpikeControl : MonoBehaviour
         canMove = true;
         tempEndPos = transform.position;
         endPos = transform.position;
-        travelDuration = Random.Range(3f, 4f);
+        travelDuration = Random.Range(3f, 5f);
 
     }
 

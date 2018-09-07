@@ -142,7 +142,7 @@ public class JokerControl : MonoBehaviour
                     spawnerControl.num_of_jokers--; //yediği için joker sayısı 1 azalır ki yenisi çıkabilsin
                                                     //playerControl.moveForce = playerControl.moveForce * 2;
                     target.SendMessage("StartWaneEffect", gameObject.tag); 
-                    playerControl.moveSpeed = playerControl.moveSpeed * 2; //movespeed 2 katına çıkar
+                    playerControl.moveSpeed = playerControl.moveSpeed * 1.5f; //movespeed 2 katına çıkar
                     Invoke("RevertJokerEffect", 5.0f); //5sn sonra efekt gider. Yukarda revert var. Revert aşağıda olsa daha doğru olmaz mı ?
 
                 }
@@ -153,7 +153,7 @@ public class JokerControl : MonoBehaviour
                     SoundManager.Instance.Play("BeerJoker");
                     spawnerControl.num_of_jokers--;
                     target.SendMessage("StartWaneEffect", gameObject.tag);
-                    playerControl.moveSpeed = playerControl.moveSpeed / 2;
+                    playerControl.moveSpeed = playerControl.moveSpeed / 1.5f;
                     Invoke("RevertJokerEffect", 5.0f);
                 }
 

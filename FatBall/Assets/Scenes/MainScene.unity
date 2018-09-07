@@ -2171,11 +2171,11 @@ MonoBehaviour:
   - {fileID: 2051913184}
   - {fileID: 2061407266}
   jokers:
-  - {fileID: 1658457293378228, guid: cef4b0c6f0087db43888345f6a15ec55, type: 2}
-  - {fileID: 1272600264370408, guid: b8e68ca85a3a4a541b663a780b143c9f, type: 2}
-  - {fileID: 1632207111875900, guid: f7c49af1315c3ee4d8063a33debb8d2d, type: 2}
-  - {fileID: 1313610341625108, guid: 6249ab43f4696f2448c9b560dc1b1ec1, type: 2}
-  - {fileID: 1151137373715956, guid: fc920befc46c4fa499f431d09ad2497c, type: 2}
+  - {fileID: 1717229900323964, guid: 257494b2aa1c9514b96601d7c43260ca, type: 2}
+  - {fileID: 1516736749191958, guid: a29b8420961894c40ab3938dd9091130, type: 2}
+  - {fileID: 1200441049286332, guid: 4cb5b0674982e314d83d86fe37dfdf33, type: 2}
+  - {fileID: 1884388505174914, guid: e9220ac176e1cb84ea6e4835390fa3e9, type: 2}
+  - {fileID: 1893792459475884, guid: 5a993935f8742604ca8a1e0793983955, type: 2}
   randomSpawnPoint: 0
   randomJoker: 0
   joker: {fileID: 0}
@@ -2953,8 +2953,11 @@ MonoBehaviour:
   - {fileID: 1722039291}
   - {fileID: 1283693714}
   monsters:
-  - {fileID: 1293262495756814, guid: 1c7e21014a6d00749bd6af927bf38659, type: 2}
-  - {fileID: 1953286433165440, guid: cd27cb5becf29434fb4908e99f6b7194, type: 2}
+  - {fileID: 1638921543338198, guid: 62960137647b2864ea9420134a4e08fd, type: 2}
+  - {fileID: 1536103414339866, guid: 59f0379ca6d1ced41aac94623dd26da8, type: 2}
+  - {fileID: 1195455768594294, guid: 2cad21828262d1c409fea4d0d554e380, type: 2}
+  - {fileID: 1698508143486572, guid: f6ee5e3d7bc2f774ebc1545e26947a26, type: 2}
+  - {fileID: 1725696938592498, guid: 28d3bae80fc14594490d3719d4d67744, type: 2}
   randomSpawnPoint: 0
   randomMonster: 0
   monster: {fileID: 0}

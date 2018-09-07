@@ -53,7 +53,7 @@ public class MonsterControl : MonoBehaviour
         gameMaster = FindObjectOfType<GameMaster>();
         transform.name = transform.name.Replace("(Clone)", "").Trim();
         rb = GetComponent<Rigidbody2D>();
-        float randomScale = Random.Range(Screen.width / 15f, Screen.width / 24f);
+        float randomScale = Random.Range(Screen.width / 11f, Screen.width / 18f);
         //soundManager = FindObjectOfType<SoundManagerScript>();
         StartCoroutine(MoveMonster());
 

@@ -11,7 +11,7 @@ public class JokerSpawnerControl : MonoBehaviour {
 
     public GameObject joker;
     public int num_of_jokers = 0;
-    public int jokerLimit = 3;
+    public int jokerLimit = 4;
 
     void Awake()
     {

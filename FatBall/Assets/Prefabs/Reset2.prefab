@@ -9,47 +9,47 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1516736749191958}
+  m_RootGameObject: {fileID: 1151137373715956}
   m_IsPrefabAsset: 1
---- !u!1 &1516736749191958
+--- !u!1 &1151137373715956
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4515682565927276}
-  - component: {fileID: 212230814899729098}
-  - component: {fileID: 50150200480618640}
-  - component: {fileID: 60144731434969948}
-  - component: {fileID: 114275530449387562}
+  - component: {fileID: 4698841790522922}
+  - component: {fileID: 212256684551823442}
+  - component: {fileID: 50632764242182612}
+  - component: {fileID: 114237029661177442}
+  - component: {fileID: 60796231494836024}
   m_Layer: 0
-  m_Name: BeerJoker
-  m_TagString: BeerJoker
+  m_Name: Reset2
+  m_TagString: Reset
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4515682565927276
+--- !u!4 &4698841790522922
 Transform:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1516736749191958}
+  m_GameObject: {fileID: 1151137373715956}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1042.5151, y: 508.19162, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 1612.0916, y: 173.44702, z: 0}
+  m_LocalScale: {x: 15, y: 15, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &50150200480618640
+--- !u!50 &50632764242182612
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1516736749191958}
+  m_GameObject: {fileID: 1151137373715956}
   m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
@@ -63,12 +63,12 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &60144731434969948
+--- !u!60 &60796231494836024
 PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1516736749191958}
+  m_GameObject: {fileID: 1151137373715956}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
@@ -79,40 +79,38 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.96, y: 0.96}
-    newSize: {x: 0.96, y: 0.96}
+    oldSize: {x: 1.28, y: 1.28}
+    newSize: {x: 5.12, y: 5.12}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.37, y: 0.12}
-      - {x: 0.31, y: 0.19}
-      - {x: 0.099999994, y: 0.42999998}
-      - {x: 0.04, y: 0.45}
-      - {x: -0.13, y: 0.45}
-      - {x: -0.28, y: 0.41}
-      - {x: -0.35, y: 0.32999998}
-      - {x: -0.35, y: 0.049999997}
-      - {x: -0.25, y: 0}
-      - {x: -0.22, y: -0.39}
-      - {x: -0.14, y: -0.45}
-      - {x: 0.16, y: -0.45}
-      - {x: 0.24, y: -0.42999998}
-      - {x: 0.38, y: -0.24}
-      - {x: 0.38, y: 0.02}
-    - - {x: 0.22999999, y: 0.02}
-      - {x: 0.24, y: -0.03}
-      - {x: 0.25, y: -0.099999994}
-      - {x: 0.22999999, y: -0.14999999}
-      - {x: 0.24, y: -0.14999999}
---- !u!114 &114275530449387562
+    - - {x: 0.59429526, y: 0.48904625}
+      - {x: 0.6327962, y: 0.4518097}
+      - {x: 0.63579106, y: 0.41492108}
+      - {x: 0.56744796, y: 0.5308767}
+      - {x: 0.39396974, y: 0.64304304}
+      - {x: 0.20198569, y: 0.64000046}
+      - {x: 0.061889652, y: 0.57261556}
+      - {x: -0.15633139, y: 0.36034548}
+      - {x: -0.6399984, y: -0.16968283}
+      - {x: -0.63202316, y: -0.41606754}
+      - {x: -0.6200033, y: -0.46213484}
+      - {x: -0.46607262, y: -0.5941671}
+      - {x: -0.29731447, y: -0.6514262}
+      - {x: -0.12095541, y: -0.6071503}
+      - {x: -0.07989095, y: -0.57213545}
+      - {x: 0.61, y: 0.089999996}
+      - {x: 0.64, y: 0.16}
+      - {x: 0.64, y: 0.45999998}
+--- !u!114 &114237029661177442
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1516736749191958}
+  m_GameObject: {fileID: 1151137373715956}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d0d8dabef935cf540909633084ded01a, type: 3}
@@ -121,17 +119,17 @@ MonoBehaviour:
   soundManager: {fileID: 1270106360224736, guid: 24c00894793607343be51fb03b0cea75,
     type: 2}
   bubble: {fileID: 0}
-  accelerationTime: 0
+  accelerationTime: 2
   maxSpeed: 0
   spawnerControl: {fileID: 0}
   playerControl: {fileID: 0}
   monstersSpawnerControl: {fileID: 0}
---- !u!212 &212230814899729098
+--- !u!212 &212256684551823442
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1516736749191958}
+  m_GameObject: {fileID: 1151137373715956}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -161,12 +159,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 255b5601048d0284e95e73def13846e9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 30ac7fc996a3cf045bd6b17b48b43e98, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.96, y: 0.96}
+  m_Size: {x: 5.12, y: 5.12}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
