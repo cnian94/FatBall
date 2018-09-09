@@ -64,9 +64,11 @@ public class NetworkController : MonoBehaviour
         //Set NetworkController to DontDestroyOnLoad so that it won't be destroyed when reloading our scene.
         DontDestroyOnLoad(gameObject);
 
+        //PlayerPrefs.SetString("device_id", "");
+
         device_id = SystemInfo.deviceUniqueIdentifier;
 
-        if (PlayerPrefs.GetString("device_id") == "")
+        if (device_id == "")
         {
             notMemberPanel.SetActive(true);
 
@@ -74,7 +76,6 @@ public class NetworkController : MonoBehaviour
 
         else
         {
-            Debug.Log("Nickname: " + PlayerPrefs.GetString("device_id"));
             memberPanel.SetActive(true);
         }
     }
