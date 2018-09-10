@@ -69,7 +69,7 @@ public class MonsterControl : MonoBehaviour
         while (isMonsterMovementAllowed)
         {
             movement = new Vector3(-movement.x + Random.Range(-20f, 20f), -movement.y + Random.Range(-20f, 20f), 0);
-            maxSpeed = Random.Range(1f, Screen.width / 300f);
+            maxSpeed = Random.Range(Screen.width / 750f, Screen.width / 300f);
             yield return new WaitForSeconds(accelerationTime);
 
         }
@@ -79,7 +79,7 @@ public class MonsterControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(0, 0, Random.Range(10f, 15f) / 50f);
+        transform.Rotate(0, 0, Random.Range(Screen.width / 750f, Screen.width/500f));
         Vector3 position = gameObject.transform.position;
 
         if (position.x <= -max_distance_from_view || position.x >= Screen.width + max_distance_from_view ||
@@ -115,7 +115,7 @@ public class MonsterControl : MonoBehaviour
             case "Player":
                 if (!gameMaster.isBubbleCatched)
                 {
-                    Vector3 targetScale = new Vector3(col.gameObject.transform.localScale.x + gameObject.transform.localScale.x / 2, col.gameObject.transform.localScale.y + gameObject.transform.localScale.y / 2, gameObject.transform.localScale.z);
+                    Vector3 targetScale = new Vector3(col.gameObject.transform.localScale.x + gameObject.transform.localScale.x / 4, col.gameObject.transform.localScale.y + gameObject.transform.localScale.y / 4, gameObject.transform.localScale.z);
                     SoundManager.Instance.Play("Enemy");
                     spawnerControl.num_of_monsters--;
                     gameMaster.SpawnAMonster();

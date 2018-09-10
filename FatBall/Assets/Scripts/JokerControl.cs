@@ -60,7 +60,7 @@ public class JokerControl : MonoBehaviour
         target = GameObject.Find("Player");
         rb = GetComponent<Rigidbody2D>();
 
-        float randomScale = Random.Range(Screen.width / 25f, Screen.width / 18f);
+        float randomScale = Random.Range(Screen.width / 11f, Screen.width / 18f);
         temp = transform.localScale;
         temp.x = randomScale;
         temp.y = randomScale;
@@ -74,7 +74,7 @@ public class JokerControl : MonoBehaviour
         while (isJokerMovementAllowed)
         {
             movement = new Vector3(-movement.x + Random.Range(-20f, 20f), -movement.y + Random.Range(-20f, 20f), 0);
-            maxSpeed = Random.Range(1f, Screen.width / 300f);
+            maxSpeed = Random.Range(Screen.width / 750f, Screen.width / 300f);
             yield return new WaitForSeconds(accelerationTime);
 
         }
@@ -84,7 +84,7 @@ public class JokerControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(0, 0, Random.Range(10f, 15f) / 50f);
+        transform.Rotate(0, 0, Random.Range(Screen.width/750f, Screen.width / 500f));
         Vector3 position = gameObject.transform.position;
    
         if (position.x <= -max_distance_from_view || position.x >= Screen.width + max_distance_from_view ||
@@ -142,7 +142,7 @@ public class JokerControl : MonoBehaviour
                     spawnerControl.num_of_jokers--; //yediği için joker sayısı 1 azalır ki yenisi çıkabilsin
                                                     //playerControl.moveForce = playerControl.moveForce * 2;
                     target.SendMessage("StartWaneEffect", gameObject.tag); 
-                    playerControl.moveSpeed = playerControl.moveSpeed * 1.5f; //movespeed 2 katına çıkar
+                    playerControl.moveSpeed = playerControl.moveSpeed * 1.2f; //movespeed 2 katına çıkar
                     Invoke("RevertJokerEffect", 5.0f); //5sn sonra efekt gider. Yukarda revert var. Revert aşağıda olsa daha doğru olmaz mı ?
 
                 }
@@ -153,7 +153,7 @@ public class JokerControl : MonoBehaviour
                     SoundManager.Instance.Play("BeerJoker");
                     spawnerControl.num_of_jokers--;
                     target.SendMessage("StartWaneEffect", gameObject.tag);
-                    playerControl.moveSpeed = playerControl.moveSpeed / 1.5f;
+                    playerControl.moveSpeed = playerControl.moveSpeed / 1.2f;
                     Invoke("RevertJokerEffect", 5.0f);
                 }
 
@@ -192,6 +192,21 @@ public class JokerControl : MonoBehaviour
                     spawnerControl.num_of_jokers--;
                 }
 
+                if (gameObject.CompareTag("GrapeJoker"))
+                {
+                    gameObject.SetActive(false);
+                    SoundManager.Instance.Play("Enemy");
+                    spawnerControl.num_of_jokers--;
+                    target.SendMessage("StartWaneEffect", gameObject.tag);
+                }
+
+                if (gameObject.CompareTag("CherryJoker"))
+                {
+                    gameObject.SetActive(false);
+                    SoundManager.Instance.Play("Enemy");
+                    spawnerControl.num_of_jokers--;
+                    target.SendMessage("StartWaneEffect", gameObject.tag);
+                }
                 break;
         }
     }

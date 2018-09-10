@@ -112,7 +112,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soundManager: {fileID: 1270106360224736, guid: 24c00894793607343be51fb03b0cea75,
     type: 2}
-  bubble: {fileID: 0}
+  bubble: {fileID: 1362125668989964, guid: 885d698a4c315a84294c77c26817c465, type: 2}
   accelerationTime: 0
   maxSpeed: 0
   spawnerControl: {fileID: 0}

@@ -86,11 +86,11 @@ public class PlayerController : MonoBehaviour
         //enemies = GameObject.FindGameObjectsWithTag("Enemy");
         //playerCurrentPos = gameObject.transform.position;
 
-        if (gameObject.transform.localScale.x <= Screen.width / 10f)
+        if (gameObject.transform.localScale.x <= Screen.width / 20f)
         {
             gameMaster.jokerWeights[3] = 0;
         }
-        if (gameObject.transform.localScale.x > Screen.width / 10f)
+        if (gameObject.transform.localScale.x > Screen.width / 20f)
         {
             gameMaster.jokerWeights[3] = 20;
         }
@@ -159,7 +159,7 @@ public class PlayerController : MonoBehaviour
             {
                 previousDistanceToTouchPos = (touchPosition - transform.position).magnitude;
             }
-        }*/  //buraya kadar dokunmatik oynamak için
+        } */ //buraya kadar dokunmatik oynamak için
 
 
     }
@@ -209,7 +209,7 @@ public class PlayerController : MonoBehaviour
             if (bubble)
             {
                 bubbleScale = bubble.transform.localScale;
-                bubbleTargetScale = new Vector3(bubbleScale.x / 2, bubbleScale.y / 2, bubbleScale.z);
+                bubbleTargetScale = new Vector3(bubbleScale.x , bubbleScale.y , bubbleScale.z);
             }
 
             while (time > 0f)
@@ -228,7 +228,7 @@ public class PlayerController : MonoBehaviour
 
         else
         {
-            Vector3 targetScale = new Vector3(gameObject.transform.localScale.x - gameObject.transform.localScale.x / 8, gameObject.transform.localScale.y - gameObject.transform.localScale.y / 8, gameObject.transform.localScale.z);
+            Vector3 targetScale = new Vector3(gameObject.transform.localScale.x - gameObject.transform.localScale.x / 16, gameObject.transform.localScale.y - gameObject.transform.localScale.y / 16, gameObject.transform.localScale.z);
             if (bubble)
             {
                 bubbleScale = bubble.transform.localScale;

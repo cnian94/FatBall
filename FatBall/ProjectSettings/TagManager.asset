@@ -21,6 +21,8 @@ TagManager:
   - Bubble
   - Timer
   - BackgroundCamera
+  - CherryJoker
+  - GrapeJoker
   layers:
   - Default
   - TransparentFX

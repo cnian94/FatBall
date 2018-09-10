@@ -2176,11 +2176,13 @@ MonoBehaviour:
   - {fileID: 1200441049286332, guid: 4cb5b0674982e314d83d86fe37dfdf33, type: 2}
   - {fileID: 1884388505174914, guid: e9220ac176e1cb84ea6e4835390fa3e9, type: 2}
   - {fileID: 1893792459475884, guid: 5a993935f8742604ca8a1e0793983955, type: 2}
+  - {fileID: 1645376945432924, guid: 5291e4700a644ca4d83bb0b742102f4b, type: 2}
+  - {fileID: 1214143981083728, guid: 638e4b08ac40164449eb7840a6294c5b, type: 2}
   randomSpawnPoint: 0
   randomJoker: 0
   joker: {fileID: 0}
   num_of_jokers: 0
-  jokerLimit: 3
+  jokerLimit: 4
 --- !u!1 &1283693713
 GameObject:
   m_ObjectHideFlags: 0
@@ -3123,6 +3125,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
+        type: 2}
+      propertyPath: jokerWeights.Array.size
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 4101108299393166, guid: 1a2a91ac2fe13d045a582bc393ce5fde, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3220,6 +3227,16 @@ Prefab:
         type: 2}
       propertyPath: jokerWeights.Array.data[1]
       value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
+        type: 2}
+      propertyPath: jokerWeights.Array.data[5]
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
+        type: 2}
+      propertyPath: jokerWeights.Array.data[6]
+      value: 80
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a2a91ac2fe13d045a582bc393ce5fde, type: 2}

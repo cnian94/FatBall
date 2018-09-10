@@ -24,7 +24,7 @@ public class NetworkController : MonoBehaviour
     {
 
         string json = JsonUtility.ToJson(playerModel);
-        var request = new UnityWebRequest("http://127.0.0.1:5000/api/register", "POST");
+        var request = new UnityWebRequest("http://0.0.0.0:5000/api/register", "POST");
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
@@ -60,13 +60,14 @@ public class NetworkController : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
+        
         //Set NetworkController to DontDestroyOnLoad so that it won't be destroyed when reloading our scene.
         DontDestroyOnLoad(gameObject);
 
-        //PlayerPrefs.SetString("device_id", "");
+        PlayerPrefs.SetString("device_id", SystemInfo.deviceUniqueIdentifier);
 
-        device_id = SystemInfo.deviceUniqueIdentifier;
+        device_id = PlayerPrefs.GetString("device_id");
+        //Debug.Log("device_id: " + device_id);
 
         if (device_id == "")
         {
