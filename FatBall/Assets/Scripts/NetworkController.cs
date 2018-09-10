@@ -17,6 +17,7 @@ public class NetworkController : MonoBehaviour
     private string device_id;
 
     public PlayerModel playerModel;
+    public InventoryList inventoryList;
 
     private string REGISTER_URL = "http://127.0.0.1:5000/api/register";
     private string CHECK_URL = "http://127.0.0.1:5000/api/check";
@@ -122,6 +123,7 @@ public class NetworkController : MonoBehaviour
         }
     }
 
+
     public IEnumerator GetInventory()
     {
         string json = JsonUtility.ToJson(playerModel);
@@ -135,7 +137,9 @@ public class NetworkController : MonoBehaviour
         }
         else
         {
-            Debug.Log("INVENTORY RESPONSE:" + request.downloadHandler.text);
+            Debug.Log("Response:"+ request.downloadHandler.text);
+            inventoryList = InventoryList.CreateFromJSON(request.downloadHandler.text);
+            Debug.Log("INVENTORY:" + inventoryList.inventory.Length);
         }
     }
 
@@ -145,7 +149,8 @@ public class NetworkController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-
+        StartCoroutine(GetInventory());
     }
 
 }
+

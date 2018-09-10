@@ -37,7 +37,7 @@ public class OptionsController : MonoBehaviour
     public Image selectedImage;
     public Text monsterName;
 
-
+    public InventoryItem[] inventory;
     public List<Sprite> PlayerSprites = new List<Sprite>();
     public List<Sprite> ThemeSprites = new List<Sprite>();
 
@@ -48,6 +48,10 @@ public class OptionsController : MonoBehaviour
 
     public int selectedSegment = 0;
 
+
+    byte[] dataImage;
+    Texture2D mytexture;
+    Sprite charSprite;
 
     void CreateDictionary()
     {
@@ -63,6 +67,7 @@ public class OptionsController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        inventory = NetworkController.Instance.inventoryList.inventory;
         normalColor = new Color(1, 1, 1, 1);
         selectedColor = new Color(0.86f, 0.78f, 0.49f, 1);
         charBtn.GetComponent<Image>().color = selectedColor;
@@ -71,16 +76,14 @@ public class OptionsController : MonoBehaviour
 
         SetPanel(0);
 
-        NetworkController.Instance.StartCoroutine(NetworkController.Instance.GetInventory());
-
     }
 
-    public void SelectChar(string name, Sprite charSprite, int purchased, int price)
+    public void SelectChar(string name, Sprite charSprite, bool purchased, int price)
     {
         Debug.Log("SELECTED CHAR: " + name);
         GameObject selected = GameObject.Find(name);
 
-        if (purchased == 1) 
+        if (purchased) 
         {
             if (!GameObject.Find("CharSelectedImage"))
             {
@@ -138,8 +141,67 @@ public class OptionsController : MonoBehaviour
 
         if (index == 0 && !charPanelCreated)
         {
+            Debug.Log("index:" + index);
+            Debug.Log("charPanelCreated:" + charPanelCreated);
+            Debug.Log("inventory.Length:" + inventory.Length);
 
-            foreach (KeyValuePair<string, KeyValuePair<int[], Sprite>> entry in dictionary)
+
+            for (int i = 0; i < inventory.Length ; i++)
+            {
+                try
+                {
+                    //Debug.Log(inventory[i].character.char_name + ": " + inventory[i].character.img.Length);
+                    this.dataImage = System.Convert.FromBase64String(inventory[i].character.img);
+                    this.mytexture = new Texture2D(1, 1);
+                    this.mytexture.LoadImage(this.dataImage);
+
+                    this.charSprite = Sprite.Create(this.mytexture, new Rect(0.0f, 0.0f, this.mytexture.width, this.mytexture.height), new Vector2(0.5f, 0.5f));
+
+                }
+                catch (System.FormatException e)
+                {
+                    Debug.Log(inventory[i].character.char_name + ": " + inventory[i].character.img.Length);
+                    //inventory[i].character.img += "=";
+                    inventory[i].character.img = inventory[i].character.img.Substring(0, inventory[i].character.img.Length - 3);
+                    Debug.Log(inventory[i].character.img.Length);
+                    this.dataImage = System.Convert.FromBase64String(inventory[i].character.img);
+                    this.mytexture = new Texture2D(1, 1);
+                    this.mytexture.LoadImage(this.dataImage);
+
+                    this.charSprite = Sprite.Create(this.mytexture, new Rect(0.0f, 0.0f, this.mytexture.width, this.mytexture.height), new Vector2(0.5f, 0.5f));
+                }
+
+                charDeskButton = Instantiate(charDeskButtonPrefab, charOptionsContent.transform);
+                charDeskButton.name = inventory[i].character.char_name;
+
+                //byte[] dataImage = System.Convert.FromBase64String(inventory[i].character.img);
+                Texture2D mytexture = new Texture2D(1, 1);
+                mytexture.LoadImage(dataImage);
+
+                Sprite charSprite = Sprite.Create(mytexture, new Rect(0.0f, 0.0f, mytexture.width, mytexture.height), new Vector2(0.5f, 0.5f));
+
+                charDeskButton.onClick.AddListener(delegate { SelectChar(inventory[i].character.char_name, charSprite, inventory[i].purchased, inventory[i].character.price); });
+                charImage = Instantiate(charImage, charDeskButton.transform);
+
+
+                charImage.GetComponent<Image>().sprite = charSprite;
+                //charImage.GetComponent<Image>().sprite = entry.Value.Value;
+
+
+                monsterName = Instantiate(monsterName, charDeskButton.transform);
+                monsterName.text = inventory[i].character.char_name;
+
+                if (!inventory[i].purchased)
+                {
+                    lockImage = Instantiate(lockImage, charDeskButton.transform);
+                    charDeskButton.GetComponent<Image>().color = new Color(0.407f, 0.407f, 0.407f, 0.439f);
+
+                }
+
+
+            }
+
+            /*foreach (KeyValuePair<string, KeyValuePair<int[], Sprite>> entry in dictionary)
             {
                 //Debug.Log("Name: " + entry.Key);
                 //Debug.Log("Price: " + entry.Value.Key[0]);
@@ -161,7 +223,7 @@ public class OptionsController : MonoBehaviour
                     charDeskButton.GetComponent<Image>().color = new Color(0.407f, 0.407f, 0.407f, 0.439f);
 
                 }
-            }
+            }*/
 
             charPanelCreated = true;
 
