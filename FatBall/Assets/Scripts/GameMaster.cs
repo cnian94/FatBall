@@ -76,7 +76,7 @@ public class GameMaster : MonoBehaviour
 
     public IEnumerator IncreaseMonsterLimit() //Monster sayısının artış hızı
     {
-        while (!timerScript.GetIsPaused())
+        while (!timerScript.GetIsPaused() && spawnerControl.monsters_limit<10)
         {
             yield return new WaitForSeconds(5);
             //spawnerControl.monsters_limit = spawnerControl.monsters_limit * 2;

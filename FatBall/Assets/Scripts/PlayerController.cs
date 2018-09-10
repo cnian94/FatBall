@@ -49,10 +49,9 @@ public class PlayerController : MonoBehaviour
 
         CalibrateAccelerometer();
     }
-
-
-    //Method for calibration 
-    void CalibrateAccelerometer()
+    
+        //Method for calibration 
+        void CalibrateAccelerometer()
     {
         dirInit = Input.acceleration;
 
@@ -94,6 +93,9 @@ public class PlayerController : MonoBehaviour
         {
             gameMaster.jokerWeights[3] = 20;
         }
+
+            transform.Rotate(0, 0, Random.Range(Screen.width / 1500f, Screen.width / 1250f));
+            Vector3 position = gameObject.transform.position;
 
 
         _InputDir = FixAcceleration(Input.acceleration); //tilt control açar
@@ -167,12 +169,12 @@ public class PlayerController : MonoBehaviour
 
     void StartWaneEffect(string tag)  //Joker yediği zaman küçülme süresi
     {
-        StartCoroutine(LerpScale(1f, tag));
+        StartCoroutine(LerpScale(0.3f, tag));
     }
 
     void StartGetFatEffect(Vector3[] scales)  // Monster yediği zaman küçülme süresi
     {
-        StartCoroutine(LerpScaleMonster(1f, scales));
+        StartCoroutine(LerpScaleMonster(0.3f, scales));
     }
 
 
@@ -264,7 +266,7 @@ public class PlayerController : MonoBehaviour
                     Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
                     //gameOverUI.SetActive(true);
                     gameMaster.KillPlayer(gameObject);
-                    Destroy(Explosion, 3);
+                    Destroy(Explosion, 1);
                     break;
 
             }

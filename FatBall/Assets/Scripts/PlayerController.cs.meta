@@ -3,7 +3,10 @@ guid: 4ae5819787c335a4baf6bd607d9c304f
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - gameMaster: {instanceID: 0}
+  - Explosion: {instanceID: 0}
+  - timer: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

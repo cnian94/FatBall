@@ -1053,7 +1053,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.77205884, g: 0.7704928, b: 0.71528983, a: 1}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
@@ -1542,8 +1542,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -13, y: -445}
-  m_SizeDelta: {x: 650, y: 200}
+  m_AnchoredPosition: {x: 17.3, y: -392.3}
+  m_SizeDelta: {x: 533.1, y: 142.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1519400922
 MonoBehaviour:
@@ -1564,7 +1564,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 4ffcf1394913fbe42815fc021ecdcff4, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 084a5edddabb93d4d9716380cb1f29a4, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
