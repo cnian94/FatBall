@@ -1697,6 +1697,8 @@ MonoBehaviour:
   notMemberPanel: {fileID: 671680686}
   memberPanel: {fileID: 1817919222}
   nickname: {fileID: 1537162294}
+  inventoryList:
+    inventory: []
 --- !u!1 &1817919222
 GameObject:
   m_ObjectHideFlags: 0
@@ -1713,7 +1715,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1817919223
 RectTransform:
   m_ObjectHideFlags: 0

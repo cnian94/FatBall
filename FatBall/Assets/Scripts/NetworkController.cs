@@ -19,9 +19,9 @@ public class NetworkController : MonoBehaviour
     public PlayerModel playerModel;
     public InventoryList inventoryList;
 
-    private string REGISTER_URL = "http://127.0.0.1:5000/api/register";
-    private string CHECK_URL = "http://127.0.0.1:5000/api/check";
-    private string INVENTORY_URL = "http://127.0.0.1:5000/api/inventory?id=";
+    private string REGISTER_URL = "http://192.168.1.104:5000/api/register";
+    private string CHECK_URL = "http://192.168.1.104:5000/api/check";
+    private string INVENTORY_URL = "http://192.168.1.104:5000/api/inventory?id=";
 
 
 
@@ -46,7 +46,9 @@ public class NetworkController : MonoBehaviour
 
         if (playerModel == null)
         {
-            notMemberPanel.SetActive(true);
+            memberPanel.SetActive(false);
+            notMemberPanel.SetActive(true); //burayı kapat
+            //memberPanel.SetActive(true); //bunu yaz
 
         }
 
@@ -55,6 +57,8 @@ public class NetworkController : MonoBehaviour
             //memberPanel.SetActive(true);
             StartCoroutine(CheckDeviceIsRegistered());
         }
+
+        //PlayerPrefs.SetString("player", null);
     }
 
 
@@ -81,7 +85,7 @@ public class NetworkController : MonoBehaviour
             //Debug.Log("PLAYER RESPONSE:" + JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text).ToString());
             PlayerPrefs.SetString("player", request.downloadHandler.text);
 
-
+            StartCoroutine(GetInventory());
             notMemberPanel.SetActive(false);
             memberPanel.SetActive(true);
         }
@@ -89,6 +93,7 @@ public class NetworkController : MonoBehaviour
 
     public void GetIn()
     {
+        device_id = SystemInfo.deviceUniqueIdentifier;
         playerModel = new PlayerModel(device_id, nickname.text);
         StartCoroutine(Register());
     }
@@ -120,9 +125,9 @@ public class NetworkController : MonoBehaviour
 
             notMemberPanel.SetActive(false);
             memberPanel.SetActive(true);
+            StartCoroutine(GetInventory());
         }
     }
-
 
     public IEnumerator GetInventory()
     {
@@ -149,7 +154,7 @@ public class NetworkController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        StartCoroutine(GetInventory());
+
     }
 
 }
