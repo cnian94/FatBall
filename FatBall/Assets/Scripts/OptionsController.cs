@@ -71,6 +71,8 @@ public class OptionsController : MonoBehaviour
 
         SetPanel(0);
 
+        NetworkController.Instance.StartCoroutine(NetworkController.Instance.GetInventory());
+
     }
 
     public void SelectChar(string name, Sprite charSprite, int purchased, int price)

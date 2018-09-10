@@ -18,33 +18,10 @@ public class NetworkController : MonoBehaviour
 
     public PlayerModel playerModel;
 
+    private string REGISTER_URL = "http://127.0.0.1:5000/api/register";
+    private string CHECK_URL = "http://127.0.0.1:5000/api/check";
+    private string INVENTORY_URL = "http://127.0.0.1:5000/api/inventory?id=";
 
-
-    IEnumerator CheckDeviceIsRegistered(string device_id)
-    {
-
-        string json = JsonUtility.ToJson(playerModel);
-        var request = new UnityWebRequest("http://0.0.0.0:5000/api/register", "POST");
-        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
-        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-        request.SetRequestHeader("Content-Type", "application/json");
-        yield return request.Send();
-
-        if (request.error != null)
-        {
-            Debug.Log("Erro: " + request.error);
-        }
-        else
-        {
-            Debug.Log("All OK");
-            Debug.Log("Status Code: " + request.responseCode);
-            PlayerPrefs.SetString("device_id", device_id);
-            notMemberPanel.SetActive(false);
-            memberPanel.SetActive(true);
-        }
-
-    }
 
 
     // Initialize the singleton instance.
@@ -60,16 +37,13 @@ public class NetworkController : MonoBehaviour
         {
             Destroy(gameObject);
         }
-        
+
         //Set NetworkController to DontDestroyOnLoad so that it won't be destroyed when reloading our scene.
         DontDestroyOnLoad(gameObject);
 
-        PlayerPrefs.SetString("device_id", SystemInfo.deviceUniqueIdentifier);
+        playerModel = JsonUtility.FromJson<PlayerModel>(PlayerPrefs.GetString("player"));
 
-        device_id = PlayerPrefs.GetString("device_id");
-        //Debug.Log("device_id: " + device_id);
-
-        if (device_id == "")
+        if (playerModel == null)
         {
             notMemberPanel.SetActive(true);
 
@@ -77,6 +51,37 @@ public class NetworkController : MonoBehaviour
 
         else
         {
+            //memberPanel.SetActive(true);
+            StartCoroutine(CheckDeviceIsRegistered());
+        }
+    }
+
+
+    IEnumerator Register()
+    {
+        string json = JsonUtility.ToJson(playerModel);
+        var request = new UnityWebRequest(REGISTER_URL, "POST");
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        yield return request.Send();
+
+        if (request.error != null)
+        {
+            Debug.Log("Erro: " + request.error);
+        }
+        else
+        {
+            Debug.Log("Status Code: " + request.responseCode);
+
+
+            //Debug.Log("RESPONSE:"+ request.downloadHandler.text);
+            //Debug.Log("PLAYER RESPONSE:" + JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text).ToString());
+            PlayerPrefs.SetString("player", request.downloadHandler.text);
+
+
+            notMemberPanel.SetActive(false);
             memberPanel.SetActive(true);
         }
     }
@@ -84,8 +89,57 @@ public class NetworkController : MonoBehaviour
     public void GetIn()
     {
         playerModel = new PlayerModel(device_id, nickname.text);
-        StartCoroutine(CheckDeviceIsRegistered(device_id));
+        StartCoroutine(Register());
     }
+
+
+
+    IEnumerator CheckDeviceIsRegistered()
+    {
+
+        string json = JsonUtility.ToJson(playerModel);
+        var request = new UnityWebRequest(CHECK_URL, "POST");
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        yield return request.Send();
+
+        if (request.error != null)
+        {
+            Debug.Log("Erro: " + request.error);
+        }
+        else
+        {
+            Debug.Log("DEVICE IS ALREADY REGISTERED: " + request.responseCode);
+
+            //Debug.Log("RESPONSE:"+ request.downloadHandler.text);
+            //Debug.Log("PLAYER RESPONSE:" + JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text).ToString());
+
+
+            notMemberPanel.SetActive(false);
+            memberPanel.SetActive(true);
+        }
+    }
+
+    public IEnumerator GetInventory()
+    {
+        string json = JsonUtility.ToJson(playerModel);
+        var request = new UnityWebRequest(INVENTORY_URL + playerModel.device_id, "GET");
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        yield return request.Send();
+
+        if (request.error != null)
+        {
+            Debug.Log("Erro: " + request.error);
+        }
+        else
+        {
+            Debug.Log("INVENTORY RESPONSE:" + request.downloadHandler.text);
+        }
+    }
+
+
 
 
     // Use this for initialization
@@ -94,9 +148,4 @@ public class NetworkController : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }
