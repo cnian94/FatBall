@@ -134,7 +134,7 @@ public class JokerControl : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-        JokerSpawnerControl.eatedJoker++;
+        
         switch (col.gameObject.name)
         {
             
@@ -148,6 +148,7 @@ public class JokerControl : MonoBehaviour
                     target.SendMessage("StartWaneEffect", gameObject.tag); 
                     playerControl.moveSpeed = playerControl.moveSpeed * 1.2f; //movespeed 2 katına çıkar
                     Invoke("RevertJokerEffect", 5.0f); //5sn sonra efekt gider. Yukarda revert var. Revert aşağıda olsa daha doğru olmaz mı ?
+                    JokerSpawnerControl.eatedJoker++;
 
                 }
 
@@ -159,6 +160,7 @@ public class JokerControl : MonoBehaviour
                     target.SendMessage("StartWaneEffect", gameObject.tag);
                     playerControl.moveSpeed = playerControl.moveSpeed / 1.2f;
                     Invoke("RevertJokerEffect", 5.0f);
+                    JokerSpawnerControl.eatedJoker++;
                 }
 
                 if (gameObject.CompareTag("RadishJoker") && !GameMaster.gm.isBubbleCatched) //beni biraz aştı :D her yerde var
@@ -170,6 +172,7 @@ public class JokerControl : MonoBehaviour
                     bubble = Instantiate(bubble, target.transform.localPosition, Quaternion.identity);
                     bubble.SendMessage("SetIsBubbleEffectActive", true);
                     Invoke("RevertJokerEffect", 8.0f); //8 saniye sürüyor
+                    JokerSpawnerControl.eatedJoker++;
 
                 }
 
@@ -178,7 +181,8 @@ public class JokerControl : MonoBehaviour
                     gameObject.SetActive(false);
                     SoundManager.Instance.Play("BroccoliJoker");
                     spawnerControl.num_of_jokers--;
-                    target.SendMessage("StartWaneEffect", gameObject.tag); 
+                    target.SendMessage("StartWaneEffect", gameObject.tag);
+                    JokerSpawnerControl.eatedJoker++;
                 }
 
                 if (gameObject.CompareTag("Reset"))
@@ -194,6 +198,7 @@ public class JokerControl : MonoBehaviour
                     monstersSpawnerControl.num_of_monsters = 0; //üsttekinin aynısı geçerli.
 
                     spawnerControl.num_of_jokers--;
+                    JokerSpawnerControl.eatedJoker++;
                 }
 
                 if (gameObject.CompareTag("GrapeJoker"))
@@ -202,6 +207,7 @@ public class JokerControl : MonoBehaviour
                     SoundManager.Instance.Play("Enemy");
                     spawnerControl.num_of_jokers--;
                     target.SendMessage("StartWaneEffect", gameObject.tag);
+                    JokerSpawnerControl.eatedJoker++;
                 }
 
                 if (gameObject.CompareTag("CherryJoker"))
@@ -210,6 +216,7 @@ public class JokerControl : MonoBehaviour
                     SoundManager.Instance.Play("Enemy");
                     spawnerControl.num_of_jokers--;
                     target.SendMessage("StartWaneEffect", gameObject.tag);
+                    JokerSpawnerControl.eatedJoker++;
                 }
                 break;
         }
