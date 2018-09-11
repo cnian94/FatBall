@@ -23,6 +23,7 @@ TagManager:
   - BackgroundCamera
   - CherryJoker
   - GrapeJoker
+  - CharDeskButton
   layers:
   - Default
   - TransparentFX

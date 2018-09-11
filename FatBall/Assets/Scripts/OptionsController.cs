@@ -17,7 +17,7 @@ public class OptionsController : MonoBehaviour
     public GameObject themeOptionsContent;
 
     public GameObject unlockPanel;
-    public Image coinImage;
+    public Button unlockButton;
     public Text priceText;
 
     private bool charPanelCreated = false;
@@ -26,11 +26,8 @@ public class OptionsController : MonoBehaviour
     public Button charBtn;
     public Button themeBtn;
 
-    //public Image charDeskPrefab;
-    //private Image charDesk;
-
     public Button charDeskButtonPrefab;
-    private Button charDeskButton;
+    private Button charDesk;
 
     public Image charImage;
     public Image lockImage;
@@ -41,28 +38,12 @@ public class OptionsController : MonoBehaviour
     public List<Sprite> PlayerSprites = new List<Sprite>();
     public List<Sprite> ThemeSprites = new List<Sprite>();
 
-    public Dictionary<string, KeyValuePair<int[], Sprite>> dictionary = new Dictionary<string, KeyValuePair<int[], Sprite>>();
-
     Color normalColor;
     Color selectedColor;
 
     public int selectedSegment = 0;
 
 
-    byte[] dataImage;
-    Texture2D mytexture;
-    Sprite charSprite;
-
-    void CreateDictionary()
-    {
-
-        for (int i = 0; i < PlayerSprites.ToArray().Length; i++)
-        {
-            int[] key = { Random.Range(1000, 10000), Random.Range(0, 2), 0};
-            KeyValuePair<int[], Sprite> pair = new KeyValuePair<int[], Sprite>(key, PlayerSprites[i]);
-            dictionary.Add(PlayerSprites[i].name, pair);
-        }
-    }
 
     // Use this for initialization
     void Start()
@@ -72,18 +53,18 @@ public class OptionsController : MonoBehaviour
         selectedColor = new Color(0.86f, 0.78f, 0.49f, 1);
         charBtn.GetComponent<Image>().color = selectedColor;
 
-        CreateDictionary();
+        //CreateDictionary();
 
         SetPanel(0);
 
     }
 
-    public void SelectChar(string name, Sprite charSprite, bool purchased, int price)
+    public void SelectChar(string name, Sprite charSprite, bool purchased, int price, int char_id)
     {
         Debug.Log("SELECTED CHAR: " + name);
         GameObject selected = GameObject.Find(name);
 
-        if (purchased) 
+        if (purchased)
         {
             if (!GameObject.Find("CharSelectedImage"))
             {
@@ -119,20 +100,21 @@ public class OptionsController : MonoBehaviour
             charToUnlockImage.sprite = charSprite;
             charToUnlock.transform.localScale = charToUnlock.transform.localScale * 5;
             charToUnlock = Instantiate(charToUnlock, unlockPanel.transform);
+            charToUnlock.name = "CharToUnlock";
+
+
             monsterName = Instantiate(monsterName, unlockPanel.transform);
             monsterName.text = name;
             monsterName.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.7f);
             monsterName.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 0.7f);
             monsterName.transform.localScale = monsterName.transform.localScale * 5;
 
-            coinImage = Instantiate(coinImage, unlockPanel.transform);
             priceText = Instantiate(priceText, unlockPanel.transform);
             priceText.text = price.ToString();
 
-
+            unlockButton = Instantiate(unlockButton, unlockPanel.transform);
+            unlockButton.onClick.AddListener(delegate { UnlockMonster(char_id, price); });
         }
-
-
     }
 
 
@@ -145,86 +127,50 @@ public class OptionsController : MonoBehaviour
             Debug.Log("charPanelCreated:" + charPanelCreated);
             Debug.Log("inventory.Length:" + inventory.Length);
 
-
-            for (int i = 0; i < inventory.Length ; i++)
+            for (int i = 0; i < inventory.Length; i++)
             {
+                byte[] dataImage;
+                Texture2D mytexture = new Texture2D(1, 1);
+                Sprite charSprite;
+
                 try
                 {
                     //Debug.Log(inventory[i].character.char_name + ": " + inventory[i].character.img.Length);
-                    this.dataImage = System.Convert.FromBase64String(inventory[i].character.img);
-                    this.mytexture = new Texture2D(1, 1);
-                    this.mytexture.LoadImage(this.dataImage);
-
-                    this.charSprite = Sprite.Create(this.mytexture, new Rect(0.0f, 0.0f, this.mytexture.width, this.mytexture.height), new Vector2(0.5f, 0.5f));
+                    dataImage = System.Convert.FromBase64String(inventory[i].character.img);
+                    mytexture = new Texture2D(1, 1);
+                    mytexture.LoadImage(dataImage);
 
                 }
                 catch (System.FormatException e)
                 {
-                    Debug.Log(inventory[i].character.char_name + ": " + inventory[i].character.img.Length);
-                    //inventory[i].character.img += "=";
-                    inventory[i].character.img = inventory[i].character.img.Substring(0, inventory[i].character.img.Length - 3);
                     Debug.Log(inventory[i].character.img.Length);
-                    this.dataImage = System.Convert.FromBase64String(inventory[i].character.img);
-                    this.mytexture = new Texture2D(1, 1);
-                    this.mytexture.LoadImage(this.dataImage);
-
-                    this.charSprite = Sprite.Create(this.mytexture, new Rect(0.0f, 0.0f, this.mytexture.width, this.mytexture.height), new Vector2(0.5f, 0.5f));
+                    dataImage = System.Convert.FromBase64String(inventory[i].character.img);
+                    mytexture = new Texture2D(1, 1);
+                    mytexture.LoadImage(dataImage);
                 }
 
-                charDeskButton = Instantiate(charDeskButtonPrefab, charOptionsContent.transform);
-                charDeskButton.name = inventory[i].character.char_name;
+                charSprite = Sprite.Create(mytexture, new Rect(0.0f, 0.0f, mytexture.width, mytexture.height), new Vector2(0.5f, 0.5f));
 
-                //byte[] dataImage = System.Convert.FromBase64String(inventory[i].character.img);
-                Texture2D mytexture = new Texture2D(1, 1);
-                mytexture.LoadImage(dataImage);
+                charDesk = Instantiate(charDeskButtonPrefab, charOptionsContent.transform);
+                int id = i;
+                charDesk.onClick.AddListener(delegate { SelectChar(inventory[id].character.char_name, charSprite, inventory[id].purchased, inventory[id].character.price, int.Parse(inventory[id].character.char_id)); });
+                charDesk.name = inventory[i].character.char_name;
 
-                Sprite charSprite = Sprite.Create(mytexture, new Rect(0.0f, 0.0f, mytexture.width, mytexture.height), new Vector2(0.5f, 0.5f));
-
-                charDeskButton.onClick.AddListener(delegate { SelectChar(inventory[i].character.char_name, charSprite, inventory[i].purchased, inventory[i].character.price); });
-                charImage = Instantiate(charImage, charDeskButton.transform);
-
-
+                charImage = Instantiate(charImage, charDesk.transform);
                 charImage.GetComponent<Image>().sprite = charSprite;
-                //charImage.GetComponent<Image>().sprite = entry.Value.Value;
 
 
-                monsterName = Instantiate(monsterName, charDeskButton.transform);
+                monsterName = Instantiate(monsterName, charDesk.transform);
                 monsterName.text = inventory[i].character.char_name;
 
                 if (!inventory[i].purchased)
                 {
-                    lockImage = Instantiate(lockImage, charDeskButton.transform);
-                    charDeskButton.GetComponent<Image>().color = new Color(0.407f, 0.407f, 0.407f, 0.439f);
+                    lockImage = Instantiate(lockImage, charDesk.transform);
+                    charDesk.GetComponent<Image>().color = new Color(0.407f, 0.407f, 0.407f, 0.439f);
 
                 }
-
 
             }
-
-            /*foreach (KeyValuePair<string, KeyValuePair<int[], Sprite>> entry in dictionary)
-            {
-                //Debug.Log("Name: " + entry.Key);
-                //Debug.Log("Price: " + entry.Value.Key[0]);
-                //Debug.Log("Purchased: " + entry.Value.Key[1]);
-                //Debug.Log("-----------------------------------");
-
-                charDeskButton = Instantiate(charDeskButtonPrefab, charOptionsContent.transform);
-                charDeskButton.name = entry.Key;
-                charDeskButton.onClick.AddListener(delegate { SelectChar(entry.Key, entry.Value.Value, entry.Value.Key[1], entry.Value.Key[0]); });
-                charImage = Instantiate(charImage, charDeskButton.transform);
-                charImage.GetComponent<Image>().sprite = entry.Value.Value;
-
-                monsterName = Instantiate(monsterName, charDeskButton.transform);
-                monsterName.text = entry.Key;
-
-                if(entry.Value.Key[1] == 0)
-                {
-                    lockImage = Instantiate(lockImage, charDeskButton.transform);
-                    charDeskButton.GetComponent<Image>().color = new Color(0.407f, 0.407f, 0.407f, 0.439f);
-
-                }
-            }*/
-
             charPanelCreated = true;
 
         }
@@ -234,15 +180,12 @@ public class OptionsController : MonoBehaviour
             for (int i = 0; i < ThemeSprites.ToArray().Length; i++)
             {
 
-                charDeskButton = Instantiate(charDeskButtonPrefab, charOptionsContent.transform);
-                //charImage.GetComponent<Image>().sprite = PlayerSprites[i];
-                //charImage = Instantiate(charImage, charDesk.transform);
+                Button charDeskButton = Instantiate(charDeskButtonPrefab, charOptionsContent.transform);
             }
 
             themePanelCreated = true;
         }
     }
-
 
     public void ChangeSegment(int index)
     {
@@ -281,6 +224,20 @@ public class OptionsController : MonoBehaviour
         SoundManager.Instance.Play("Button");
     }
 
+    public void UnlockMonster(int char_id, int price)
+    {
+        Debug.Log("my coins:" + NetworkController.Instance.playerModel.coins);
+        if (price > NetworkController.Instance.playerModel.coins)
+        {
+            Debug.Log("Yo, you don't have enough money for this shit !!");
+        }
 
+        else
+        {
+            NetworkController.Instance.StartCoroutine(NetworkController.Instance.UnlockMonster(char_id));
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+    }
 
 }

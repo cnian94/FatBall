@@ -118,10 +118,8 @@ public class NetworkController : MonoBehaviour
         else
         {
             Debug.Log("DEVICE IS ALREADY REGISTERED: " + request.responseCode);
-
-            //Debug.Log("RESPONSE:"+ request.downloadHandler.text);
-            //Debug.Log("PLAYER RESPONSE:" + JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text).ToString());
-
+            PlayerPrefs.SetString("player", request.downloadHandler.text);
+            playerModel = JsonUtility.FromJson<PlayerModel>(PlayerPrefs.GetString("player"));
 
             notMemberPanel.SetActive(false);
             memberPanel.SetActive(true);
@@ -145,6 +143,29 @@ public class NetworkController : MonoBehaviour
             Debug.Log("Response:"+ request.downloadHandler.text);
             inventoryList = InventoryList.CreateFromJSON(request.downloadHandler.text);
             Debug.Log("INVENTORY:" + inventoryList.inventory.Length);
+        }
+    }
+
+
+    public IEnumerator UnlockMonster(int char_id)
+    {
+        UnlockModel unlockModel = new UnlockModel(playerModel.device_id, char_id);
+        string json = JsonUtility.ToJson(unlockModel);
+        Debug.Log("JSON:" + json);
+        var request = new UnityWebRequest(INVENTORY_URL, "POST");
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        yield return request.Send();
+
+        if (request.error != null)
+        {
+            Debug.Log("Erro: " + request.error);
+        }
+        else
+        {
+            StartCoroutine(GetInventory());
         }
     }
 
