@@ -76,7 +76,7 @@ public class GameMaster : MonoBehaviour
 
     public IEnumerator IncreaseMonsterLimit() //Monster sayısının artış hızı
     {
-        while (!timerScript.GetIsPaused() && spawnerControl.monsters_limit<10)
+        while (!timerScript.GetIsPaused() && spawnerControl.monsters_limit<25)
         {
             yield return new WaitForSeconds(5);
             //spawnerControl.monsters_limit = spawnerControl.monsters_limit * 2;
@@ -108,6 +108,8 @@ public class GameMaster : MonoBehaviour
         SoundManager.Instance.Play("Explosion");
         gameOverUI.SetActive(true);
         PauseButton.SetActive(false);
+        Debug.Log("Enemyeated" + spawnerControl.eatedEnemy);
+        Debug.Log("Jokereated" + jokerSpawnerControl.eatedJoker);
     }
 
     public void PauseGame()

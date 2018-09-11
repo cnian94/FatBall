@@ -9,7 +9,7 @@ public class MonstersSpawnerControl : MonoBehaviour {
 	public GameObject[] monsters;
 	public int randomSpawnPoint, randomMonster;
 
-
+    public int eatedEnemy = 0;
     public GameObject monster;
     public int num_of_monsters = 0;
     public float monsters_limit;

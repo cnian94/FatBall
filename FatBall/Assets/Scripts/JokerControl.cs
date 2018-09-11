@@ -21,6 +21,8 @@ public class JokerControl : MonoBehaviour
     private Vector3 movement;
     private float timeLeft;
 
+
+    public JokerSpawnerControl JokerSpawnerControl;
     public static float max_distance_from_view = 100f;
     public JokerSpawnerControl spawnerControl;
     public PlayerController playerControl;
@@ -56,6 +58,7 @@ public class JokerControl : MonoBehaviour
         spawnerControl = FindObjectOfType<JokerSpawnerControl>();
         playerControl = FindObjectOfType<PlayerController>();
         monstersSpawnerControl = FindObjectOfType<MonstersSpawnerControl>();
+        JokerSpawnerControl = FindObjectOfType<JokerSpawnerControl>();
         transform.name = transform.name.Replace("(Clone)", "").Trim();
         target = GameObject.Find("Player");
         rb = GetComponent<Rigidbody2D>();
@@ -131,9 +134,10 @@ public class JokerControl : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
+        JokerSpawnerControl.eatedJoker++;
         switch (col.gameObject.name)
         {
-
+            
             case "Player":
                 if (gameObject.CompareTag("GrapeFruitJoker")) //tavşanı yerse
                 {

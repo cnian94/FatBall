@@ -21,6 +21,8 @@ public class MonsterControl : MonoBehaviour
     Vector3 temp;
 
     private bool isMonsterMovementAllowed = true;
+    
+
 
 
     public void SetIsMonsterMovementAllowed(bool val)
@@ -122,6 +124,7 @@ public class MonsterControl : MonoBehaviour
                     Destroy(gameObject);
                     Vector3[] scales = { col.gameObject.transform.localScale, targetScale };
                     col.gameObject.SendMessage("StartGetFatEffect", scales);
+                    spawnerControl.eatedEnemy++;
                 }
                 break;
         }
