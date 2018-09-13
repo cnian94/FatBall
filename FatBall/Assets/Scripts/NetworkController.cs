@@ -44,7 +44,7 @@ public class NetworkController : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         playerModel = JsonUtility.FromJson<PlayerModel>(PlayerPrefs.GetString("player"));
-        //playerModel = new PlayerModel("3323e9048b337f17b71d49e4ac5925e951ada236", "cano", 3,  241);
+        //playerModel = new PlayerModel("3323e9048b337f17b71d49e4ac5925e951ada236", "cano", 0,  241);
         //PlayerPrefs.SetString("player",JsonUtility.ToJson(playerModel));
 
         if (playerModel == null)
