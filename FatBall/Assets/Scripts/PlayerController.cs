@@ -73,8 +73,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //rb.velocity = new Vector2(dirX, dirY);
-        rb.AddForce(movement); //tilt control açar
+        //rb.AddForce(movement); //tilt control açar
     }
 
 
@@ -98,13 +97,13 @@ public class PlayerController : MonoBehaviour
             Vector3 position = gameObject.transform.position;
 
 
-        _InputDir = FixAcceleration(Input.acceleration); //tilt control açar
-        movement = new Vector2(_InputDir.x, _InputDir.y) * moveSpeed;  //tilt control açar
+        //_InputDir = FixAcceleration(Input.acceleration); //tilt control açar
+        //movement = new Vector2(_InputDir.x, _InputDir.y) * moveSpeed;  //tilt control açar
 
 
 
 
-        /*if (!timer.GetComponent<TimerScript>().GetIsPaused())  //dokunmatik oynamak için 
+        if (!timer.GetComponent<TimerScript>().GetIsPaused())  //dokunmatik oynamak için 
         {
             if (isMoving)
             {
@@ -161,7 +160,7 @@ public class PlayerController : MonoBehaviour
             {
                 previousDistanceToTouchPos = (touchPosition - transform.position).magnitude;
             }
-        } */ //buraya kadar dokunmatik oynamak için
+        }  //buraya kadar dokunmatik oynamak için
 
 
     }
@@ -266,7 +265,7 @@ public class PlayerController : MonoBehaviour
                     Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
                     //gameOverUI.SetActive(true);
                     gameMaster.KillPlayer(gameObject);
-                    Destroy(Explosion, 1);
+                    Destroy(Explosion, 3);
                     break;
 
             }

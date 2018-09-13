@@ -8,7 +8,6 @@ public class JokerSpawnerControl : MonoBehaviour {
     public GameObject[] jokers;
     public int randomSpawnPoint, randomJoker;
 
-    public int eatedJoker = 0;
     public GameObject joker;
     public int num_of_jokers = 0;
     public int jokerLimit = 4;

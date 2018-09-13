@@ -16,6 +16,12 @@ public class PlayerModel
         this.nickname = nickname;
     }
 
+    public PlayerModel(string device_id, string nickname, int highscore, int coins) : this(device_id, nickname)
+    {
+        this.highscore = highscore;
+        this.coins = coins;
+    }
+
     public override string ToString()
     {
         return "device_id:" + this.device_id + System.Environment.NewLine

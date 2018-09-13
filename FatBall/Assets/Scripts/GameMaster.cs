@@ -35,6 +35,10 @@ public class GameMaster : MonoBehaviour
     GameObject randomSpike;
     public float extendTime;
 
+
+    public int eatedEnemy = 0;
+    public int eatedJoker = 0;
+
     void Awake()
     {
         timerScript = timer.GetComponent<TimerScript>();
@@ -76,7 +80,7 @@ public class GameMaster : MonoBehaviour
 
     public IEnumerator IncreaseMonsterLimit() //Monster sayısının artış hızı
     {
-        while (!timerScript.GetIsPaused() && spawnerControl.monsters_limit<25)
+        while (!timerScript.GetIsPaused() && spawnerControl.monsters_limit < 25)
         {
             yield return new WaitForSeconds(5);
             //spawnerControl.monsters_limit = spawnerControl.monsters_limit * 2;
@@ -108,8 +112,28 @@ public class GameMaster : MonoBehaviour
         SoundManager.Instance.Play("Explosion");
         gameOverUI.SetActive(true);
         PauseButton.SetActive(false);
-        Debug.Log("Enemyeated" + spawnerControl.eatedEnemy);
-        Debug.Log("Jokereated" + jokerSpawnerControl.eatedJoker);
+        Debug.Log("Enemyeated" + eatedEnemy);
+        Debug.Log("Jokereated" + eatedJoker);
+        CalculateScore();
+    }
+
+    public void CalculateScore()
+    {
+        int pointFromJokers = eatedJoker * 2;
+        int pointFromEnemy = -eatedEnemy;
+        string[] time_score = timerScript.time_text.text.Split(':');
+        int pointFromTime = int.Parse(time_score[0]) * 60 + int.Parse(time_score[1].Split('.')[0]);
+        int finalScore = pointFromTime + pointFromJokers + pointFromEnemy;
+        Debug.Log("pointFromJokers:" + pointFromJokers);
+        Debug.Log("pointFromEnemy:" + pointFromEnemy);
+        Debug.Log("pointFromTime:" + pointFromTime);
+        Debug.Log("FINAL SCORE:" + finalScore);
+        if(finalScore > NetworkController.Instance.playerModel.highscore)
+        {
+            Debug.Log("New high score !!");
+            NetworkController.Instance.playerModel.highscore = finalScore;
+            NetworkController.Instance.StartCoroutine(NetworkController.Instance.SetHighScore());
+        }
     }
 
     public void PauseGame()

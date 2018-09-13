@@ -16,7 +16,7 @@ public class MonsterControl : MonoBehaviour
 
     public static float max_distance_from_view;
     private MonstersSpawnerControl spawnerControl;
-    private GameMaster gameMaster;
+    //private GameMaster gameMaster;
 
     Vector3 temp;
 
@@ -52,7 +52,7 @@ public class MonsterControl : MonoBehaviour
     void Start()
     {
         spawnerControl = FindObjectOfType<MonstersSpawnerControl>();
-        gameMaster = FindObjectOfType<GameMaster>();
+        //gameMaster = FindObjectOfType<GameMaster>();
         transform.name = transform.name.Replace("(Clone)", "").Trim();
         rb = GetComponent<Rigidbody2D>();
         float randomScale = Random.Range(Screen.width / 11f, Screen.width / 18f);
@@ -115,16 +115,17 @@ public class MonsterControl : MonoBehaviour
         {
 
             case "Player":
-                if (!gameMaster.isBubbleCatched)
+                if (!GameMaster.gm.isBubbleCatched)
                 {
                     Vector3 targetScale = new Vector3(col.gameObject.transform.localScale.x + gameObject.transform.localScale.x / 4, col.gameObject.transform.localScale.y + gameObject.transform.localScale.y / 4, gameObject.transform.localScale.z);
                     SoundManager.Instance.Play("Enemy");
                     spawnerControl.num_of_monsters--;
-                    gameMaster.SpawnAMonster();
+                    GameMaster.gm.SpawnAMonster();
+                    //gameMaster.SpawnAMonster();
                     Destroy(gameObject);
                     Vector3[] scales = { col.gameObject.transform.localScale, targetScale };
                     col.gameObject.SendMessage("StartGetFatEffect", scales);
-                    spawnerControl.eatedEnemy++;
+                    GameMaster.gm.eatedEnemy++;
                 }
                 break;
         }

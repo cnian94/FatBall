@@ -21,6 +21,7 @@ public class NetworkController : MonoBehaviour
 
     private string REGISTER_URL = "http://192.168.1.104:5000/api/register";
     private string CHECK_URL = "http://192.168.1.104:5000/api/check";
+    private string PLAYER_URL = "http://192.168.1.104:5000/api/player";
     private string INVENTORY_URL = "http://192.168.1.104:5000/api/inventory?id=";
 
 
@@ -43,6 +44,8 @@ public class NetworkController : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         playerModel = JsonUtility.FromJson<PlayerModel>(PlayerPrefs.GetString("player"));
+        //playerModel = new PlayerModel("3323e9048b337f17b71d49e4ac5925e951ada236", "cano", 3,  241);
+        //PlayerPrefs.SetString("player",JsonUtility.ToJson(playerModel));
 
         if (playerModel == null)
         {
@@ -166,6 +169,29 @@ public class NetworkController : MonoBehaviour
         else
         {
             StartCoroutine(GetInventory());
+        }
+    }
+
+    public IEnumerator SetHighScore()
+    {
+        string json = JsonUtility.ToJson(playerModel);
+        Debug.Log("JSON:" + json);
+        var request = new UnityWebRequest(PLAYER_URL, "PUT");
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        yield return request.Send();
+
+        if (request.error != null)
+        {
+            Debug.Log("Erro: " + request.error);
+        }
+        else
+        {
+            Debug.Log("RESPONSE: " + request.downloadHandler.text);
+            PlayerPrefs.SetString("player", request.downloadHandler.text);
+            playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
         }
     }
 
