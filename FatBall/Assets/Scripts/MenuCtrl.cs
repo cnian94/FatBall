@@ -25,6 +25,11 @@ public class MenuCtrl : MonoBehaviour
         {
             SoundManager.Instance.MusicSource.Stop();
         }
+
+        if (sceneName.Equals("LeaderBoardScene"))
+        {
+            NetworkController.Instance.StartCoroutine(NetworkController.Instance.GetLeaderBoard());
+        }
         SceneManager.LoadScene(sceneName);
     }
 

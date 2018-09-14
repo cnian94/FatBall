@@ -10,18 +10,21 @@ public class OptionsController : MonoBehaviour
 
     public GameObject Player;
 
+    public Text PlayerCoinText;
+    public Image PlayerCoin;
+
     public GameObject charOptionsPanel;
     public GameObject charOptionsContent;
 
-    public GameObject themeOptionsPanel;
-    public GameObject themeOptionsContent;
+    //public GameObject themeOptionsPanel;
+    //public GameObject themeOptionsContent;
 
     public GameObject unlockPanel;
     public Button unlockButton;
     public Text priceText;
 
     private bool charPanelCreated = false;
-    private bool themePanelCreated = false;
+    //private bool themePanelCreated = false;
 
     public Button charBtn;
     public Button themeBtn;
@@ -41,26 +44,29 @@ public class OptionsController : MonoBehaviour
     Color normalColor;
     Color selectedColor;
 
-    public int selectedSegment = 0;
 
 
 
     // Use this for initialization
     void Start()
     {
+        PlayerCoinText.text = NetworkController.Instance.playerModel.coins.ToString();
         inventory = NetworkController.Instance.inventoryList.inventory;
         normalColor = new Color(1, 1, 1, 1);
         selectedColor = new Color(0.86f, 0.78f, 0.49f, 1);
         charBtn.GetComponent<Image>().color = selectedColor;
 
-        //CreateDictionary();
-
-        SetPanel(0);
+        SetPanel();
 
     }
 
-    public void SelectChar(string name, Sprite charSprite, bool purchased, int price, int char_id)
+    public void SelectChar(Sprite charSprite, int charIndex)
     {
+        string name = inventory[charIndex].character.char_name;
+        bool purchased = inventory[charIndex].purchased;
+        int price = inventory[charIndex].character.price;
+        int char_id = int.Parse(inventory[charIndex].character.char_id);
+
         Debug.Log("SELECTED CHAR: " + name);
         GameObject selected = GameObject.Find(name);
 
@@ -70,19 +76,23 @@ public class OptionsController : MonoBehaviour
             {
                 selectedImage = Instantiate(selectedImage, selected.transform);
                 selectedImage.name = "CharSelectedImage";
-                Player.GetComponent<SpriteRenderer>().sprite = charSprite;
-                DestroyImmediate(Player.GetComponent<PolygonCollider2D>(), true);
-                Player.AddComponent<PolygonCollider2D>();
-                Player.GetComponent<PolygonCollider2D>().isTrigger = true;
+                PlayerPrefs.SetInt("selectedChar", charIndex);
+
+                //Player.GetComponent<SpriteRenderer>().sprite = charSprite;
+                //DestroyImmediate(Player.GetComponent<PolygonCollider2D>(), true);
+                //Player.AddComponent<PolygonCollider2D>();
+                //Player.GetComponent<PolygonCollider2D>().isTrigger = true;
             }
 
             if (GameObject.Find("CharSelectedImage"))
             {
                 selectedImage.transform.SetParent(selected.transform, false);
-                Player.GetComponent<SpriteRenderer>().sprite = charSprite;
-                DestroyImmediate(Player.GetComponent<PolygonCollider2D>(), true);
-                Player.AddComponent<PolygonCollider2D>();
-                Player.GetComponent<PolygonCollider2D>().isTrigger = true;
+                PlayerPrefs.SetInt("selectedChar", charIndex);
+
+                //Player.GetComponent<SpriteRenderer>().sprite = charSprite;
+                //DestroyImmediate(Player.GetComponent<PolygonCollider2D>(), true);
+                //Player.AddComponent<PolygonCollider2D>();
+                //Player.GetComponent<PolygonCollider2D>().isTrigger = true;
             }
 
         }
@@ -118,14 +128,11 @@ public class OptionsController : MonoBehaviour
     }
 
 
-    private void SetPanel(int index)
+    private void SetPanel() // old parameter int index
     {
 
-        if (index == 0 && !charPanelCreated)
+        if (!charPanelCreated)
         {
-            Debug.Log("index:" + index);
-            Debug.Log("charPanelCreated:" + charPanelCreated);
-            Debug.Log("inventory.Length:" + inventory.Length);
 
             for (int i = 0; i < inventory.Length; i++)
             {
@@ -152,8 +159,8 @@ public class OptionsController : MonoBehaviour
                 charSprite = Sprite.Create(mytexture, new Rect(0.0f, 0.0f, mytexture.width, mytexture.height), new Vector2(0.5f, 0.5f));
 
                 charDesk = Instantiate(charDeskButtonPrefab, charOptionsContent.transform);
-                int id = i;
-                charDesk.onClick.AddListener(delegate { SelectChar(inventory[id].character.char_name, charSprite, inventory[id].purchased, inventory[id].character.price, int.Parse(inventory[id].character.char_id)); });
+                int charIndex = i;
+                charDesk.onClick.AddListener(delegate { SelectChar(charSprite, charIndex); });
                 charDesk.name = inventory[i].character.char_name;
 
                 charImage = Instantiate(charImage, charDesk.transform);
@@ -167,7 +174,12 @@ public class OptionsController : MonoBehaviour
                 {
                     lockImage = Instantiate(lockImage, charDesk.transform);
                     charDesk.GetComponent<Image>().color = new Color(0.407f, 0.407f, 0.407f, 0.439f);
+                }
 
+                if (i == PlayerPrefs.GetInt("selectedChar"))
+                {
+                    selectedImage = Instantiate(selectedImage, charDesk.transform);
+                    selectedImage.name = "CharSelectedImage";
                 }
 
             }
@@ -175,7 +187,7 @@ public class OptionsController : MonoBehaviour
 
         }
 
-        if (index == 1 && !themePanelCreated)
+        /*if (index == 1 && !themePanelCreated)
         {
             for (int i = 0; i < ThemeSprites.ToArray().Length; i++)
             {
@@ -184,10 +196,10 @@ public class OptionsController : MonoBehaviour
             }
 
             themePanelCreated = true;
-        }
+        }*/
     }
 
-    public void ChangeSegment(int index)
+    /*public void ChangeSegment(int index)
     {
         if (index == selectedSegment)
         {
@@ -216,7 +228,7 @@ public class OptionsController : MonoBehaviour
                 SetPanel(1);
             }
         }
-    }
+    }*/
 
     public void loadScene(string sceneName)
     {
@@ -224,9 +236,36 @@ public class OptionsController : MonoBehaviour
         SoundManager.Instance.Play("Button");
     }
 
+    IEnumerator StopCoinAnim(float time, int char_id)
+    {
+        yield return new WaitForSeconds(time);
+        SoundManager.Instance.MusicSource.Stop();
+        SoundManager.Instance.PlayMusic("GameSound");
+        PlayerCoin.GetComponent<Animator>().SetTrigger("fixed");
+        NetworkController.Instance.StartCoroutine(NetworkController.Instance.UnlockMonster(char_id));
+
+    }
+
+    float currCountdownValue;
+    public IEnumerator DecreasePlayerCoin(float price, float countdownValue, int char_id)
+    {
+        PlayerCoin.GetComponent<Animator>().SetTrigger("purchased");
+        SoundManager.Instance.PlayMusic("CoinSound");
+        currCountdownValue = countdownValue;
+        float coins = int.Parse(PlayerCoinText.text);
+        StartCoroutine(StopCoinAnim(countdownValue, char_id));
+        while (currCountdownValue > 0)
+        {
+            yield return new WaitForSeconds(0.2f);
+            currCountdownValue-=0.2f;
+            coins -= (price / (countdownValue * 5));
+            PlayerCoinText.text = ((int)coins).ToString();
+        }
+    }
+
+
     public void UnlockMonster(int char_id, int price)
     {
-        Debug.Log("my coins:" + NetworkController.Instance.playerModel.coins);
         if (price > NetworkController.Instance.playerModel.coins)
         {
             Debug.Log("Yo, you don't have enough money for this shit !!");
@@ -234,10 +273,10 @@ public class OptionsController : MonoBehaviour
 
         else
         {
-            NetworkController.Instance.StartCoroutine(NetworkController.Instance.UnlockMonster(char_id));
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            StartCoroutine(DecreasePlayerCoin(price, 3, char_id));
         }
-
     }
+
+
 
 }

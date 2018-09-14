@@ -90,13 +90,31 @@ public class GameMaster : MonoBehaviour
         }
     }
 
+    public Sprite GetSelectedCharSprite(int index)
+    {
+
+        byte[] dataImage = System.Convert.FromBase64String(NetworkController.Instance.inventoryList.inventory[index].character.img);
+        Texture2D mytexture = new Texture2D(1, 1);
+        mytexture.LoadImage(dataImage);
+
+        Sprite charSprite = Sprite.Create(mytexture, new Rect(0.0f, 0.0f, mytexture.width, mytexture.height), new Vector2(0.5f, 0.5f));
+        return charSprite;
+    }
+
     public IEnumerator SpawnPlayer()
     {
         yield return new WaitForSeconds(spawnDelay);
         CancelInvoke("PlayStartSound");
         Vector3 randomPoint = new Vector3(Random.Range(Screen.width / 6, Screen.width - (Screen.width / 6)), Random.Range(Screen.height / 3, Screen.height - (Screen.height / 3)), 1);
+
+        player.GetComponent<SpriteRenderer>().sprite = GetSelectedCharSprite(PlayerPrefs.GetInt("selectedChar"));
+        DestroyImmediate(player.GetComponent<PolygonCollider2D>(), true);
+        player.AddComponent<PolygonCollider2D>();
+        player.GetComponent<PolygonCollider2D>().isTrigger = true;
         player = Instantiate(player, randomPoint, Quaternion.identity);
         player.name = "Player";
+
+
         timer.SetActive(true);
         //PauseButton.SetActive(true);
         SpawnAMonster();
@@ -128,10 +146,11 @@ public class GameMaster : MonoBehaviour
         Debug.Log("pointFromEnemy:" + pointFromEnemy);
         Debug.Log("pointFromTime:" + pointFromTime);
         Debug.Log("FINAL SCORE:" + finalScore);
-        if(finalScore > NetworkController.Instance.playerModel.highscore)
+        if (finalScore > NetworkController.Instance.playerModel.highscore)
         {
             Debug.Log("New high score !!");
             NetworkController.Instance.playerModel.highscore = finalScore;
+            NetworkController.Instance.playerModel.coins = NetworkController.Instance.playerModel.coins + finalScore;
             NetworkController.Instance.StartCoroutine(NetworkController.Instance.SetHighScore());
         }
     }

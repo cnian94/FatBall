@@ -19,71 +19,12 @@ public class LeaderboardController : MonoBehaviour
     public string me = "Tilda";
     private Vector2 scrollTo;
 
-    private string[] playerz =
-{
-        "Shanda",
-         "Mae",
-         "Eneida",
-        "Felecia",
-        "Zachariah",
-              "Filomena",
-         "Leopoldo",
-        "Monnie",
-           "Venice",
-      "Sheila",
-       "Beau",
-        "Sean",
-         "Paul",
-      "Reiko",
-        "Arlene",
-"Sang",
-"Wilton",
-"Somer",
-"Lavina",
-"Tilda",
-"Donte",
-"Lashaunda",
-"Oneida",
-"Nada",
-"Micki",
-"Belkis",
-"Sunni",
-"Royce",
-"Janey",
-"Adell",
-"Kelli",
-"Kary",
-"Lauralee",
-"Tawnya",
-"Odilia",
-"Jacquelynn",
-"Bo",
-"Melonie",
-"Fabian",
-"Sheri",
-"Boyce",
-"Merideth",
-"Breanne",
-"Rosalva",
-"Marita",
-"Edra",
-"Scottie",
-"Shemeka",
-"Mitsue",
-"Marilee"
-};
-
-
-    private Dictionary<string, double> players2 = new Dictionary<string, double>();
-
 
     // Use this for initialization
     void Start()
     {
         CreateRandomLeaderboard();
-        //Debug.Log(leaderBoardPanel.GetComponent<ScrollRect>().normalizedPosition);
-        //SoundManager.GetComponent<SoundManagerScript>().PlaySound("GameSound");
-
+        StartCoroutine(ScrollToMyScore(0.5f));
     }
 
     IEnumerator ScrollToMyScore(float time)
@@ -103,47 +44,19 @@ public class LeaderboardController : MonoBehaviour
 
     void CreateRandomLeaderboard()
     {
-        for (int i = 0; i < playerz.Length; i++)
+        PlayerModel[] players = NetworkController.Instance.leaderboard.players;
+
+        for (int i=0; i < players.Length; i++)
         {
-            int randomScore = Random.Range(0, 460);
-            players2.Add(playerz[i], randomScore);
-        }
-
-        SortLeaderboard();
-        StartCoroutine(ScrollToMyScore(0.5f));
-    }
-
-    void SortLeaderboard()
-    {
-
-        var myList = players2.ToList();
-        
-        myList.Sort((pair1, pair2) => pair2.Value.CompareTo(pair1.Value));
-
-
-        foreach (KeyValuePair<string, double> player in myList)
-        {
-
             playerBtn = Instantiate(prefabBtn, leaderBoardContent.transform);
-            playerBtn.GetComponentInChildren<Text>().text = player.Key + "                    " + player.Value;
-            playerBtn.name = player.Key;
-        }
+            playerBtn.GetComponentInChildren<Text>().text =  players[i].nickname + "                    " + players[i].highscore;
+            playerBtn.name = players[i].nickname;
 
-        FindMe(myList);
-
-    }
-
-    void FindMe(List<KeyValuePair<string, double>> players) 
-    {
-        var index = 0;
-        foreach (KeyValuePair<string, double> player in players)
-        {
-            if(player.Key.Equals(me))
+            if (players[i].device_id == NetworkController.Instance.playerModel.device_id)
             {
-                index = players.IndexOf(player);
                 float ratio = (1f / players.ToArray().Length);
-                scrollTo.y = 1 - ratio * index;
-                Button me = GameObject.Find(player.Key).GetComponent<Button>();
+                scrollTo.y = 1 - ratio * i;
+                Button me = GameObject.Find(players[i].nickname).GetComponent<Button>();
                 me.GetComponent<Image>().color = Color.grey;
             }
         }
@@ -158,7 +71,6 @@ public class LeaderboardController : MonoBehaviour
 
     private void Update()
     {
-        //Debug.Log(leaderBoardPanel.GetComponent<ScrollRect>().normalizedPosition);
     }
 
 

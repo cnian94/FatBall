@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[Serializable]
 public class PlayerModel
 {
 
@@ -29,4 +31,19 @@ public class PlayerModel
              + "highscore:" + this.highscore + System.Environment.NewLine
              + "coins:" + this.coins + System.Environment.NewLine;
     }
+}
+
+
+[Serializable]
+public class LeaderBoardList
+{
+
+    public PlayerModel[] players;
+
+
+    public static LeaderBoardList CreateFromJSON(string jsonString)
+    {
+        return JsonUtility.FromJson<LeaderBoardList>(jsonString);
+    }
+
 }

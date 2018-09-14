@@ -11,17 +11,6 @@ public class InventoryItem
     public CharModel character;
     public bool purchased;
 
-
-    /*public InventoryItem(CharModel charModel, bool purchased)
-    {
-        @char = charModel;
-        this.purchased = purchased;
-
-    }*/
-
-
-
-
     public static InventoryItem CreateFromJSON(string jsonString)
     {
         return JsonUtility.FromJson<InventoryItem>(jsonString);

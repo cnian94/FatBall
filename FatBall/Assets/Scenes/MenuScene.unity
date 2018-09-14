@@ -1304,6 +1304,7 @@ MonoBehaviour:
   BeerJokerSound: {fileID: 8300000, guid: e09804541364d594f872e18f9555d4c4, type: 3}
   ResetSound: {fileID: 8300000, guid: 47ee6cd5f3bd706488551cea3ad2323a, type: 3}
   ButtonSound: {fileID: 8300000, guid: 427c6952a8a0f3c4db12f4cffeef8de6, type: 3}
+  CoinSound: {fileID: 8300000, guid: 7f327fa30a20b044ea8ded63fa5b9521, type: 3}
   isMuted: 0
   EffectsSource: {fileID: 1246306025}
   MusicSource: {fileID: 1246306027}

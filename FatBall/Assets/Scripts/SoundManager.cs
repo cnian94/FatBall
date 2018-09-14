@@ -8,7 +8,7 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
 
-    public AudioClip GameSound, StartSound, ExplosionSound, EnemySound, GrapeFruitJokerSound, RadishJokerSound, BroccoliJokerSound, BeerJokerSound, ResetSound, ButtonSound;
+    public AudioClip GameSound, StartSound, ExplosionSound, EnemySound, GrapeFruitJokerSound, RadishJokerSound, BroccoliJokerSound, BeerJokerSound, ResetSound, ButtonSound, CoinSound;
     public bool isMuted = false;
 
 
@@ -100,6 +100,11 @@ public class SoundManager : MonoBehaviour
 
             case "RadishJoker": //Shield joker belirli bir süre oynayacağı için PlayOneShot olmaz.
                 MusicSource.clip = RadishJokerSound;
+                MusicSource.Play();
+                break;
+
+            case "CoinSound":
+                MusicSource.clip = CoinSound;
                 MusicSource.Play();
                 break;
         }
