@@ -2992,11 +2992,6 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
-        type: 2}
-      propertyPath: jokerWeights.Array.size
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 4101108299393166, guid: 1a2a91ac2fe13d045a582bc393ce5fde, type: 2}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3031,11 +3026,6 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
         type: 2}
-      propertyPath: cam
-      value: 
-      objectReference: {fileID: 142995596}
-    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
-        type: 2}
       propertyPath: timer
       value: 
       objectReference: {fileID: 1771478288}
@@ -3051,60 +3041,14 @@ Prefab:
       objectReference: {fileID: 149113803}
     - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
         type: 2}
-      propertyPath: jokerWeights.Array.data[0]
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
-        type: 2}
-      propertyPath: jokerWeights.Array.data[2]
-      value: 45
-      objectReference: {fileID: 0}
-    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
-        type: 2}
-      propertyPath: jokerWeights.Array.data[3]
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
-        type: 2}
-      propertyPath: jokerWeights.Array.data[4]
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
-        type: 2}
       propertyPath: gamePausedUI
       value: 
       objectReference: {fileID: 200044072}
     - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
         type: 2}
-      propertyPath: bg_cam
-      value: 
-      objectReference: {fileID: 1342181995}
-    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
-        type: 2}
       propertyPath: PauseButton
       value: 
       objectReference: {fileID: 219945670}
-    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
-        type: 2}
-      propertyPath: player
-      value: 
-      objectReference: {fileID: 1721170030420978, guid: 7c73ea29cd8dfca48aa99c361bdea932,
-        type: 2}
-    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
-        type: 2}
-      propertyPath: jokerWeights.Array.data[1]
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
-        type: 2}
-      propertyPath: jokerWeights.Array.data[5]
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 114771182332631052, guid: 1a2a91ac2fe13d045a582bc393ce5fde,
-        type: 2}
-      propertyPath: jokerWeights.Array.data[6]
-      value: 80
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a2a91ac2fe13d045a582bc393ce5fde, type: 2}
   m_IsPrefabAsset: 0

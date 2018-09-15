@@ -51,13 +51,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f2b36e216538a04d9c22a049c86386a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cam: {fileID: 0}
   timer: {fileID: 0}
   countDown: {fileID: 0}
-  player: {fileID: 100000, guid: 640ca4bdd51fe144c92f84869ed38b86, type: 2}
+  player: {fileID: 1721170030420978, guid: 7c73ea29cd8dfca48aa99c361bdea932, type: 2}
   gameOverUI: {fileID: 0}
-  jokerWeights: 3200000032000000140000001400000002000000
+  gamePausedUI: {fileID: 0}
+  PauseButton: {fileID: 0}
+  danger: {fileID: 1105957195135460, guid: a66af6865f083a047b64f19ca55876aa, type: 2}
+  timerScript: {fileID: 0}
+  jokerWeights: 50000000460000002d000000140000000a0000005000000050000000
   jokerSpawnTime: 5
   monsterSpawnTime: 5
   isBubbleCatched: 0
   extendTime: 0
+  eatedEnemy: 0
+  eatedJoker: 0
+  Dangerclip: {fileID: 7400000, guid: 9c96115c1df739f48bcb00c9a8cc8e5a, type: 2}

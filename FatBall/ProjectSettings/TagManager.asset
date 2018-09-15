@@ -24,6 +24,7 @@ TagManager:
   - CherryJoker
   - GrapeJoker
   - CharDeskButton
+  - Danger
   layers:
   - Default
   - TransparentFX

@@ -17,6 +17,7 @@ public class GameMaster : MonoBehaviour
     public GameObject gameOverUI;
     public GameObject gamePausedUI;
     public GameObject PauseButton;
+    public GameObject danger;
 
     public TimerScript timerScript;
 
@@ -38,6 +39,9 @@ public class GameMaster : MonoBehaviour
 
     public int eatedEnemy = 0;
     public int eatedJoker = 0;
+
+    public AnimationClip Dangerclip;
+
 
     void Awake()
     {
@@ -265,22 +269,122 @@ public class GameMaster : MonoBehaviour
             jokerSpawnerControl.joker.name = "Joker";
             jokerSpawnerControl.num_of_jokers++;
         }
-
     }
+
+    Vector3 GetDangerPos()
+    {
+        Vector3 pos = randomSpike.GetComponent<SpikeControl>().endPos;
+        pos.z = 1;
+
+        if (randomSpike.name.Equals("TopSpike"))
+        {
+            pos.y -= 300;
+        }
+
+        if (randomSpike.name.Equals("RightSpike"))
+        {
+            pos.x -= 300;
+
+        }
+
+        if (randomSpike.name.Equals("BottomSpike"))
+        {
+            pos.y += 300;
+
+        }
+
+        if (randomSpike.name.Equals("LeftSpike"))
+        {
+
+            pos.x += 300;
+        }
+
+        if (randomSpike.name.Equals("TopLeftCornerSpike"))
+        {
+            pos.x += 300;
+            pos.y -= 300;
+        }
+
+        if (randomSpike.name.Equals("TopRightCornerSpike"))
+        {
+            pos.x -= 300;
+            pos.y -= 300;
+        }
+
+
+        if (randomSpike.name.Equals("BottomRightCornerSpike"))
+        {
+            pos.x -= 300;
+            pos.y += 300;
+
+        }
+
+        if (randomSpike.name.Equals("BottomLeftCornerSpike"))
+        {
+            pos.x += 300;
+            pos.y += 300;
+        }
+
+        return pos;
+    }
+
+
+    void SetDangerClip()
+    {
+
+        float startTime = 0;
+        float endTime = 0.50f;
+
+        Vector3 startValue = danger.transform.localScale;
+        Vector3 endValue = new Vector3(danger.transform.localScale.x + 10, danger.transform.localScale.y + 10, danger.transform.localScale.z);
+
+        AnimationCurve curve_x = AnimationCurve.Linear(startTime, startValue.x, endTime, endValue.x);
+        AnimationCurve curve_y = AnimationCurve.Linear(startTime, startValue.y, endTime, endValue.y);
+
+        startTime += 0.50f;
+        endTime += 0.50f;
+        startValue.x += 10;
+        startValue.y += 10;
+
+        endValue.x += 30;
+        endValue.y += 30;
+
+        AnimationCurve curve_x2 = AnimationCurve.Linear(startTime, startValue.x, endTime, endValue.x);
+        AnimationCurve curve_y2 = AnimationCurve.Linear(startTime, startValue.x, endTime, endValue.x);
+
+        string relativeObjectName = string.Empty; // Means the object holding the animator component
+
+        Dangerclip.SetCurve(relativeObjectName, typeof(Transform), "localScale.x", curve_x);
+        Dangerclip.SetCurve(relativeObjectName, typeof(Transform), "localScale.y", curve_y);
+        Dangerclip.SetCurve(relativeObjectName, typeof(Transform), "localScale.x", curve_x2);
+        Dangerclip.SetCurve(relativeObjectName, typeof(Transform), "localScale.y", curve_y2);
+    }
+
 
     IEnumerator GetRandomSpike()
     {
         while (true)
         {
             randomSpike = spikeSpawner.spikes[Random.Range(0, spikeSpawner.spikes.Length)];
+            SetDangerClip();
             SpikeControl spikeControl = randomSpike.GetComponent<SpikeControl>();
             //spikeControl.isMovingToView
             if (spikeControl.isWaiting)
             {
+                GameObject dangerObject = GameObject.FindGameObjectWithTag("Danger");
+                SoundManager.Instance.Play("Alert");
+                if (dangerObject == null)
+                {
+                    Debug.Log("DANGER OBJECT NOT FOUND !!");
+                    Instantiate(danger, GetDangerPos(), Quaternion.identity);
+                    dangerObject = GameObject.FindGameObjectWithTag("Danger");
+                    yield return new WaitForSeconds(1.5f);
+                    Destroy(dangerObject);
+                }
 
-                //SpikeControl spikeControl = randomSpike.GetComponent<SpikeControl>();
                 spikeControl.endPos = CalcEndPos(randomSpike.name, spikeControl.startPos);
                 StartCoroutine(NormalizeSpike(randomSpike, spikeControl));
+
                 break;
             }
             yield return null;

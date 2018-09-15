@@ -1305,6 +1305,7 @@ MonoBehaviour:
   ResetSound: {fileID: 8300000, guid: 47ee6cd5f3bd706488551cea3ad2323a, type: 3}
   ButtonSound: {fileID: 8300000, guid: 427c6952a8a0f3c4db12f4cffeef8de6, type: 3}
   CoinSound: {fileID: 8300000, guid: 7f327fa30a20b044ea8ded63fa5b9521, type: 3}
+  AlertSound: {fileID: 8300000, guid: 6c625f43bd213ed4580ca1680fae116f, type: 3}
   isMuted: 0
   EffectsSource: {fileID: 1246306025}
   MusicSource: {fileID: 1246306027}
@@ -1695,9 +1696,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9c10c8d58a61434ea8f2ee49186cdff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  leaderboardCtrl: {fileID: 0}
   notMemberPanel: {fileID: 671680686}
   memberPanel: {fileID: 1817919222}
   nickname: {fileID: 1537162294}
+  leaderboard:
+    players: []
+  playerModel:
+    device_id: 
+    nickname: 
+    highscore: 0
+    coins: 0
   inventoryList:
     inventory: []
 --- !u!1 &1817919222
