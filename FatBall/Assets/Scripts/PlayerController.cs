@@ -182,13 +182,13 @@ public class PlayerController : MonoBehaviour
     {
 
         float originalTime = time;
-        Debug.Log("scales: " + scales[0] + " - " + scales[1]);
+        //Debug.Log("scales: " + scales[0] + " - " + scales[1]);
 
         while (time > 0f)
         {
             time -= Time.deltaTime;
             transform.localScale = Vector3.Lerp(scales[1], scales[0], time / originalTime);
-            Debug.Log("Timer: " + time);
+            //Debug.Log("Timer: " + time);
             yield return null;
         }
     }
@@ -260,6 +260,7 @@ public class PlayerController : MonoBehaviour
             {
 
                 case "Spike":
+                    GameMaster.gm.CalculateScore();
                     GameObject.Find("Timer").SendMessage("Finish");
                     Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
                     Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);

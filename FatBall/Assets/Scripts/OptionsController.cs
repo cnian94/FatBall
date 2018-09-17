@@ -232,8 +232,8 @@ public class OptionsController : MonoBehaviour
 
     public void loadScene(string sceneName)
     {
-        SceneManager.LoadScene(sceneName);
-        SoundManager.Instance.Play("Button");
+        //SoundManager.Instance.MusicSource.Pause();
+        MenuCtrl.Instance.loadScene(sceneName);
     }
 
     IEnumerator StopCoinAnim(float time, int char_id)

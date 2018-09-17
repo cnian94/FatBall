@@ -2007,7 +2007,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 623f245b1ddd11147b65820af1bc3959, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d08f826f9394d2f468aa3faf239b8207, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2259,46 +2259,46 @@ MonoBehaviour:
     type: 2}
   inventory: []
   PlayerSprites:
-  - {fileID: 21300000, guid: ba5d27ca794d81f458fbae1781d58ddf, type: 3}
-  - {fileID: 21300000, guid: 2541110c37aca7b4fb875d0fc133bb18, type: 3}
-  - {fileID: 21300000, guid: 568754007f15f8e479d6a525fedb2512, type: 3}
-  - {fileID: 21300000, guid: d3690a809fc6d2e4aa58d812bac52407, type: 3}
-  - {fileID: 21300000, guid: 59c0018e8f8dac74fb7d51cf138dfb25, type: 3}
-  - {fileID: 21300000, guid: cc0a0397c6e41264ab46337bd8a67f47, type: 3}
-  - {fileID: 21300000, guid: 208aa988859758b418a4f22bc4053766, type: 3}
-  - {fileID: 21300000, guid: b6595c52f4fbf2f43b6da3f21481ce2f, type: 3}
-  - {fileID: 21300000, guid: a08b702b20f1c54499eb64b13a3c7653, type: 3}
-  - {fileID: 21300000, guid: 5ea212c013c17d1408a0a4a52d6a5e0f, type: 3}
-  - {fileID: 21300000, guid: 8c36961d4456e4f468e1f4eedf80f45d, type: 3}
-  - {fileID: 21300000, guid: 06f8350fd62c2984db342c6788000279, type: 3}
-  - {fileID: 21300000, guid: ac60b0f8ed498de489d2bb989a861928, type: 3}
-  - {fileID: 21300000, guid: 2a4926e5a283e8c49b37ff9fbf04ca68, type: 3}
-  - {fileID: 21300000, guid: d91f99f49a5025445b33cd7b8ede4f13, type: 3}
-  - {fileID: 21300000, guid: e72a5c6348097ee46bd1126b269fe14d, type: 3}
-  - {fileID: 21300000, guid: bd969218bd51b4f49b203681ec34987d, type: 3}
-  - {fileID: 21300000, guid: 2a94738ef8b929c4eb683d1d8982a3f5, type: 3}
-  - {fileID: 21300000, guid: 19fe6046073ec0e4f88f59d8816975b0, type: 3}
-  - {fileID: 21300000, guid: 3511d09b17780484c968c9a4d2914510, type: 3}
-  - {fileID: 21300000, guid: 266a3cfdf479f074f995819fbdce6254, type: 3}
-  - {fileID: 21300000, guid: 7f3c2080ca350d3498d4b68866b2e2be, type: 3}
-  - {fileID: 21300000, guid: 10c5e9ebed7b8a64da4c654c8a3e0540, type: 3}
-  - {fileID: 21300000, guid: 656e7914fc2eb0947a6a6e4727069238, type: 3}
-  - {fileID: 21300000, guid: b453fd66bfe0e21418415e3acb593ea1, type: 3}
-  - {fileID: 21300000, guid: 5f46f817f0738c74c9814bf385b078ac, type: 3}
-  - {fileID: 21300000, guid: 4adbc9c103d5edd43b66a79b35d4f756, type: 3}
-  - {fileID: 21300000, guid: 07198d1cb36e6e94aa3b3ca9ce5a5cef, type: 3}
-  - {fileID: 21300000, guid: fec594d65428acb4baa227c2b744acd6, type: 3}
-  - {fileID: 21300000, guid: 1173e0c3f7fda4f478f0e37fb4baa07e, type: 3}
-  - {fileID: 21300000, guid: 4cfe46502e29bb84fabfd35f27981111, type: 3}
-  - {fileID: 21300000, guid: 8d0bfb61304207e4e9d0f7b846b75fbf, type: 3}
-  - {fileID: 21300000, guid: 6b7ceaf55eda90c4998357699a49111f, type: 3}
-  - {fileID: 21300000, guid: 8b5267383eccd1043979f9d2915b337f, type: 3}
-  - {fileID: 21300000, guid: 230fecaabfbd97c46b42e132ea1aa3ac, type: 3}
-  - {fileID: 21300000, guid: 01b4a7482587c8b4cbd1a49cd2e51931, type: 3}
-  - {fileID: 21300000, guid: 4dc9d4e45b533654b95f59ee24ace205, type: 3}
-  - {fileID: 21300000, guid: 44edf53fb3964f74a8273ce14f49e18b, type: 3}
-  - {fileID: 21300000, guid: 062341721e205954a984b309d05c8881, type: 3}
-  - {fileID: 21300000, guid: b1fdb3e337e85064492981d218a07598, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   ThemeSprites: []
 --- !u!4 &1923865639
 Transform:

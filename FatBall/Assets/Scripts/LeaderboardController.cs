@@ -65,8 +65,8 @@ public class LeaderboardController : MonoBehaviour
 
     public void loadScene(string sceneName)
     {
-        SceneManager.LoadScene(sceneName);
-        SoundManager.Instance.Play("Button");
+        //SoundManager.Instance.MusicSource.Pause();
+        MenuCtrl.Instance.loadScene(sceneName);
     }
 
     private void Update()

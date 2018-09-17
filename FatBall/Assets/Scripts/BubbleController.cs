@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityStandardAssets.CrossPlatformInput;
 using UnityEngine;
 
 public class BubbleController : MonoBehaviour

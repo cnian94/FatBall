@@ -47,3 +47,17 @@ public class LeaderBoardList
     }
 
 }
+
+
+
+[Serializable]
+public class TakenModel
+{
+    public bool taken;
+
+    public TakenModel(bool taken)
+    {
+        this.taken = taken;
+    }
+}
+

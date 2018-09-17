@@ -16,6 +16,8 @@ public class TimerScript : MonoBehaviour
     private bool finished = false;
     private bool isPaused = false;
 
+    public string result;
+
     private float t;
 
 
@@ -28,6 +30,7 @@ public class TimerScript : MonoBehaviour
     {
         if (finished)
         {
+            time_text.text = result;
             startTime = 0f;
         }
 
@@ -40,7 +43,6 @@ public class TimerScript : MonoBehaviour
 
             time_text.text = minutes + ":" + seconds;
             pausedTimeText.text = time_text.text;
-            //Debug.Log(minutes + ":" + seconds);
         }
     }
 

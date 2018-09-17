@@ -7,7 +7,6 @@ public class MonsterControl : MonoBehaviour
 {
 
     Rigidbody2D rb;
-    //private SoundManagerScript soundManager;
 
     public float accelerationTime;
     public float maxSpeed;
@@ -16,7 +15,6 @@ public class MonsterControl : MonoBehaviour
 
     public static float max_distance_from_view;
     private MonstersSpawnerControl spawnerControl;
-    //private GameMaster gameMaster;
 
     Vector3 temp;
 
@@ -52,11 +50,9 @@ public class MonsterControl : MonoBehaviour
     void Start()
     {
         spawnerControl = FindObjectOfType<MonstersSpawnerControl>();
-        //gameMaster = FindObjectOfType<GameMaster>();
         transform.name = transform.name.Replace("(Clone)", "").Trim();
         rb = GetComponent<Rigidbody2D>();
         float randomScale = Random.Range(Screen.width / 11f, Screen.width / 18f);
-        //soundManager = FindObjectOfType<SoundManagerScript>();
         StartCoroutine(MoveMonster());
 
         temp = transform.localScale;
@@ -121,7 +117,6 @@ public class MonsterControl : MonoBehaviour
                     SoundManager.Instance.Play("Enemy");
                     spawnerControl.num_of_monsters--;
                     GameMaster.gm.SpawnAMonster();
-                    //gameMaster.SpawnAMonster();
                     Destroy(gameObject);
                     Vector3[] scales = { col.gameObject.transform.localScale, targetScale };
                     col.gameObject.SendMessage("StartGetFatEffect", scales);

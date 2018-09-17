@@ -31,7 +31,7 @@ public class GameOverUI : MonoBehaviour {
 
     public void OpenLeadersBoard()
     {
-        SceneManager.LoadScene(2);
         SoundManager.Instance.Play("Button");
+        MenuCtrl.Instance.loadScene("LeaderBoardScene");
     }
 }

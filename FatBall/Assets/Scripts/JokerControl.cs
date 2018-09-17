@@ -194,11 +194,19 @@ public class JokerControl : MonoBehaviour
                     {
                         Destroy(Enemies[i]); //kaç tane enemy varsa i sayısına eşit işte
                     }
+
+                    int temp = monstersSpawnerControl.num_of_monsters;
+
                     monstersSpawnerControl.monsters_limit = 3; //en başa döner monster limit ve monster sayısı. Bunu değiştirirsen MonsterSpawnerControl'ü de değiştir. Hatta hieracy de de değiştir garanti olsun.
                     monstersSpawnerControl.num_of_monsters = 0; //üsttekinin aynısı geçerli.
-
                     spawnerControl.num_of_jokers--;
                     GameMaster.gm.eatedJoker++;
+
+                    if (temp >= 25)
+                    {
+                        GameMaster.gm.StartCoroutine(GameMaster.gm.IncreaseMonsterLimit());
+                    }
+
                 }
 
                 if (gameObject.CompareTag("GrapeJoker"))

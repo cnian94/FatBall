@@ -19,10 +19,10 @@ public class AspectRatioScript : MonoBehaviour
 
     private void Start()
     {
-        /*tempScale = BackgroundImage.transform.localScale;
-        tempScale.x = Screen.width / 11;
-        tempScale.y = Screen.height / 20;
-        transform.localScale = tempScale;*/
+        //tempScale = BackgroundImage.transform.localScale;
+        //tempScale.x = Screen.width / 10;
+        //tempScale.y = Screen.height / 18;
+        //BackgroundImage.transform.localScale = tempScale;
 
     }
 

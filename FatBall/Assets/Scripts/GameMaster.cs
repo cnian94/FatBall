@@ -17,11 +17,9 @@ public class GameMaster : MonoBehaviour
     public GameObject gameOverUI;
     public GameObject gamePausedUI;
     public GameObject PauseButton;
-    public GameObject danger;
 
     public TimerScript timerScript;
 
-    //private SoundManagerScript soundManager;
     private MonstersSpawnerControl spawnerControl;
     private SpikeSpawnerControl spikeSpawner;
     private JokerSpawnerControl jokerSpawnerControl;
@@ -40,7 +38,7 @@ public class GameMaster : MonoBehaviour
     public int eatedEnemy = 0;
     public int eatedJoker = 0;
 
-    public AnimationClip Dangerclip;
+
 
 
     void Awake()
@@ -81,14 +79,26 @@ public class GameMaster : MonoBehaviour
         }
     }
 
+    public void SpawnAMonster()
+    {
+        while (spawnerControl.num_of_monsters < spawnerControl.monsters_limit)
+        {
+            spawnerControl.randomSpawnPoint = Random.Range(0, spawnerControl.spawnPoints.Length);
+            spawnerControl.randomMonster = Random.Range(0, spawnerControl.monsters.Length);
+            spawnerControl.monster = Instantiate(spawnerControl.monsters[spawnerControl.randomMonster], spawnerControl.spawnPoints[spawnerControl.randomSpawnPoint].position,
+                Quaternion.identity);
+            spawnerControl.monster.name = "Enemy";
+            spawnerControl.num_of_monsters++;
+        }
+    }
+
 
     public IEnumerator IncreaseMonsterLimit() //Monster sayısının artış hızı
     {
-        while (!timerScript.GetIsPaused() && spawnerControl.monsters_limit < 25)
+        while (player && spawnerControl.num_of_monsters < 25)
         {
+            //Debug.Log("INCREASING MONSTER LIMIT !!");
             yield return new WaitForSeconds(5);
-            //spawnerControl.monsters_limit = spawnerControl.monsters_limit * 2;
-            //spawnerControl.monsters_limit++;
             spawnerControl.monsters_limit = spawnerControl.monsters_limit + Mathf.Log(spawnerControl.monsters_limit) / 1.5f;
             SpawnAMonster();
         }
@@ -130,13 +140,9 @@ public class GameMaster : MonoBehaviour
     public void KillPlayer(GameObject player)
     {
         Destroy(player);
-        //soundManager.PlaySound("Explosion");
         SoundManager.Instance.Play("Explosion");
-        gameOverUI.SetActive(true);
-        PauseButton.SetActive(false);
-        Debug.Log("Enemyeated" + eatedEnemy);
-        Debug.Log("Jokereated" + eatedJoker);
-        CalculateScore();
+        //Debug.Log("Enemyeated" + eatedEnemy);
+        //Debug.Log("Jokereated" + eatedJoker);
     }
 
     public void CalculateScore()
@@ -146,16 +152,33 @@ public class GameMaster : MonoBehaviour
         string[] time_score = timerScript.time_text.text.Split(':');
         int pointFromTime = int.Parse(time_score[0]) * 60 + int.Parse(time_score[1].Split('.')[0]);
         int finalScore = pointFromTime + pointFromJokers + pointFromEnemy;
-        Debug.Log("pointFromJokers:" + pointFromJokers);
-        Debug.Log("pointFromEnemy:" + pointFromEnemy);
-        Debug.Log("pointFromTime:" + pointFromTime);
-        Debug.Log("FINAL SCORE:" + finalScore);
+        //Debug.Log("pointFromJokers:" + pointFromJokers);
+        //Debug.Log("pointFromEnemy:" + pointFromEnemy);
+        //Debug.Log("pointFromTime:" + pointFromTime);
+        //Debug.Log("FINAL SCORE:" + finalScore);
         if (finalScore > NetworkController.Instance.playerModel.highscore)
         {
             Debug.Log("New high score !!");
             NetworkController.Instance.playerModel.highscore = finalScore;
             NetworkController.Instance.playerModel.coins = NetworkController.Instance.playerModel.coins + finalScore;
             NetworkController.Instance.StartCoroutine(NetworkController.Instance.SetHighScore());
+            timerScript.result = "Healthy Food X " + eatedJoker + " = " + pointFromJokers + System.Environment.NewLine +
+                                         "Junk Food X " + eatedEnemy + " = " + pointFromEnemy + System.Environment.NewLine +
+                                         "Life Span = " + pointFromTime + System.Environment.NewLine +
+                                         "-----------------------------------------------------------------------------------" + System.Environment.NewLine +
+                                         "Total: " + finalScore;
+
+        }
+
+        else
+        {
+            NetworkController.Instance.playerModel.coins = NetworkController.Instance.playerModel.coins + finalScore;
+            NetworkController.Instance.StartCoroutine(NetworkController.Instance.SetHighScore());
+            timerScript.result = "Healthy Food X " + eatedJoker + " = " + pointFromJokers + System.Environment.NewLine +
+                             "Junk Food X " + eatedEnemy + " = " + pointFromEnemy + System.Environment.NewLine +
+                             "Life Span = " + pointFromTime + System.Environment.NewLine +
+                             "-----------------------------------------------------------------------------------" + System.Environment.NewLine +
+                             "Total: " + finalScore;
         }
     }
 
@@ -212,18 +235,6 @@ public class GameMaster : MonoBehaviour
 
     }
 
-    public void SpawnAMonster()
-    {
-        while (spawnerControl.num_of_monsters < spawnerControl.monsters_limit)
-        {
-            spawnerControl.randomSpawnPoint = Random.Range(0, spawnerControl.spawnPoints.Length);
-            spawnerControl.randomMonster = Random.Range(0, spawnerControl.monsters.Length);
-            spawnerControl.monster = Instantiate(spawnerControl.monsters[spawnerControl.randomMonster], spawnerControl.spawnPoints[spawnerControl.randomSpawnPoint].position,
-                Quaternion.identity);
-            spawnerControl.monster.name = "Enemy";
-            spawnerControl.num_of_monsters++;
-        }
-    }
 
     public int GetSumOfWeights(int[] weights)
     {
@@ -271,120 +282,17 @@ public class GameMaster : MonoBehaviour
         }
     }
 
-    Vector3 GetDangerPos()
-    {
-        Vector3 pos = randomSpike.GetComponent<SpikeControl>().endPos;
-        pos.z = 1;
-
-        if (randomSpike.name.Equals("TopSpike"))
-        {
-            pos.y -= 300;
-        }
-
-        if (randomSpike.name.Equals("RightSpike"))
-        {
-            pos.x -= 300;
-
-        }
-
-        if (randomSpike.name.Equals("BottomSpike"))
-        {
-            pos.y += 300;
-
-        }
-
-        if (randomSpike.name.Equals("LeftSpike"))
-        {
-
-            pos.x += 300;
-        }
-
-        if (randomSpike.name.Equals("TopLeftCornerSpike"))
-        {
-            pos.x += 300;
-            pos.y -= 300;
-        }
-
-        if (randomSpike.name.Equals("TopRightCornerSpike"))
-        {
-            pos.x -= 300;
-            pos.y -= 300;
-        }
-
-
-        if (randomSpike.name.Equals("BottomRightCornerSpike"))
-        {
-            pos.x -= 300;
-            pos.y += 300;
-
-        }
-
-        if (randomSpike.name.Equals("BottomLeftCornerSpike"))
-        {
-            pos.x += 300;
-            pos.y += 300;
-        }
-
-        return pos;
-    }
-
-
-    void SetDangerClip()
-    {
-
-        float startTime = 0;
-        float endTime = 0.50f;
-
-        Vector3 startValue = danger.transform.localScale;
-        Vector3 endValue = new Vector3(danger.transform.localScale.x + 10, danger.transform.localScale.y + 10, danger.transform.localScale.z);
-
-        AnimationCurve curve_x = AnimationCurve.Linear(startTime, startValue.x, endTime, endValue.x);
-        AnimationCurve curve_y = AnimationCurve.Linear(startTime, startValue.y, endTime, endValue.y);
-
-        startTime += 0.50f;
-        endTime += 0.50f;
-        startValue.x += 10;
-        startValue.y += 10;
-
-        endValue.x += 30;
-        endValue.y += 30;
-
-        AnimationCurve curve_x2 = AnimationCurve.Linear(startTime, startValue.x, endTime, endValue.x);
-        AnimationCurve curve_y2 = AnimationCurve.Linear(startTime, startValue.x, endTime, endValue.x);
-
-        string relativeObjectName = string.Empty; // Means the object holding the animator component
-
-        Dangerclip.SetCurve(relativeObjectName, typeof(Transform), "localScale.x", curve_x);
-        Dangerclip.SetCurve(relativeObjectName, typeof(Transform), "localScale.y", curve_y);
-        Dangerclip.SetCurve(relativeObjectName, typeof(Transform), "localScale.x", curve_x2);
-        Dangerclip.SetCurve(relativeObjectName, typeof(Transform), "localScale.y", curve_y2);
-    }
-
 
     IEnumerator GetRandomSpike()
     {
         while (true)
         {
             randomSpike = spikeSpawner.spikes[Random.Range(0, spikeSpawner.spikes.Length)];
-            SetDangerClip();
             SpikeControl spikeControl = randomSpike.GetComponent<SpikeControl>();
-            //spikeControl.isMovingToView
             if (spikeControl.isWaiting)
             {
-                GameObject dangerObject = GameObject.FindGameObjectWithTag("Danger");
-                SoundManager.Instance.Play("Alert");
-                if (dangerObject == null)
-                {
-                    Debug.Log("DANGER OBJECT NOT FOUND !!");
-                    Instantiate(danger, GetDangerPos(), Quaternion.identity);
-                    dangerObject = GameObject.FindGameObjectWithTag("Danger");
-                    yield return new WaitForSeconds(1.5f);
-                    Destroy(dangerObject);
-                }
-
                 spikeControl.endPos = CalcEndPos(randomSpike.name, spikeControl.startPos);
                 StartCoroutine(NormalizeSpike(randomSpike, spikeControl));
-
                 break;
             }
             yield return null;

@@ -11,13 +11,15 @@ public class NetworkController : MonoBehaviour
     // Singleton instance.
     public static NetworkController Instance = null;
 
-    public GameObject leaderboardCtrl;
-
     public GameObject notMemberPanel;
     public GameObject memberPanel;
+    public GameObject connectionPanel;
+
+    public Text PlayerCoinText;
 
     public Text nickname;
     private string device_id;
+    public Text takenText;
 
     public LeaderBoardList leaderboard;
 
@@ -36,36 +38,56 @@ public class NetworkController : MonoBehaviour
     // Initialize the singleton instance.
     private void Awake()
     {
-        // If there is not already an instance of NetworkController, set it to this.
-        if (Instance == null)
+        Debug.Log("NETWORK AWAKE !!");
+
+        if (Application.internetReachability == NetworkReachability.NotReachable)
         {
-            Instance = this;
-        }
-        //If an instance already exists, destroy whatever this object is to enforce the singleton.
-        else if (Instance != this)
-        {
-            Destroy(gameObject);
-        }
-
-        //Set NetworkController to DontDestroyOnLoad so that it won't be destroyed when reloading our scene.
-        DontDestroyOnLoad(gameObject);
-
-        playerModel = JsonUtility.FromJson<PlayerModel>(PlayerPrefs.GetString("player"));
-        //playerModel = new PlayerModel("3323e9048b337f17b71d49e4ac5925e951ada236", "cano", 0,  241);
-        //PlayerPrefs.SetString("player",JsonUtility.ToJson(playerModel));
-
-        if (playerModel == null)
-        {
-            memberPanel.SetActive(false);
-            notMemberPanel.SetActive(true); //burayı kapat
-            //memberPanel.SetActive(true); //bunu yaz
-
+            Debug.Log("Error. Check internet connection!");
+            connectionPanel.SetActive(true);
         }
 
         else
         {
-            //memberPanel.SetActive(true);
-            StartCoroutine(CheckDeviceIsRegistered());
+            //PlayerPrefs.DeleteAll();
+            //Check if instance already exists
+            if (Instance == null)
+            {
+                //if not, set instance to this
+                Instance = this;
+                Check();
+            }
+
+            //If instance already exists and it's not this:
+            else if (Instance != this)
+            {
+                //Then destroy this. This enforces our singleton pattern, meaning there can only ever be one instance of a GameManager.
+                Destroy(gameObject);
+                Check();
+            }
+
+            //Sets this to not be destroyed when reloading scene
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+
+    private void Check()
+    {
+        //this.playerModel = new PlayerModel("3323e9048b337f17b71d49e4ac5925e951ada236", "cano", 57, 2942);
+        //PlayerPrefs.SetString("player",JsonUtility.ToJson(playerModel));
+        Debug.Log("PLAYER PREFS: " + PlayerPrefs.GetString("player"));
+
+        if (PlayerPrefs.GetString("player") == null || PlayerPrefs.GetString("player").Equals(""))
+        {
+            memberPanel.SetActive(false);
+            notMemberPanel.SetActive(true); //burayı kapat
+            //memberPanel.SetActive(true); //bunu yaz
+        }
+
+        else
+        {
+            playerModel = JsonUtility.FromJson<PlayerModel>(PlayerPrefs.GetString("player"));
+            Debug.Log("PLAYER MODEL NOT NULL !!");
+            Instance.StartCoroutine(CheckDeviceIsRegistered());
         }
     }
 
@@ -86,16 +108,28 @@ public class NetworkController : MonoBehaviour
         }
         else
         {
-            Debug.Log("Status Code: " + request.responseCode);
+           
+            TakenModel taken = JsonUtility.FromJson<TakenModel>(request.downloadHandler.text);
+            Debug.Log("TAKEN MODEL:" + taken.taken);
 
-
-            //Debug.Log("RESPONSE:"+ request.downloadHandler.text);
-            //Debug.Log("PLAYER RESPONSE:" + JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text).ToString());
-            PlayerPrefs.SetString("player", request.downloadHandler.text);
-            PlayerPrefs.SetInt("selectedChar", 0);
-            StartCoroutine(GetInventory());
-            notMemberPanel.SetActive(false);
-            memberPanel.SetActive(true);
+            if (taken.taken)
+            {
+                Debug.Log("NICKNAME ALREADY TAKEN !!");
+                takenText.text = "c'mon, be creative !!";
+            }
+            else
+            {
+                Debug.Log("NICKNAME NOT TAKEN !!");
+                //Debug.Log("RESPONSE:"+ request.downloadHandler.text);
+                //Debug.Log("PLAYER RESPONSE:" + JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text).ToString());
+                PlayerPrefs.SetString("player", request.downloadHandler.text);
+                PlayerPrefs.SetInt("selectedChar", 0);
+                playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
+                StartCoroutine(GetInventory());
+                notMemberPanel.SetActive(false);
+                memberPanel.SetActive(true);
+                PlayerCoinText.text = playerModel.coins.ToString();
+            }
         }
     }
 
@@ -133,11 +167,13 @@ public class NetworkController : MonoBehaviour
                 PlayerPrefs.SetInt("selectedChar", 0);
             }
 
-            playerModel = JsonUtility.FromJson<PlayerModel>(PlayerPrefs.GetString("player"));
+            playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
 
             notMemberPanel.SetActive(false);
             memberPanel.SetActive(true);
-            StartCoroutine(GetInventory());
+            Debug.Log("COINS: " + playerModel.coins.ToString());
+            PlayerCoinText.text = playerModel.coins.ToString();
+            Instance.StartCoroutine(GetInventory());
         }
     }
 
@@ -161,6 +197,7 @@ public class NetworkController : MonoBehaviour
         {
             leaderboard = LeaderBoardList.CreateFromJSON(request.downloadHandler.text);
             Debug.Log("LEADERBOARD:" + leaderboard.players.Length);
+            SceneManager.LoadScene("LeaderBoardScene");
         }
     }
 
@@ -172,7 +209,7 @@ public class NetworkController : MonoBehaviour
         //string json = JsonUtility.ToJson(playerModel);
         var request = new UnityWebRequest(INVENTORY_URL + playerModel.device_id, "GET");
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-        yield return StartCoroutine(WaitForInventory(request));
+        yield return Instance.StartCoroutine(WaitForInventory(request));
     }
 
 
@@ -187,7 +224,7 @@ public class NetworkController : MonoBehaviour
         else
         {
             inventoryList = InventoryList.CreateFromJSON(request.downloadHandler.text);
-            if(SceneManager.GetActiveScene().name == "OptionsScene")
+            if (SceneManager.GetActiveScene().name == "OptionsScene")
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             }
@@ -222,7 +259,7 @@ public class NetworkController : MonoBehaviour
     public IEnumerator SetHighScore()
     {
         string json = JsonUtility.ToJson(playerModel);
-        Debug.Log("JSON:" + json);
+        //Debug.Log("JSON:" + json);
         var request = new UnityWebRequest(PLAYER_URL, "PUT");
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
@@ -236,9 +273,11 @@ public class NetworkController : MonoBehaviour
         }
         else
         {
-            Debug.Log("RESPONSE: " + request.downloadHandler.text);
+            //Debug.Log("RESPONSE: " + request.downloadHandler.text);
             PlayerPrefs.SetString("player", request.downloadHandler.text);
             playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
+            GameMaster.gm.gameOverUI.SetActive(true);
+            GameMaster.gm.PauseButton.SetActive(false);
         }
     }
 
@@ -248,6 +287,7 @@ public class NetworkController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        Debug.Log("NETWORK START !!");
     }
 
 }
