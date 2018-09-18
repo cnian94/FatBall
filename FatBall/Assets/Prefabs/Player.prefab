@@ -22,8 +22,8 @@ GameObject:
   - component: {fileID: 212612876536565322}
   - component: {fileID: 50716418575964324}
   - component: {fileID: 114669522633332174}
-  - component: {fileID: 60882623627427430}
-  - component: {fileID: 60649874970162820}
+  - component: {fileID: 60386689564683838}
+  - component: {fileID: 60548437648466700}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -64,7 +64,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &60649874970162820
+--- !u!60 &60386689564683838
 PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -73,7 +73,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -139,7 +139,7 @@ PolygonCollider2D:
       - {x: -0.25, y: -1.09}
       - {x: -0.049999997, y: -1.13}
       - {x: 0.24, y: -1.12}
---- !u!60 &60882623627427430
+--- !u!60 &60548437648466700
 PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -148,7 +148,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
