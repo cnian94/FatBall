@@ -148,7 +148,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -28, y: -50}
-  m_SizeDelta: {x: 600, y: 1100}
+  m_SizeDelta: {x: 600, y: 900}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &20572199
 MonoBehaviour:
@@ -525,10 +525,10 @@ RectTransform:
   m_Father: {fileID: 1611412086}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 310, y: -50}
-  m_SizeDelta: {x: 40, y: 1100}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 309, y: -590}
+  m_SizeDelta: {x: 40, y: 950}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1120585356
 MonoBehaviour:
@@ -568,7 +568,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1381908913}
   m_HandleRect: {fileID: 1381908912}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -805,7 +805,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5127714, g: 0.6214877, b: 0.6509434, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -892,7 +892,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000005722046, y: 550}
+  m_AnchoredPosition: {x: 0.000005722046, y: 450.00003}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1687183512
@@ -1007,6 +1007,8 @@ MonoBehaviour:
   leaderBoardPanel: {fileID: 1611412085}
   leaderBoardContent: {fileID: 1687183510}
   prefabBtn: {fileID: 114053689013227342, guid: 02950dd6a60f8ed4da10b7afabccd1d6,
+    type: 2}
+  PlayerPanelPrefab: {fileID: 1191007236913504, guid: 2cb8ef6a27fc154469602a7342cc03a4,
     type: 2}
   me: Tilda
 --- !u!1 &2105361507

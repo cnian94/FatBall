@@ -27,27 +27,32 @@ public class NetworkController : MonoBehaviour
     public InventoryList inventoryList;
 
 
-    private string REGISTER_URL = "http://192.168.1.104:5000/api/register";
-    private string CHECK_URL = "http://192.168.1.104:5000/api/check";
-    private string PLAYER_URL = "http://192.168.1.104:5000/api/player";
-    private string LEADERBOARD_URL = "http://192.168.1.104:5000/api/leaderboard";
-    private string INVENTORY_URL = "http://192.168.1.104:5000/api/inventory?id=";
+    private string REGISTER_URL = "https://fatball.herokuapp.com/api/register";
+    private string CHECK_URL = "https://fatball.herokuapp.com/api/check";
+    private string PLAYER_URL = "https://fatball.herokuapp.com/api/player";
+    private string LEADERBOARD_URL = "https://fatball.herokuapp.com/api/leaderboard";
+    private string INVENTORY_URL = "https://fatball.herokuapp.com/api/inventory?id=";
+
+    public int RandomAdLimit ;
+    public int PlayCounter;
 
 
 
     // Initialize the singleton instance.
     private void Awake()
     {
-        Debug.Log("NETWORK AWAKE !!");
+        //Debug.Log("NETWORK AWAKE !!");
 
         if (Application.internetReachability == NetworkReachability.NotReachable)
         {
-            Debug.Log("Error. Check internet connection!");
+            //Debug.Log("Error. Check internet connection!");
             connectionPanel.SetActive(true);
         }
 
         else
         {
+            PlayCounter = 0 ;
+            RandomAdLimit = Random.Range(2, 5);
             //PlayerPrefs.DeleteAll();
             //Check if instance already exists
             if (Instance == null)
@@ -72,7 +77,7 @@ public class NetworkController : MonoBehaviour
 
     private void Check()
     {
-        //this.playerModel = new PlayerModel("3323e9048b337f17b71d49e4ac5925e951ada236", "cano", 57, 2942);
+        //this.playerModel = new PlayerModel("3323e9048b337f17b71d49e4ac5925e951ada236", "cano", 197, 3747);
         //PlayerPrefs.SetString("player",JsonUtility.ToJson(playerModel));
         Debug.Log("PLAYER PREFS: " + PlayerPrefs.GetString("player"));
 
@@ -100,7 +105,7 @@ public class NetworkController : MonoBehaviour
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
-        yield return request.Send();
+        yield return request.SendWebRequest();
 
         if (request.error != null)
         {
@@ -151,7 +156,7 @@ public class NetworkController : MonoBehaviour
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
-        yield return request.Send();
+        yield return request.SendWebRequest();
 
         if (request.error != null)
         {
@@ -159,7 +164,7 @@ public class NetworkController : MonoBehaviour
         }
         else
         {
-            Debug.Log("DEVICE IS ALREADY REGISTERED: " + request.responseCode);
+            //Debug.Log("DEVICE IS ALREADY REGISTERED: " + request.responseCode);
             PlayerPrefs.SetString("player", request.downloadHandler.text);
 
             if (PlayerPrefs.GetInt("selectedChar") == 0)
@@ -171,7 +176,7 @@ public class NetworkController : MonoBehaviour
 
             notMemberPanel.SetActive(false);
             memberPanel.SetActive(true);
-            Debug.Log("COINS: " + playerModel.coins.ToString());
+            //Debug.Log("COINS: " + playerModel.coins.ToString());
             PlayerCoinText.text = playerModel.coins.ToString();
             Instance.StartCoroutine(GetInventory());
         }
@@ -187,7 +192,7 @@ public class NetworkController : MonoBehaviour
 
     private IEnumerator WaitForLeaderboard(UnityWebRequest request)
     {
-        yield return request.Send();
+        yield return request.SendWebRequest();
 
         if (request.error != null)
         {
@@ -215,7 +220,7 @@ public class NetworkController : MonoBehaviour
 
     private IEnumerator WaitForInventory(UnityWebRequest request)
     {
-        yield return request.Send();
+        yield return request.SendWebRequest();
 
         if (request.error != null)
         {
@@ -242,7 +247,7 @@ public class NetworkController : MonoBehaviour
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
-        yield return request.Send();
+        yield return request.SendWebRequest();
 
         if (request.error != null)
         {
@@ -256,7 +261,7 @@ public class NetworkController : MonoBehaviour
         }
     }
 
-    public IEnumerator SetHighScore()
+    public IEnumerator SetHighScore(bool doubled = false)
     {
         string json = JsonUtility.ToJson(playerModel);
         //Debug.Log("JSON:" + json);
@@ -265,7 +270,7 @@ public class NetworkController : MonoBehaviour
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
-        yield return request.Send();
+        yield return request.SendWebRequest();
 
         if (request.error != null)
         {
@@ -273,11 +278,20 @@ public class NetworkController : MonoBehaviour
         }
         else
         {
-            //Debug.Log("RESPONSE: " + request.downloadHandler.text);
-            PlayerPrefs.SetString("player", request.downloadHandler.text);
-            playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
-            GameMaster.gm.gameOverUI.SetActive(true);
-            GameMaster.gm.PauseButton.SetActive(false);
+            if (!doubled)
+            {
+                Debug.Log("RESPONSE: " + request.downloadHandler.text);
+                PlayerPrefs.SetString("player", request.downloadHandler.text);
+                playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
+                GameMaster.gm.gameOverUI.SetActive(true);
+            }
+
+            else
+            {
+                PlayerPrefs.SetString("player", request.downloadHandler.text);
+                playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
+                SceneManager.LoadScene(0);
+            }
         }
     }
 
@@ -287,7 +301,7 @@ public class NetworkController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        Debug.Log("NETWORK START !!");
+        //Debug.Log("NETWORK START !!");
     }
 
 }

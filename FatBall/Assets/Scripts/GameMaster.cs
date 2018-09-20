@@ -38,6 +38,10 @@ public class GameMaster : MonoBehaviour
     public int eatedEnemy = 0;
     public int eatedJoker = 0;
 
+    public int finalScore;
+
+    public int MonsterSpawnLimit;
+
 
 
 
@@ -95,7 +99,7 @@ public class GameMaster : MonoBehaviour
 
     public IEnumerator IncreaseMonsterLimit() //Monster sayısının artış hızı
     {
-        while (player && spawnerControl.num_of_monsters < 25)
+        while (player && spawnerControl.num_of_monsters < MonsterSpawnLimit)
         {
             //Debug.Log("INCREASING MONSTER LIMIT !!");
             yield return new WaitForSeconds(5);
@@ -118,6 +122,7 @@ public class GameMaster : MonoBehaviour
     public IEnumerator SpawnPlayer()
     {
         yield return new WaitForSeconds(spawnDelay);
+        NetworkController.Instance.PlayCounter++ ;
         CancelInvoke("PlayStartSound");
         Vector3 randomPoint = new Vector3(Random.Range(Screen.width / 6, Screen.width - (Screen.width / 6)), Random.Range(Screen.height / 3, Screen.height - (Screen.height / 3)), 1);
 
@@ -127,6 +132,7 @@ public class GameMaster : MonoBehaviour
         player.GetComponent<PolygonCollider2D>().isTrigger = true;
         player = Instantiate(player, randomPoint, Quaternion.identity);
         player.name = "Player";
+        MonsterSpawnLimit = Random.Range(15, 25);
 
 
         timer.SetActive(true);
@@ -141,17 +147,24 @@ public class GameMaster : MonoBehaviour
     {
         Destroy(player);
         SoundManager.Instance.Play("Explosion");
+        CalculateScore();
+        if (NetworkController.Instance.PlayCounter == NetworkController.Instance.RandomAdLimit)
+        {
+            AdsManager.Instance.ShowRandomdAd();
+            NetworkController.Instance.PlayCounter = 0 ;
+            NetworkController.Instance.RandomAdLimit = Random.Range(2, 5);
+        }
         //Debug.Log("Enemyeated" + eatedEnemy);
         //Debug.Log("Jokereated" + eatedJoker);
     }
 
     public void CalculateScore()
     {
-        int pointFromJokers = eatedJoker * 2;
+        int pointFromJokers = eatedJoker * 5;
         int pointFromEnemy = -eatedEnemy;
         string[] time_score = timerScript.time_text.text.Split(':');
         int pointFromTime = int.Parse(time_score[0]) * 60 + int.Parse(time_score[1].Split('.')[0]);
-        int finalScore = pointFromTime + pointFromJokers + pointFromEnemy;
+        finalScore = pointFromTime + pointFromJokers + pointFromEnemy;
         //Debug.Log("pointFromJokers:" + pointFromJokers);
         //Debug.Log("pointFromEnemy:" + pointFromEnemy);
         //Debug.Log("pointFromTime:" + pointFromTime);
@@ -165,7 +178,7 @@ public class GameMaster : MonoBehaviour
             timerScript.result = "Healthy Food X " + eatedJoker + " = " + pointFromJokers + System.Environment.NewLine +
                                          "Junk Food X " + eatedEnemy + " = " + pointFromEnemy + System.Environment.NewLine +
                                          "Life Span = " + pointFromTime + System.Environment.NewLine +
-                                         "-----------------------------------------------------------------------------------" + System.Environment.NewLine +
+                                         "---------------------------------------" + System.Environment.NewLine +
                                          "Total: " + finalScore;
 
         }
@@ -177,62 +190,9 @@ public class GameMaster : MonoBehaviour
             timerScript.result = "Healthy Food X " + eatedJoker + " = " + pointFromJokers + System.Environment.NewLine +
                              "Junk Food X " + eatedEnemy + " = " + pointFromEnemy + System.Environment.NewLine +
                              "Life Span = " + pointFromTime + System.Environment.NewLine +
-                             "-----------------------------------------------------------------------------------" + System.Environment.NewLine +
+                             "--------------------------------" + System.Environment.NewLine +
                              "Total: " + finalScore;
         }
-    }
-
-    public void PauseGame()
-    {
-        timer.GetComponent<TimerScript>().SetIsPaused(true);
-        gamePausedUI.SetActive(true);
-        PauseButton.SetActive(false);
-
-        GameObject[] monsters = GameObject.FindGameObjectsWithTag("Enemy");
-        for (int i = 0; i < monsters.Length; i++)
-        {
-            monsters[i].GetComponent<MonsterControl>().SetIsMonsterMovementAllowed(false);
-            monsters[i].GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        }
-
-        /*GameObject[] jokers = GameObject.FindGameObjectsWithTag("Enemy");
-        for (int i = 0; i < monsters.Length; i++)
-        {
-            monsters[i].GetComponent<MonsterControl>().SetIsMonsterMovementAllowed(false);
-        }*/
-
-        GameObject[] spikes = GameObject.FindGameObjectsWithTag("Spike");
-        for (int i = 0; i < spikes.Length; i++)
-        {
-            spikes[i].GetComponent<SpikeControl>().SetCanMove(false);
-        }
-
-    }
-
-    public void ResumeGame()
-    {
-        timer.GetComponent<TimerScript>().SetIsPaused(false);
-        gamePausedUI.SetActive(false);
-        PauseButton.SetActive(true);
-
-        GameObject[] monsters = GameObject.FindGameObjectsWithTag("Enemy");
-        for (int i = 0; i < monsters.Length; i++)
-        {
-            monsters[i].GetComponent<MonsterControl>().SetIsMonsterMovementAllowed(true);
-        }
-
-        /*GameObject[] jokers = GameObject.FindGameObjectsWithTag("Enemy");
-        for (int i = 0; i < monsters.Length; i++)
-        {
-            monsters[i].GetComponent<MonsterControl>().SetIsMonsterMovementAllowed(false);
-        }*/
-
-        GameObject[] spikes = GameObject.FindGameObjectsWithTag("Spike");
-        for (int i = 0; i < spikes.Length; i++)
-        {
-            spikes[i].GetComponent<SpikeControl>().SetCanMove(true);
-        }
-
     }
 
 
@@ -363,7 +323,7 @@ public class GameMaster : MonoBehaviour
 
     IEnumerator ExtendSpike()
     {
-        while (!timerScript.GetIsPaused())
+        while (true)
         {
             yield return new WaitForSeconds(extendTime);
             StartCoroutine(GetRandomSpike());
@@ -374,7 +334,7 @@ public class GameMaster : MonoBehaviour
     {
         float reducedBy = Random.Range(0.6f, 1.5f);
 
-        while (!timerScript.GetIsPaused())
+        while (true)
         {
             yield return new WaitForSeconds(10f);
             if (extendTime >= Random.Range(2f, 3f))

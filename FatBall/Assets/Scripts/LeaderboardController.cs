@@ -15,8 +15,9 @@ public class LeaderboardController : MonoBehaviour
     public Button prefabBtn;
     private Button playerBtn;
 
+    public GameObject PlayerPanelPrefab;
+    private GameObject PlayerPanel;
 
-    public string me = "Tilda";
     private Vector2 scrollTo;
 
 
@@ -48,16 +49,20 @@ public class LeaderboardController : MonoBehaviour
 
         for (int i=0; i < players.Length; i++)
         {
-            playerBtn = Instantiate(prefabBtn, leaderBoardContent.transform);
-            playerBtn.GetComponentInChildren<Text>().text =  players[i].nickname + "                    " + players[i].highscore;
-            playerBtn.name = players[i].nickname;
+            PlayerPanel = Instantiate(PlayerPanelPrefab, leaderBoardContent.transform);
+            PlayerPanel.transform.GetChild(0).GetComponent<Text>().text = (i+1) + ". " + players[i].nickname;
+            PlayerPanel.transform.GetChild(1).GetComponent<Text>().text = players[i].highscore.ToString();
+            PlayerPanel.name = players[i].nickname;
 
             if (players[i].device_id == NetworkController.Instance.playerModel.device_id)
             {
                 float ratio = (1f / players.ToArray().Length);
                 scrollTo.y = 1 - ratio * i;
-                Button me = GameObject.Find(players[i].nickname).GetComponent<Button>();
-                me.GetComponent<Image>().color = Color.grey;
+                PlayerPanel.transform.GetChild(0).GetComponent<Text>().color = Color.red;
+                PlayerPanel.transform.GetChild(1).GetComponent<Text>().color = Color.red;
+
+                //Text me = GameObject.Find(players[i].nickname).GetComponent<Text>();
+                //me.GetComponent<Text>().color = Color.red;
             }
         }
 

@@ -9,12 +9,6 @@ public class GameOverUI : MonoBehaviour {
         SoundManager.Instance.PlayMusic("GameSound");
     }
 
-    public void Quit()
-    {
-        Debug.Log("APPLICATION QUIT !!");
-        Application.Quit();
-    }
-
     public void retry()
     {
         SoundManager.Instance.MusicSource.Stop();

@@ -113,7 +113,9 @@ public class MonsterControl : MonoBehaviour
             case "Player":
                 if (!GameMaster.gm.isBubbleCatched)
                 {
-                    Vector3 targetScale = new Vector3(col.gameObject.transform.localScale.x + gameObject.transform.localScale.x / 4, col.gameObject.transform.localScale.y + gameObject.transform.localScale.y / 4, gameObject.transform.localScale.z);
+                    Debug.Log("boyut10" + gameObject.transform.localScale.x / 10);
+                    Debug.Log("boyut8" + gameObject.transform.localScale.x / 8);
+                    Vector3 targetScale = new Vector3(col.gameObject.transform.localScale.x + gameObject.transform.localScale.x / 16, col.gameObject.transform.localScale.y + gameObject.transform.localScale.y / 16, gameObject.transform.localScale.z);
                     SoundManager.Instance.Play("Enemy");
                     spawnerControl.num_of_monsters--;
                     GameMaster.gm.SpawnAMonster();

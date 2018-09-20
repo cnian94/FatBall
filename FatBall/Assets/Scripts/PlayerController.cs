@@ -13,11 +13,9 @@ public class PlayerController : MonoBehaviour
 
     Touch touch;
     Vector3 touchPosition, whereToMove;
-    bool isMoving = false;
 
     float previousDistanceToTouchPos, currentDistanceToTouchPos;
 
-    public GameMaster gameMaster;
     public GameObject Explosion;
     public GameObject timer;
     Vector3 tempScale;
@@ -25,6 +23,8 @@ public class PlayerController : MonoBehaviour
     public Vector3 dirInit = Vector3.zero;
 
     Matrix4x4 calibrationMatrix;
+
+    private bool isColliding = false;
 
 
     void Awake()
@@ -45,13 +45,12 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = this.GetComponent<Rigidbody2D>();
-        gameMaster = FindObjectOfType<GameMaster>();
 
         CalibrateAccelerometer();
     }
-    
-        //Method for calibration 
-        void CalibrateAccelerometer()
+
+    //Method for calibration 
+    void CalibrateAccelerometer()
     {
         dirInit = Input.acceleration;
 
@@ -73,7 +72,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //rb.AddForce(movement); //tilt control açar
+        rb.AddForce(movement); //tilt control açar
     }
 
 
@@ -86,81 +85,81 @@ public class PlayerController : MonoBehaviour
 
         if (gameObject.transform.localScale.x <= Screen.width / 20f)
         {
-            gameMaster.jokerWeights[3] = 0;
+            GameMaster.gm.jokerWeights[3] = 0;
         }
         if (gameObject.transform.localScale.x > Screen.width / 20f)
         {
-            gameMaster.jokerWeights[3] = 20;
+            GameMaster.gm.jokerWeights[3] = 20;
         }
 
-            transform.Rotate(0, 0, Random.Range(Screen.width / 1500f, Screen.width / 1250f));
-            Vector3 position = gameObject.transform.position;
+        transform.Rotate(0, 0, Random.Range(Screen.width / 1500f, Screen.width / 1250f));
+        Vector3 position = gameObject.transform.position;
 
 
-        //_InputDir = FixAcceleration(Input.acceleration); //tilt control açar
-        //movement = new Vector2(_InputDir.x, _InputDir.y) * moveSpeed;  //tilt control açar
+        _InputDir = FixAcceleration(Input.acceleration); //tilt control açar
+        movement = new Vector2(_InputDir.x, _InputDir.y) * moveSpeed;  //tilt control açar
 
 
 
 
-        if (!timer.GetComponent<TimerScript>().GetIsPaused())  //dokunmatik oynamak için 
+
+
+        /*if (isMoving) //dokunmatik oynamak için 
         {
-            if (isMoving)
-            {
-                currentDistanceToTouchPos = (touchPosition - transform.position).magnitude;
-            }
+            currentDistanceToTouchPos = (touchPosition - transform.position).magnitude;
+        }
 
-            if (Input.touchCount > 0)
-            {
-                touch = Input.GetTouch(0);
+        if (Input.touchCount > 0)
+        {
+            touch = Input.GetTouch(0);
 
-                if (touch.phase == TouchPhase.Began)
-                {
-                    previousDistanceToTouchPos = 0;
-                    currentDistanceToTouchPos = 0;
-                    isMoving = true;
-                    touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
-                    touchPosition.z = 0;
-                    whereToMove = (touchPosition - transform.position).normalized;
-                    rb.velocity = new Vector2(whereToMove.x * moveSpeed, whereToMove.y * moveSpeed);
-                }
-
-                if (touch.phase == TouchPhase.Ended)
-                {
-                    isMoving = false;
-                    rb.velocity = Vector2.zero;
-                }
-
-            }
-
-            if (Input.GetMouseButtonDown(0))
+            if (touch.phase == TouchPhase.Began)
             {
                 previousDistanceToTouchPos = 0;
                 currentDistanceToTouchPos = 0;
                 isMoving = true;
-                touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                touchPosition = Camera.main.ScreenToWorldPoint(touch.position);
                 touchPosition.z = 0;
                 whereToMove = (touchPosition - transform.position).normalized;
                 rb.velocity = new Vector2(whereToMove.x * moveSpeed, whereToMove.y * moveSpeed);
             }
 
-            if (currentDistanceToTouchPos > previousDistanceToTouchPos)
+            if (touch.phase == TouchPhase.Ended)
             {
                 isMoving = false;
                 rb.velocity = Vector2.zero;
             }
 
-            if (Input.GetMouseButtonUp(0)) //yeni hareket için
-            {
-                isMoving = false;
-                rb.velocity = Vector2.zero;
-            }
+        }
 
-            if (isMoving)
-            {
-                previousDistanceToTouchPos = (touchPosition - transform.position).magnitude;
-            }
-        }  //buraya kadar dokunmatik oynamak için
+        if (Input.GetMouseButtonDown(0))
+        {
+            previousDistanceToTouchPos = 0;
+            currentDistanceToTouchPos = 0;
+            isMoving = true;
+            touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            touchPosition.z = 0;
+            whereToMove = (touchPosition - transform.position).normalized;
+            rb.velocity = new Vector2(whereToMove.x * moveSpeed, whereToMove.y * moveSpeed);
+        }
+
+        if (currentDistanceToTouchPos > previousDistanceToTouchPos)
+        {
+            isMoving = false;
+            rb.velocity = Vector2.zero;
+        }
+
+        if (Input.GetMouseButtonUp(0)) //yeni hareket için
+        {
+            isMoving = false;
+            rb.velocity = Vector2.zero;
+        }
+
+        if (isMoving)
+        {
+            previousDistanceToTouchPos = (touchPosition - transform.position).magnitude;
+        }
+        */  //buraya kadar dokunmatik oynamak için
 
 
     }
@@ -210,7 +209,7 @@ public class PlayerController : MonoBehaviour
             if (bubble)
             {
                 bubbleScale = bubble.transform.localScale;
-                bubbleTargetScale = new Vector3(bubbleScale.x , bubbleScale.y , bubbleScale.z);
+                bubbleTargetScale = new Vector3(bubbleScale.x, bubbleScale.y, bubbleScale.z);
             }
 
             while (time > 0f)
@@ -233,7 +232,7 @@ public class PlayerController : MonoBehaviour
             if (bubble)
             {
                 bubbleScale = bubble.transform.localScale;
-                bubbleTargetScale = new Vector3(bubbleScale.x  - bubbleScale.x/8, bubbleScale.y  - bubbleScale.y/8, bubbleScale.z);
+                bubbleTargetScale = new Vector3(bubbleScale.x - bubbleScale.x / 8, bubbleScale.y - bubbleScale.y / 8, bubbleScale.z);
             }
 
             while (time > 0f)
@@ -252,20 +251,23 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+
+
     void OnTriggerEnter2D(Collider2D col)
     {
+
         if (!GameMaster.gm.isBubbleCatched)
         {
             switch (col.gameObject.tag)
             {
 
                 case "Spike":
-                    GameMaster.gm.CalculateScore();
+                    if (isColliding) return;
+                    isColliding = true;
+                    GameMaster.gm.KillPlayer(gameObject);
                     GameObject.Find("Timer").SendMessage("Finish");
                     Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
                     Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
-                    //gameOverUI.SetActive(true);
-                    gameMaster.KillPlayer(gameObject);
                     Destroy(Explosion, 3);
                     break;
 

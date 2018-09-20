@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BackgroundScript : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
+    private void Awake()
+    {
         Vector3 pos = transform.localPosition;
         pos.x = Screen.width / 2;
         pos.y = Screen.height / 2;
@@ -13,16 +12,9 @@ public class BackgroundScript : MonoBehaviour {
         transform.localPosition = pos;
 
         Vector3 scale = transform.localScale;
-        scale.x = Screen.width;
+        scale.x = Screen.width + 10;
         scale.y = Screen.height;
 
         transform.localScale = scale;
-
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    }
 }

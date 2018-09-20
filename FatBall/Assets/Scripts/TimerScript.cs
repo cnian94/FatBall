@@ -10,11 +10,9 @@ public class TimerScript : MonoBehaviour
 
     public GameObject time_btn_obj;
     public Text time_text;
-    public Text pausedTimeText;
     public Sprite time_end_sprite;
     private float startTime;
     private bool finished = false;
-    private bool isPaused = false;
 
     public string result;
 
@@ -34,7 +32,7 @@ public class TimerScript : MonoBehaviour
             startTime = 0f;
         }
 
-        if (!finished && !isPaused && Time.timeSinceLevelLoad >= 3)
+        if (!finished  && Time.timeSinceLevelLoad >= 3)
         {
             t = Time.timeSinceLevelLoad - startTime;
 
@@ -42,24 +40,12 @@ public class TimerScript : MonoBehaviour
             string seconds = (t % 60).ToString("f2");
 
             time_text.text = minutes + ":" + seconds;
-            pausedTimeText.text = time_text.text;
         }
     }
 
     public void Finish()
     {
         finished = true;
-    }
-
-    public void SetIsPaused(bool val)
-    {
-        isPaused = val;
-    }
-
-
-    public bool GetIsPaused()
-    {
-        return isPaused;
     }
 
 }
