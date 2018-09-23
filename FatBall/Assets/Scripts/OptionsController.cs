@@ -12,6 +12,7 @@ public class OptionsController : MonoBehaviour
 
     public Text PlayerCoinText;
     public Image PlayerCoin;
+    public Text NoMoneyText;
 
     public GameObject charOptionsPanel;
     public GameObject charOptionsContent;
@@ -42,11 +43,13 @@ public class OptionsController : MonoBehaviour
     Color selectedColor;
 
     private bool isUnlockPanelActive;
+    private bool isUnlockCreated;
 
 
     private void Awake()
     {
         isUnlockPanelActive = false;
+        isUnlockCreated = false;
         Debug.Log("isUnlockPanelActive:" + isUnlockPanelActive);
     }
 
@@ -60,7 +63,12 @@ public class OptionsController : MonoBehaviour
         charBtn.GetComponent<Image>().color = selectedColor;
 
         SetPanel();
+        //Invoke("TakeSS", 3f);
+    }
 
+    void TakeSS()
+    {
+        ScreenCapture.CaptureScreenshot("inventoryIpad_char.png");
     }
 
     public void SelectChar(Sprite charSprite, int charIndex)
@@ -109,42 +117,68 @@ public class OptionsController : MonoBehaviour
                 unlockPanel.SetActive(true);
                 isUnlockPanelActive = true;
 
+                if (!isUnlockCreated)
+                {
+                    isUnlockCreated = true;
+                    charToUnlockImage.sprite = charSprite;
+                    charToUnlockImage = Instantiate(charToUnlockImage, unlockPanel.transform);
+                    charToUnlockImage.name = "CharToUnlock";
 
-                //GameObject charToUnlock = new GameObject();
-                //charToUnlockImage = charToUnlock.AddComponent<Image>();
-                //charToUnlock.GetComponent<RectTransform>().rect.Set(0, -8, 512, 512);
-                charToUnlockImage.sprite = charSprite;
-                charToUnlockImage = Instantiate(charToUnlockImage, unlockPanel.transform);
-                charToUnlockImage.name = "CharToUnlock";
 
-
-                monsterName = Instantiate(monsterName, unlockPanel.transform);
-                //monsterName.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.5f);
-                //monsterName.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 95f);
-
-                monsterName.GetComponent<RectTransform>().offsetMin = new Vector2(monsterName.GetComponent<RectTransform>().offsetMin.x, 80);
-                monsterName.GetComponent<RectTransform>().offsetMax = new Vector2(monsterName.GetComponent<RectTransform>().offsetMax.x, 30);
-                monsterName.GetComponent<RectTransform>().sizeDelta = new Vector2(370, monsterName.GetComponent<RectTransform>().sizeDelta.y);
-                monsterName.fontSize = 70;
-                monsterName.text = name;
+                    monsterName = Instantiate(monsterName, unlockPanel.transform);
+                    monsterName.GetComponent<RectTransform>().offsetMin = new Vector2(monsterName.GetComponent<RectTransform>().offsetMin.x, 80);
+                    monsterName.GetComponent<RectTransform>().offsetMax = new Vector2(monsterName.GetComponent<RectTransform>().offsetMax.x, 30);
+                    monsterName.GetComponent<RectTransform>().sizeDelta = new Vector2(370, monsterName.GetComponent<RectTransform>().sizeDelta.y);
+                    monsterName.fontSize = 70;
+                    monsterName.text = name;
 
 
 
-                priceText = Instantiate(priceText, unlockPanel.transform);
-                priceText.text = price.ToString();
+                    priceText = Instantiate(priceText, unlockPanel.transform);
+                    priceText.text = price.ToString();
 
-                unlockButton = Instantiate(unlockButton, unlockPanel.transform);
-                unlockButton.onClick.AddListener(delegate { UnlockMonster(char_id, price); });
+                    unlockButton = Instantiate(unlockButton, unlockPanel.transform);
+                    unlockButton.onClick.AddListener(delegate { UnlockMonster(char_id, price, NetworkController.Instance.playerModel.coins); });
+                }
+
+                else
+                {
+                    charToUnlockImage.sprite = charSprite;
+
+                    monsterName.GetComponent<RectTransform>().offsetMin = new Vector2(monsterName.GetComponent<RectTransform>().offsetMin.x, 80);
+                    monsterName.GetComponent<RectTransform>().offsetMax = new Vector2(monsterName.GetComponent<RectTransform>().offsetMax.x, 30);
+                    monsterName.GetComponent<RectTransform>().sizeDelta = new Vector2(370, monsterName.GetComponent<RectTransform>().sizeDelta.y);
+                    monsterName.fontSize = 70;
+                    monsterName.text = name;
+
+                    priceText.text = price.ToString();
+
+                    unlockButton.onClick.RemoveAllListeners();
+                    unlockButton.onClick.AddListener(delegate { UnlockMonster(char_id, price, NetworkController.Instance.playerModel.coins); });
+                }
+                //Invoke("TakeSS", 3f);
             }
         }
     }
 
-
-    public void UnlockMonster(int char_id, int price)
+    public void CloseUnlockPanel()
     {
-        if (price > NetworkController.Instance.playerModel.coins)
+        unlockPanel.SetActive(false);
+        isUnlockPanelActive = false;
+        NoMoneyText.gameObject.SetActive(false);
+    }
+
+
+    public void UnlockMonster(int char_id, int price, int playerCoins)
+    {
+        //int playerTempPrice = NetworkController.Instance.playerModel.coins;
+        Debug.Log("PLAYER COINS:" + playerCoins);
+        if (price > playerCoins)
         {
             Debug.Log("Yo, you don't have enough money for this shit !!");
+            NoMoneyText.gameObject.SetActive(true);
+            NoMoneyText.text = "Yo, you don't have enough";
+
         }
 
         else
@@ -186,62 +220,63 @@ public class OptionsController : MonoBehaviour
     {
 
 
-            for (int i = 0; i < inventory.Length; i++)
+        for (int i = 0; i < inventory.Length; i++)
+        {
+            byte[] dataImage;
+            Texture2D mytexture = new Texture2D(1, 1);
+            Sprite charSprite;
+
+            try
             {
-                byte[] dataImage;
-                Texture2D mytexture = new Texture2D(1, 1);
-                Sprite charSprite;
+                //Debug.Log(inventory[i].character.char_name + ": " + inventory[i].character.img.Length);
+                dataImage = System.Convert.FromBase64String(inventory[i].character.img);
+                mytexture = new Texture2D(1, 1);
+                mytexture.LoadImage(dataImage);
 
-                try
-                {
-                    //Debug.Log(inventory[i].character.char_name + ": " + inventory[i].character.img.Length);
-                    dataImage = System.Convert.FromBase64String(inventory[i].character.img);
-                    mytexture = new Texture2D(1, 1);
-                    mytexture.LoadImage(dataImage);
+            }
+            catch (System.FormatException e)
+            {
+                Debug.Log(inventory[i].character.img.Length);
+                dataImage = System.Convert.FromBase64String(inventory[i].character.img);
+                mytexture = new Texture2D(1, 1);
+                mytexture.LoadImage(dataImage);
+            }
 
-                }
-                catch (System.FormatException e)
-                {
-                    Debug.Log(inventory[i].character.img.Length);
-                    dataImage = System.Convert.FromBase64String(inventory[i].character.img);
-                    mytexture = new Texture2D(1, 1);
-                    mytexture.LoadImage(dataImage);
-                }
+            charSprite = Sprite.Create(mytexture, new Rect(0.0f, 0.0f, mytexture.width, mytexture.height), new Vector2(0.5f, 0.5f));
 
-                charSprite = Sprite.Create(mytexture, new Rect(0.0f, 0.0f, mytexture.width, mytexture.height), new Vector2(0.5f, 0.5f));
+            charDesk = Instantiate(charDeskButtonPrefab, charOptionsContent.transform);
+            int charIndex = i;
+            charDesk.onClick.AddListener(delegate { SelectChar(charSprite, charIndex); });
+            charDesk.name = inventory[i].character.char_name;
 
-                charDesk = Instantiate(charDeskButtonPrefab, charOptionsContent.transform);
-                int charIndex = i;
-                charDesk.onClick.AddListener(delegate { SelectChar(charSprite, charIndex); });
-                charDesk.name = inventory[i].character.char_name;
-
-                charImage = Instantiate(charImage, charDesk.transform);
-                charImage.GetComponent<Image>().sprite = charSprite;
+            charImage = Instantiate(charImage, charDesk.transform);
+            charImage.GetComponent<Image>().sprite = charSprite;
 
 
-                monsterName = Instantiate(monsterName, charDesk.transform);
-                monsterName.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.6f);
-                monsterName.GetComponent<Text>().fontSize = 40;
-                monsterName.text = inventory[i].character.char_name;
+            monsterName = Instantiate(monsterName, charDesk.transform);
+            monsterName.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.6f);
+            monsterName.GetComponent<Text>().fontSize = 26;
+            monsterName.text = inventory[i].character.char_name;
 
-                if (!inventory[i].purchased)
-                {
-                    lockImage = Instantiate(lockImage, charDesk.transform);
-                    charDesk.GetComponent<Image>().color = new Color(0.407f, 0.407f, 0.407f, 0.439f);
-                }
+            if (!inventory[i].purchased)
+            {
+                lockImage = Instantiate(lockImage, charDesk.transform);
+                charDesk.GetComponent<Image>().color = new Color(0.407f, 0.407f, 0.407f, 0.439f);
+            }
 
-                if (i == PlayerPrefs.GetInt("selectedChar"))
-                {
-                    selectedImage = Instantiate(selectedImage, charDesk.transform);
-                    selectedImage.name = "CharSelectedImage";
-                }
+            if (i == PlayerPrefs.GetInt("selectedChar"))
+            {
+                selectedImage = Instantiate(selectedImage, charDesk.transform);
+                selectedImage.name = "CharSelectedImage";
+            }
         }
     }
 
 
     public void loadScene(string sceneName)
     {
-        //SoundManager.Instance.MusicSource.Pause();
         MenuCtrl.Instance.loadScene(sceneName);
     }
+
+
 }

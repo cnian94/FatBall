@@ -53,6 +53,7 @@ public class NetworkController : MonoBehaviour
         {
             PlayCounter = 0 ;
             RandomAdLimit = Random.Range(2, 5);
+            //d570bugv45f02e
             //PlayerPrefs.DeleteAll();
             //Check if instance already exists
             if (Instance == null)
@@ -296,12 +297,18 @@ public class NetworkController : MonoBehaviour
     }
 
 
-
-
     // Use this for initialization
     void Start()
     {
+        //Invoke("TakeSS", 3f);
         //Debug.Log("NETWORK START !!");
+    }
+
+
+    void TakeSS()
+    {
+
+        ScreenCapture.CaptureScreenshot("MenuIpad.png");
     }
 
 }

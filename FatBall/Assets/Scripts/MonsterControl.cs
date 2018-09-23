@@ -19,7 +19,9 @@ public class MonsterControl : MonoBehaviour
     Vector3 temp;
 
     private bool isMonsterMovementAllowed = true;
-    
+
+    public bool isColliding = false;
+    //private int hitCount = 0;
 
 
 
@@ -42,7 +44,8 @@ public class MonsterControl : MonoBehaviour
     void Awake()
     {
 
-        accelerationTime = Random.Range(Screen.width / 1500f, Screen.width / 375f);
+        //accelerationTime = Random.Range(Screen.width / 1500f, Screen.width / 375f);
+        accelerationTime = Random.Range(0.5f, 2f);
         max_distance_from_view = 100f;
     }
 
@@ -77,7 +80,7 @@ public class MonsterControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(0, 0, Random.Range(Screen.width / 750f, Screen.width/500f));
+        transform.Rotate(0, 0, Random.Range(Screen.width / 750f, Screen.width / 500f));
         Vector3 position = gameObject.transform.position;
 
         if (position.x <= -max_distance_from_view || position.x >= Screen.width + max_distance_from_view ||
@@ -111,20 +114,37 @@ public class MonsterControl : MonoBehaviour
         {
 
             case "Player":
-                if (!GameMaster.gm.isBubbleCatched)
                 {
-                    Debug.Log("boyut10" + gameObject.transform.localScale.x / 10);
-                    Debug.Log("boyut8" + gameObject.transform.localScale.x / 8);
-                    Vector3 targetScale = new Vector3(col.gameObject.transform.localScale.x + gameObject.transform.localScale.x / 16, col.gameObject.transform.localScale.y + gameObject.transform.localScale.y / 16, gameObject.transform.localScale.z);
-                    SoundManager.Instance.Play("Enemy");
-                    spawnerControl.num_of_monsters--;
-                    GameMaster.gm.SpawnAMonster();
-                    Destroy(gameObject);
-                    Vector3[] scales = { col.gameObject.transform.localScale, targetScale };
-                    col.gameObject.SendMessage("StartGetFatEffect", scales);
-                    GameMaster.gm.eatedEnemy++;
+                    if (!GameMaster.gm.isBubbleCatched)
+                    {
+                        if (!isColliding)
+                        {
+                            isColliding = true;
+                            //Debug.Log("boyut10" + gameObject.transform.localScale.x / 10);
+                            //Debug.Log("boyut8" + gameObject.transform.localScale.x / 8);
+                            Vector3 targetScale = new Vector3(col.gameObject.transform.localScale.x + gameObject.transform.localScale.x / 12, col.gameObject.transform.localScale.y + gameObject.transform.localScale.y / 12, gameObject.transform.localScale.z);
+                            SoundManager.Instance.Play("Enemy");
+                            spawnerControl.num_of_monsters--;
+                            GameMaster.gm.SpawnAMonster();
+                            Destroy(gameObject);
+                            Vector3[] scales = { col.gameObject.transform.localScale, targetScale };
+                            col.gameObject.SendMessage("StartGetFatEffect", scales);
+                            GameMaster.gm.eatedEnemy++;
+                        }
+                    }
                 }
                 break;
         }
+
+
     }
+
+    void OnTriggerExit()
+    {
+        if (isColliding)
+        {
+            isColliding = false; //Allows for another object to be struck by this one
+        }
+    }
+
 }

@@ -86,6 +86,9 @@ public class MenuCtrl : MonoBehaviour
 
     void Start()
     {
-        SoundManager.Instance.PlayMusic("GameSound");
+        if (!SoundManager.Instance.MusicSource.isPlaying)
+        {
+            SoundManager.Instance.PlayMusic("GameSound");
+        }
     }
 }

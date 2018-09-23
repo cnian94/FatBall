@@ -32,6 +32,8 @@ public class JokerControl : MonoBehaviour
     Vector3 temp;
     private bool isJokerMovementAllowed = true;
 
+    private bool isColliding = false;
+
 
     public void SetIsJokerMovementAllowed(bool val)
     {
@@ -87,9 +89,9 @@ public class JokerControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(0, 0, Random.Range(Screen.width/750f, Screen.width / 500f));
+        transform.Rotate(0, 0, Random.Range(Screen.width / 750f, Screen.width / 500f));
         Vector3 position = gameObject.transform.position;
-   
+
         if (position.x <= -max_distance_from_view || position.x >= Screen.width + max_distance_from_view ||
             position.y <= -max_distance_from_view || position.y >= Screen.height + max_distance_from_view)
         {
@@ -137,23 +139,25 @@ public class JokerControl : MonoBehaviour
 
         switch (col.gameObject.name)
         {
-            
+
             case "Player":
-                if (gameObject.CompareTag("GrapeFruitJoker")) //tavşanı yerse
+                if (gameObject.CompareTag("GrapeFruitJoker") && !isColliding) //tavşanı yerse
                 {
+                    isColliding = true;
                     gameObject.SetActive(false);
                     SoundManager.Instance.Play("GrapeFruitJoker");
                     spawnerControl.num_of_jokers--; //yediği için joker sayısı 1 azalır ki yenisi çıkabilsin
                                                     //playerControl.moveForce = playerControl.moveForce * 2;
-                    target.SendMessage("StartWaneEffect", gameObject.tag); 
+                    target.SendMessage("StartWaneEffect", gameObject.tag);
                     playerControl.moveSpeed = playerControl.moveSpeed * 1.2f; //movespeed 2 katına çıkar
                     Invoke("RevertJokerEffect", 5.0f); //5sn sonra efekt gider. Yukarda revert var. Revert aşağıda olsa daha doğru olmaz mı ?
                     GameMaster.gm.eatedJoker++;
 
                 }
 
-                if (gameObject.CompareTag("BeerJoker")) //tavşanla aynı mantık
+                if (gameObject.CompareTag("BeerJoker") && !isColliding) //tavşanla aynı mantık
                 {
+                    isColliding = true;
                     gameObject.SetActive(false);
                     SoundManager.Instance.Play("BeerJoker");
                     spawnerControl.num_of_jokers--;
@@ -163,8 +167,9 @@ public class JokerControl : MonoBehaviour
                     GameMaster.gm.eatedJoker++;
                 }
 
-                if (gameObject.CompareTag("RadishJoker") && !GameMaster.gm.isBubbleCatched) //beni biraz aştı :D her yerde var
+                if (gameObject.CompareTag("RadishJoker") && !GameMaster.gm.isBubbleCatched && !isColliding) //beni biraz aştı :D her yerde var
                 {
+                    isColliding = true;
                     GameMaster.gm.isBubbleCatched = true;
                     gameObject.SetActive(false);
                     SoundManager.Instance.PlayMusic("RadishJoker");
@@ -176,8 +181,9 @@ public class JokerControl : MonoBehaviour
 
                 }
 
-                if (gameObject.CompareTag("BroccoliJoker"))
+                if (gameObject.CompareTag("BroccoliJoker") && !isColliding)
                 {
+                    isColliding = true;
                     gameObject.SetActive(false);
                     SoundManager.Instance.Play("BroccoliJoker");
                     spawnerControl.num_of_jokers--;
@@ -185,8 +191,9 @@ public class JokerControl : MonoBehaviour
                     GameMaster.gm.eatedJoker++;
                 }
 
-                if (gameObject.CompareTag("Reset"))
+                if (gameObject.CompareTag("Reset") && !isColliding)
                 {
+                    isColliding = true;
                     gameObject.SetActive(false);
                     GameObject[] Enemies = GameObject.FindGameObjectsWithTag("Enemy"); //Bütün enemyleri tek yerde topladık.Tag'i spawn.
                     SoundManager.Instance.Play("Reset");
@@ -202,15 +209,16 @@ public class JokerControl : MonoBehaviour
                     spawnerControl.num_of_jokers--;
                     GameMaster.gm.eatedJoker++;
 
-                    if (temp >= 25)
+                    if (temp >= GameMaster.gm.MonsterSpawnLimit)
                     {
                         GameMaster.gm.StartCoroutine(GameMaster.gm.IncreaseMonsterLimit());
                     }
 
                 }
 
-                if (gameObject.CompareTag("GrapeJoker"))
+                if (gameObject.CompareTag("GrapeJoker") && !isColliding)
                 {
+                    isColliding = true;
                     gameObject.SetActive(false);
                     SoundManager.Instance.Play("Enemy");
                     spawnerControl.num_of_jokers--;
@@ -218,8 +226,9 @@ public class JokerControl : MonoBehaviour
                     GameMaster.gm.eatedJoker++;
                 }
 
-                if (gameObject.CompareTag("CherryJoker"))
+                if (gameObject.CompareTag("CherryJoker") && !isColliding)
                 {
+                    isColliding = true;
                     gameObject.SetActive(false);
                     SoundManager.Instance.Play("Enemy");
                     spawnerControl.num_of_jokers--;
@@ -227,6 +236,14 @@ public class JokerControl : MonoBehaviour
                     GameMaster.gm.eatedJoker++;
                 }
                 break;
+        }
+    }
+
+    void OnTriggerExit()
+    {
+        if (isColliding)
+        {
+            isColliding = false; //Allows for another object to be struck by this one
         }
     }
 

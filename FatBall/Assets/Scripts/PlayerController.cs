@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour
     Matrix4x4 calibrationMatrix;
 
     private bool isColliding = false;
+    private bool isMoving = false;
 
 
     void Awake()
@@ -72,7 +73,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.AddForce(movement); //tilt control açar
+        //rb.AddForce(movement); //tilt control açar
     }
 
 
@@ -96,15 +97,15 @@ public class PlayerController : MonoBehaviour
         Vector3 position = gameObject.transform.position;
 
 
-        _InputDir = FixAcceleration(Input.acceleration); //tilt control açar
-        movement = new Vector2(_InputDir.x, _InputDir.y) * moveSpeed;  //tilt control açar
+        //_InputDir = FixAcceleration(Input.acceleration); //tilt control açar
+        //movement = new Vector2(_InputDir.x, _InputDir.y) * moveSpeed;  //tilt control açar
 
 
 
 
 
 
-        /*if (isMoving) //dokunmatik oynamak için 
+        if (isMoving) //dokunmatik oynamak için 
         {
             currentDistanceToTouchPos = (touchPosition - transform.position).magnitude;
         }
@@ -159,7 +160,7 @@ public class PlayerController : MonoBehaviour
         {
             previousDistanceToTouchPos = (touchPosition - transform.position).magnitude;
         }
-        */  //buraya kadar dokunmatik oynamak için
+        //buraya kadar dokunmatik oynamak için
 
 
     }
@@ -262,17 +263,26 @@ public class PlayerController : MonoBehaviour
             {
 
                 case "Spike":
-                    if (isColliding) return;
-                    isColliding = true;
-                    GameMaster.gm.KillPlayer(gameObject);
-                    GameObject.Find("Timer").SendMessage("Finish");
-                    Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
-                    Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
-                    Destroy(Explosion, 3);
+                    if (!isColliding)
+                    {
+                        isColliding = true;
+                        GameMaster.gm.KillPlayer(gameObject);
+                        GameObject.Find("Timer").SendMessage("Finish");
+                        Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
+                        Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
+                        Destroy(Explosion, 3);
+                    }
                     break;
 
             }
         }
+    }
 
+    void OnTriggerExit()
+    {
+        if (isColliding)
+        {
+            isColliding = false; //Allows for another object to be struck by this one
+        }
     }
 }

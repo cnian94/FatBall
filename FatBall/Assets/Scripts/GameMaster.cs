@@ -58,6 +58,20 @@ public class GameMaster : MonoBehaviour
         extendTime = Random.Range(6f, 10f);
     }
 
+    IEnumerator TakeSs()
+    {
+        int no = 1;
+        string name = "gameIpadthree" + no + ".png";
+
+        while (true)
+        {
+        yield return new WaitForSeconds(5);
+        ScreenCapture.CaptureScreenshot(name);
+        no++;
+        name = "gameIpadthree" + no + ".png";
+        }
+    }
+
 
     void Start()
     {
@@ -141,6 +155,7 @@ public class GameMaster : MonoBehaviour
         StartCoroutine(IncreaseMonsterLimit());
         StartCoroutine(ExtendSpike());
         StartCoroutine(ReduceSpikeExtendTime());
+        //StartCoroutine(TakeSs());
     }
 
     public void KillPlayer(GameObject player)
