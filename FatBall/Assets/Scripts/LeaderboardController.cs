@@ -45,7 +45,7 @@ public class LeaderboardController : MonoBehaviour
 
     void CreateRandomLeaderboard()
     {
-        PlayerModel[] players = NetworkController.Instance.leaderboard.players;
+        PlayerModel[] players = NetworkManager.instance.leaderboard.players;
 
         for (int i=0; i < players.Length; i++)
         {
@@ -54,7 +54,7 @@ public class LeaderboardController : MonoBehaviour
             PlayerPanel.transform.GetChild(1).GetComponent<Text>().text = players[i].highscore.ToString();
             PlayerPanel.name = players[i].nickname;
 
-            if (players[i].device_id == NetworkController.Instance.playerModel.device_id)
+            if (players[i].device_id == NetworkManager.instance.playerModel.device_id)
             {
                 float ratio = (1f / players.ToArray().Length);
                 scrollTo.y = 1 - ratio * i;
@@ -70,8 +70,8 @@ public class LeaderboardController : MonoBehaviour
 
     public void loadScene(string sceneName)
     {
-        //SoundManager.Instance.MusicSource.Pause();
-        MenuCtrl.Instance.loadScene(sceneName);
+        //SoundManager.instance.MusicSource.Pause();
+        MenuCtrl.instance.loadScene(sceneName);
     }
 
     private void Update()

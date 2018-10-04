@@ -7,18 +7,18 @@ using UnityEngine.SceneManagement;
 public class AdsManager : MonoBehaviour
 {
 
-    public static AdsManager Instance = null;
+    public static AdsManager instance = null;
 
     private void Awake()
     {
-        if (Instance == null)
+        if (instance == null)
         {
             //if not, set instance to this
-            Instance = this;
+            instance = this;
         }
 
         //If instance already exists and it's not this:
-        else if (Instance != this)
+        else if (instance != this)
         {
             //Then destroy this. This enforces our singleton pattern, meaning there can only ever be one instance of a GameManager.
             Destroy(gameObject);
@@ -55,8 +55,8 @@ public class AdsManager : MonoBehaviour
         {
             case ShowResult.Finished:
                 Debug.Log("Finished !!");
-                NetworkController.Instance.playerModel.coins = NetworkController.Instance.playerModel.coins + GameMaster.gm.finalScore;
-                NetworkController.Instance.StartCoroutine(NetworkController.Instance.SetHighScore(true));
+                NetworkManager.instance.playerModel.coins = NetworkManager.instance.playerModel.coins + GameMaster.gm.finalScore;
+                NetworkManager.instance.StartCoroutine(NetworkManager.instance.SetHighScore(true));
                 break;
 
 

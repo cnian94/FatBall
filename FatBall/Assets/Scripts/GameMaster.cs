@@ -42,11 +42,15 @@ public class GameMaster : MonoBehaviour
 
     public int MonsterSpawnLimit;
 
+    public int numOfStrawberry;
+
 
 
 
     void Awake()
     {
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
+        numOfStrawberry = 0;
         timerScript = timer.GetComponent<TimerScript>();
         //soundManager = FindObjectOfType<SoundManagerScript>();
         spawnerControl = FindObjectOfType<MonstersSpawnerControl>();
@@ -65,10 +69,10 @@ public class GameMaster : MonoBehaviour
 
         while (true)
         {
-        yield return new WaitForSeconds(5);
-        ScreenCapture.CaptureScreenshot(name);
-        no++;
-        name = "gameIpadthree" + no + ".png";
+            yield return new WaitForSeconds(5);
+            ScreenCapture.CaptureScreenshot(name);
+            no++;
+            name = "gameIpadthree" + no + ".png";
         }
     }
 
@@ -125,7 +129,7 @@ public class GameMaster : MonoBehaviour
     public Sprite GetSelectedCharSprite(int index)
     {
 
-        byte[] dataImage = System.Convert.FromBase64String(NetworkController.Instance.inventoryList.inventory[index].character.img);
+        byte[] dataImage = System.Convert.FromBase64String(NetworkManager.instance.inventoryList.inventory[index].character.img);
         Texture2D mytexture = new Texture2D(1, 1);
         mytexture.LoadImage(dataImage);
 
@@ -136,7 +140,7 @@ public class GameMaster : MonoBehaviour
     public IEnumerator SpawnPlayer()
     {
         yield return new WaitForSeconds(spawnDelay);
-        NetworkController.Instance.PlayCounter++ ;
+        NetworkManager.instance.PlayCounter++;
         CancelInvoke("PlayStartSound");
         Vector3 randomPoint = new Vector3(Random.Range(Screen.width / 6, Screen.width - (Screen.width / 6)), Random.Range(Screen.height / 3, Screen.height - (Screen.height / 3)), 1);
 
@@ -163,11 +167,11 @@ public class GameMaster : MonoBehaviour
         Destroy(player);
         SoundManager.Instance.Play("Explosion");
         CalculateScore();
-        if (NetworkController.Instance.PlayCounter == NetworkController.Instance.RandomAdLimit)
+        if (NetworkManager.instance.PlayCounter == NetworkManager.instance.RandomAdLimit)
         {
-            AdsManager.Instance.ShowRandomdAd();
-            NetworkController.Instance.PlayCounter = 0 ;
-            NetworkController.Instance.RandomAdLimit = Random.Range(2, 5);
+            AdsManager.instance.ShowRandomdAd();
+            NetworkManager.instance.PlayCounter = 0;
+            NetworkManager.instance.RandomAdLimit = Random.Range(2, 5);
         }
         //Debug.Log("Enemyeated" + eatedEnemy);
         //Debug.Log("Jokereated" + eatedJoker);
@@ -184,12 +188,12 @@ public class GameMaster : MonoBehaviour
         //Debug.Log("pointFromEnemy:" + pointFromEnemy);
         //Debug.Log("pointFromTime:" + pointFromTime);
         //Debug.Log("FINAL SCORE:" + finalScore);
-        if (finalScore > NetworkController.Instance.playerModel.highscore)
+        if (finalScore > NetworkManager.instance.playerModel.highscore)
         {
-            Debug.Log("New high score !!");
-            NetworkController.Instance.playerModel.highscore = finalScore;
-            NetworkController.Instance.playerModel.coins = NetworkController.Instance.playerModel.coins + finalScore;
-            NetworkController.Instance.StartCoroutine(NetworkController.Instance.SetHighScore());
+            //Debug.Log("New high score !!");
+            NetworkManager.instance.playerModel.highscore = finalScore;
+            NetworkManager.instance.playerModel.coins = NetworkManager.instance.playerModel.coins + finalScore;
+            NetworkManager.instance.StartCoroutine(NetworkManager.instance.SetHighScore());
             timerScript.result = "Healthy Food X " + eatedJoker + " = " + pointFromJokers + System.Environment.NewLine +
                                          "Junk Food X " + eatedEnemy + " = " + pointFromEnemy + System.Environment.NewLine +
                                          "Life Span = " + pointFromTime + System.Environment.NewLine +
@@ -200,8 +204,8 @@ public class GameMaster : MonoBehaviour
 
         else
         {
-            NetworkController.Instance.playerModel.coins = NetworkController.Instance.playerModel.coins + finalScore;
-            NetworkController.Instance.StartCoroutine(NetworkController.Instance.SetHighScore());
+            NetworkManager.instance.playerModel.coins = NetworkManager.instance.playerModel.coins + finalScore;
+            NetworkManager.instance.StartCoroutine(NetworkManager.instance.SetHighScore());
             timerScript.result = "Healthy Food X " + eatedJoker + " = " + pointFromJokers + System.Environment.NewLine +
                              "Junk Food X " + eatedEnemy + " = " + pointFromEnemy + System.Environment.NewLine +
                              "Life Span = " + pointFromTime + System.Environment.NewLine +
@@ -250,10 +254,32 @@ public class GameMaster : MonoBehaviour
             jokerSpawnerControl.randomJoker = GetRandomWeightedIndex(jokerWeights);
             Vector3 randomPoint = jokerSpawnerControl.spawnPoints[jokerSpawnerControl.randomSpawnPoint].position;
             randomPoint.z = 1;
-            jokerSpawnerControl.joker = Instantiate(jokerSpawnerControl.jokers[jokerSpawnerControl.randomJoker], randomPoint,
-                Quaternion.identity);
-            jokerSpawnerControl.joker.name = "Joker";
-            jokerSpawnerControl.num_of_jokers++;
+            if (numOfStrawberry >= 2 && jokerSpawnerControl.jokers[jokerSpawnerControl.randomJoker].CompareTag("GrapeFruitJoker"))
+            {
+                //Debug.Log("COND 1");
+                jokerSpawnerControl.joker = Instantiate(jokerSpawnerControl.jokers[6], randomPoint, Quaternion.identity);
+                jokerSpawnerControl.joker.name = "Joker";
+                jokerSpawnerControl.num_of_jokers++;
+            }
+
+            if(numOfStrawberry < 2 && jokerSpawnerControl.jokers[jokerSpawnerControl.randomJoker].CompareTag("GrapeFruitJoker"))
+            {
+                //Debug.Log("COND 2");
+                numOfStrawberry++;
+                jokerSpawnerControl.joker = Instantiate(jokerSpawnerControl.jokers[jokerSpawnerControl.randomJoker], randomPoint, Quaternion.identity);
+                jokerSpawnerControl.joker.name = "Joker";
+                jokerSpawnerControl.num_of_jokers++;
+            }
+
+            if(!jokerSpawnerControl.jokers[jokerSpawnerControl.randomJoker].CompareTag("GrapeFruitJoker"))
+            {
+                //Debug.Log("COND 3");
+                jokerSpawnerControl.joker = Instantiate(jokerSpawnerControl.jokers[jokerSpawnerControl.randomJoker], randomPoint, Quaternion.identity);
+                jokerSpawnerControl.joker.name = "Joker";
+                jokerSpawnerControl.num_of_jokers++;
+
+            }
+
         }
     }
 

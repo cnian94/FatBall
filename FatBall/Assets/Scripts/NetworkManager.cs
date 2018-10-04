@@ -4,26 +4,32 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
-public class NetworkController : MonoBehaviour
+public class NetworkManager : MonoBehaviour
 {
 
-    // Singleton instance.
-    public static NetworkController Instance = null;
+    /// <summary>
+    /// _instance of the MyClass class.
+    /// </summary>
+    /// <remarks>
+    /// Please use this for all calls to this class.
+    /// </remarks>
+    public static NetworkManager instance
+    {
+        get { return _instance ?? (_instance = new GameObject("NetworkManager").AddComponent<NetworkManager>()); }
+    }
 
+    private static NetworkManager _instance;
+
+    //public static NetworkManager _instance = null;
+
+    public LoadingProgress progressBarPre;
     public LoadingProgress progressBar;
+
     private AsyncOperation asyncLoad;
 
-    public GameObject notMemberPanel;
-    public GameObject memberPanel;
-    public GameObject connectionPanel;
-
-    public Text PlayerCoinText;
-
-    public Text nickname;
-    private string device_id;
-    public Text takenText;
-
+    public string device_id;
     public LeaderBoardList leaderboard;
 
     public PlayerModel playerModel;
@@ -36,85 +42,38 @@ public class NetworkController : MonoBehaviour
     private string LEADERBOARD_URL = "https://fatball.herokuapp.com/api/leaderboard";
     private string INVENTORY_URL = "https://fatball.herokuapp.com/api/inventory?id=";
 
-    public int RandomAdLimit ;
+    public int RandomAdLimit;
     public int PlayCounter;
 
+    [System.Serializable]
+    public class RegisterEvent : UnityEngine.Events.UnityEvent<bool> { }
+    public RegisterEvent registerEvent;
+
+    public UnityEvent inventoryFetchedEvent;
+
+    public bool inventoryNeeded = true;
 
 
-    void OnLoadingBarChange(float value)
-    {
-        print("progress: " + value);
-    }
-
-    void OnLoadingBarDone()
-    {
-        print("Loading done !!");
-    }
-
-
-    // Initialize the singleton instance.
     private void Awake()
     {
-        //Debug.Log("NETWORK AWAKE !!");
-
-        if (Application.internetReachability == NetworkReachability.NotReachable)
+        if (_instance != null && _instance != this)
         {
-            //Debug.Log("Error. Check internet connection!");
-            connectionPanel.SetActive(true);
+            Debug.Log("NOT NULL");
+            Destroy(gameObject);
         }
-
         else
         {
-            PlayCounter = 0 ;
-            RandomAdLimit = Random.Range(2, 5);
-            //d570bugv45f02e
             //PlayerPrefs.DeleteAll();
-            //Check if instance already exists
-            if (Instance == null)
-            {
-                //if not, set instance to this
-                Instance = this;
-                Check();
-            }
-
-            //If instance already exists and it's not this:
-            else if (Instance != this)
-            {
-                //Then destroy this. This enforces our singleton pattern, meaning there can only ever be one instance of a GameManager.
-                Destroy(gameObject);
-                Check();
-            }
-
-            //Sets this to not be destroyed when reloading scene
-            DontDestroyOnLoad(gameObject);
-        }
-    }
-
-    private void Check()
-    {
-        Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        progressBar.gameObject.SetActive(true);
-        //this.playerModel = new PlayerModel("3323e9048b337f17b71d49e4ac5925e951ada236", "cano", 197, 3747);
-        //PlayerPrefs.SetString("player",JsonUtility.ToJson(playerModel));
-        //Debug.Log("PLAYER PREFS: " + PlayerPrefs.GetString("player"));
-
-        if (PlayerPrefs.GetString("player") == null || PlayerPrefs.GetString("player").Equals(""))
-        {
-            memberPanel.SetActive(false);
-            notMemberPanel.SetActive(true); //burayı kapat
-            //memberPanel.SetActive(true); //bunu yaz
+            Debug.Log("NULL");
+            _instance = this;
+            RandomAdLimit = Random.Range(2, 5);
+            DontDestroyOnLoad(this);
         }
 
-        else
-        {
-            playerModel = JsonUtility.FromJson<PlayerModel>(PlayerPrefs.GetString("player"));
-            //Debug.Log("PLAYER MODEL NOT NULL !!");
-            Instance.StartCoroutine(CheckDeviceIsRegistered());
-        }
     }
 
 
-    IEnumerator Register()
+    public IEnumerator Register()
     {
         string json = JsonUtility.ToJson(playerModel);
         var request = new UnityWebRequest(REGISTER_URL, "POST");
@@ -130,41 +89,33 @@ public class NetworkController : MonoBehaviour
         }
         else
         {
-           
+
             TakenModel taken = JsonUtility.FromJson<TakenModel>(request.downloadHandler.text);
-            //Debug.Log("TAKEN MODEL:" + taken.taken);
+            Debug.Log("TAKEN MODEL:" + taken.taken);
 
             if (taken.taken)
             {
                 //Debug.Log("NICKNAME ALREADY TAKEN !!");
-                takenText.text = "c'mon, be creative !!";
+                registerEvent.Invoke(true);
             }
             else
             {
+                registerEvent.Invoke(false);
+                PlayerPrefs.SetString("player", request.downloadHandler.text);
+                PlayerPrefs.SetInt("selectedChar", 0);
+                _instance.playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
+                _instance.StartCoroutine(_instance.GetInventory());
                 //Debug.Log("NICKNAME NOT TAKEN !!");
                 //Debug.Log("RESPONSE:"+ request.downloadHandler.text);
                 //Debug.Log("PLAYER RESPONSE:" + JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text).ToString());
-                PlayerPrefs.SetString("player", request.downloadHandler.text);
-                PlayerPrefs.SetInt("selectedChar", 0);
-                playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
-                StartCoroutine(GetInventory());
-                notMemberPanel.SetActive(false);
-                memberPanel.SetActive(true);
-                PlayerCoinText.text = playerModel.coins.ToString();
+
             }
         }
     }
 
-    public void GetIn()
-    {
-        device_id = SystemInfo.deviceUniqueIdentifier;
-        playerModel = new PlayerModel(device_id, nickname.text);
-        StartCoroutine(Register());
-    }
 
 
-
-    IEnumerator CheckDeviceIsRegistered()
+    public IEnumerator CheckDeviceIsRegistered()
     {
 
         string json = JsonUtility.ToJson(playerModel);
@@ -189,13 +140,9 @@ public class NetworkController : MonoBehaviour
                 PlayerPrefs.SetInt("selectedChar", 0);
             }
 
-            playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
+            _instance.playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
 
-            //notMemberPanel.SetActive(false);
-            //memberPanel.SetActive(true);
-            //Debug.Log("COINS: " + playerModel.coins.ToString());
-            //PlayerCoinText.text = playerModel.coins.ToString();
-            Instance.StartCoroutine(Instance.GetInventory());
+            _instance.StartCoroutine(_instance.GetInventory());
         }
     }
 
@@ -203,7 +150,7 @@ public class NetworkController : MonoBehaviour
     {
         var request = new UnityWebRequest(LEADERBOARD_URL, "GET");
         request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-        yield return StartCoroutine(WaitForLeaderboard(request));
+        yield return _instance.StartCoroutine(_instance.WaitForLeaderboard(request));
     }
 
 
@@ -216,7 +163,7 @@ public class NetworkController : MonoBehaviour
         }
         else
         {
-            leaderboard = LeaderBoardList.CreateFromJSON(request.downloadHandler.text);
+            _instance.leaderboard = LeaderBoardList.CreateFromJSON(request.downloadHandler.text);
             //Debug.Log("LEADERBOARD:" + leaderboard.players.Length);
             SceneManager.LoadScene("LeaderBoardScene");
         }
@@ -227,10 +174,24 @@ public class NetworkController : MonoBehaviour
 
     public IEnumerator GetInventory()
     {
-        //string json = JsonUtility.ToJson(playerModel);
-        var request = new UnityWebRequest(INVENTORY_URL + playerModel.device_id, "GET");
-        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
-        yield return Instance.StartCoroutine(WaitForInventory(request));
+        if (inventoryNeeded)
+        {
+            Debug.Log("INVENTORY NEEDED !!"); 
+            var request = new UnityWebRequest(INVENTORY_URL + playerModel.device_id, "GET");
+            request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+            yield return _instance.StartCoroutine(WaitForInventory(request));
+        }
+
+        else
+        {
+            Debug.Log("INVENTORY NOT NEEDED !!");
+            //_instance.progressBar.gameObject.SetActive(false);
+            _instance.progressBar.SetValue(Mathf.Clamp01(100f));
+            yield return new WaitForSeconds(0.1f);
+            _instance.inventoryFetchedEvent.Invoke();
+            yield return null;
+        }
+
     }
 
 
@@ -238,13 +199,13 @@ public class NetworkController : MonoBehaviour
     {
 
         Debug.Log("Trying the bundle download");
-        Instance.asyncLoad = request.SendWebRequest();
+        _instance.asyncLoad = request.SendWebRequest();
         //yield return null;
 
         while (!asyncLoad.isDone)
         {
             //Debug.Log("D PROGRESS: " + request.downloadProgress);
-            progressBar.SetValue(Mathf.Clamp01(request.downloadProgress / 0.9f));
+            _instance.progressBar.SetValue(Mathf.Clamp01(request.downloadProgress / 0.9f));
             yield return null;
         }
 
@@ -254,17 +215,21 @@ public class NetworkController : MonoBehaviour
         }
         else
         {
-            inventoryList = InventoryList.CreateFromJSON(request.downloadHandler.text);
+            _instance.inventoryList = InventoryList.CreateFromJSON(request.downloadHandler.text);
+            _instance.inventoryFetchedEvent.Invoke();
+
+
+            /*_instance.inventoryList = InventoryList.CreateFromJSON(request.downloadHandler.text);
             //Debug.Log("D PROGRESS: " + request.downloadProgress);
 
             if (SceneManager.GetActiveScene().name == "MenuScene")
             {
-                progressBar.gameObject.SetActive(false);
-                Instance.notMemberPanel.SetActive(false);
-                Instance.memberPanel.SetActive(true);
+                _instance.progressBar.gameObject.SetActive(false);
+                _instance.notMemberPanel.gameObject.SetActive(false);
+                _instance.memberPanel.gameObject.SetActive(true);
                 //Debug.Log("COINS: " + playerModel.coins.ToString());
-                PlayerCoinText.text = playerModel.coins.ToString();
-            }
+                _instance.PlayerCoinText.text = _instance.playerModel.coins.ToString();
+            }*/
 
 
             if (SceneManager.GetActiveScene().name == "OptionsScene")
@@ -295,8 +260,8 @@ public class NetworkController : MonoBehaviour
         else
         {
             PlayerPrefs.SetString("player", request.downloadHandler.text);
-            playerModel = JsonUtility.FromJson<PlayerModel>(PlayerPrefs.GetString("player"));
-            StartCoroutine(GetInventory());
+            _instance.playerModel = JsonUtility.FromJson<PlayerModel>(PlayerPrefs.GetString("player"));
+            _instance.StartCoroutine(GetInventory());
         }
     }
 
@@ -321,33 +286,16 @@ public class NetworkController : MonoBehaviour
             {
                 //Debug.Log("RESPONSE: " + request.downloadHandler.text);
                 PlayerPrefs.SetString("player", request.downloadHandler.text);
-                playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
-                GameMaster.gm.gameOverUI.SetActive(true);
+                _instance.playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
+                GameMaster.gm.gameOverUI.gameObject.SetActive(true);
             }
 
             else
             {
                 PlayerPrefs.SetString("player", request.downloadHandler.text);
-                playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
+                _instance.playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
                 SceneManager.LoadScene(0);
             }
         }
     }
-
-
-    // Use this for initialization
-    void Start()
-    {
-        //Invoke("TakeSS", 3f);
-        //Debug.Log("NETWORK START !!");
-    }
-
-
-    void TakeSS()
-    {
-
-        ScreenCapture.CaptureScreenshot("MenuIpad.png");
-    }
-
 }
-

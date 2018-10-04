@@ -46,7 +46,7 @@ public class MonsterControl : MonoBehaviour
 
         //accelerationTime = Random.Range(Screen.width / 1500f, Screen.width / 375f);
         accelerationTime = Random.Range(0.5f, 2f);
-        max_distance_from_view = 100f;
+        max_distance_from_view = 200f;
     }
 
     // Use this for initialization
@@ -87,6 +87,8 @@ public class MonsterControl : MonoBehaviour
             position.y <= -max_distance_from_view || position.y >= Screen.height + max_distance_from_view)
         {
             spawnerControl.randomSpawnPoint = Random.Range(0, spawnerControl.spawnPoints.Length);
+            movement = new Vector3(-movement.x + Random.Range(-20f, 20f), -movement.y + Random.Range(-20f, 20f), 0);
+            maxSpeed = Random.Range(Screen.width / 750f, Screen.width / 300f);
             gameObject.transform.position = new Vector3(spawnerControl.spawnPoints[spawnerControl.randomSpawnPoint].position.x, spawnerControl.spawnPoints[spawnerControl.randomSpawnPoint].position.y, transform.position.z);
         }
     }
@@ -122,7 +124,7 @@ public class MonsterControl : MonoBehaviour
                             isColliding = true;
                             //Debug.Log("boyut10" + gameObject.transform.localScale.x / 10);
                             //Debug.Log("boyut8" + gameObject.transform.localScale.x / 8);
-                            Vector3 targetScale = new Vector3(col.gameObject.transform.localScale.x + gameObject.transform.localScale.x / 12, col.gameObject.transform.localScale.y + gameObject.transform.localScale.y / 12, gameObject.transform.localScale.z);
+                            Vector3 targetScale = new Vector3(col.gameObject.transform.localScale.x + gameObject.transform.localScale.x / 10, col.gameObject.transform.localScale.y + gameObject.transform.localScale.y / 10, gameObject.transform.localScale.z);
                             SoundManager.Instance.Play("Enemy");
                             spawnerControl.num_of_monsters--;
                             GameMaster.gm.SpawnAMonster();

@@ -8,7 +8,7 @@ public class MenuCtrl : MonoBehaviour
 {
 
     // Singleton instance.
-    public static MenuCtrl Instance = null;
+    public static MenuCtrl instance = null;
 
 
     public Button soundButton;
@@ -28,7 +28,7 @@ public class MenuCtrl : MonoBehaviour
 
         if (sceneName.Equals("LeaderBoardScene"))
         {
-            NetworkController.Instance.StartCoroutine(NetworkController.Instance.GetLeaderBoard());
+            NetworkManager.instance.StartCoroutine(NetworkManager.instance.GetLeaderBoard());
         }
 
         if (sceneName.Equals("OptionsScene"))
@@ -38,7 +38,7 @@ public class MenuCtrl : MonoBehaviour
 
         if (sceneName.Equals("MenuScene"))
         {
-            //SoundManager.Instance.MusicSource.Play();
+            //SoundManager.instance.MusicSource.Play();
             SceneManager.LoadScene(sceneName);
 
         }
@@ -51,17 +51,17 @@ public class MenuCtrl : MonoBehaviour
         {
             SoundManager.Instance.isMuted = !SoundManager.Instance.isMuted;
             soundButton.GetComponent<Image>().sprite = soundOffSprite;
-            //SoundManager.Instance.EffectsSource.mute = true;
+            //SoundManager.instance.EffectsSource.mute = true;
             SoundManager.Instance.MusicSource.mute = true;
         }
         else
         {
             //soundManager.SetActive(true);
-            //SoundManager.Instance.EffectsSource.mute = false;
+            //SoundManager.instance.EffectsSource.mute = false;
             SoundManager.Instance.MusicSource.mute = false;
             SoundManager.Instance.isMuted = !SoundManager.Instance.isMuted;
             soundButton.GetComponent<Image>().sprite = soundOnSprite;
-            //SoundManager.Instance.PlayMusic("GameSound");
+            //SoundManager.instance.PlayMusic("GameSound");
         }
     }
 
@@ -69,12 +69,12 @@ public class MenuCtrl : MonoBehaviour
     void Awake()
     {
         // If there is not already an instance of MenuCtrl, set it to this.
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this;
+            instance = this;
         }
         //If an instance already exists, destroy whatever this object is to enforce the singleton.
-        else if (Instance != this)
+        else if (instance != this)
         {
             Destroy(gameObject);
         }
@@ -91,4 +91,5 @@ public class MenuCtrl : MonoBehaviour
             SoundManager.Instance.PlayMusic("GameSound");
         }
     }
+
 }

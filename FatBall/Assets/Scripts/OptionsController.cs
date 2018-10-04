@@ -50,15 +50,15 @@ public class OptionsController : MonoBehaviour
     {
         isUnlockPanelActive = false;
         isUnlockCreated = false;
-        Debug.Log("isUnlockPanelActive:" + isUnlockPanelActive);
+        //Debug.Log("isUnlockPanelActive:" + isUnlockPanelActive);
     }
 
 
     // Use this for initialization
     void Start()
     {
-        PlayerCoinText.text = NetworkController.Instance.playerModel.coins.ToString();
-        inventory = NetworkController.Instance.inventoryList.inventory;
+        PlayerCoinText.text = NetworkManager.instance.playerModel.coins.ToString();
+        inventory = NetworkManager.instance.inventoryList.inventory;
         selectedColor = new Color(0.86f, 0.78f, 0.49f, 1);
         charBtn.GetComponent<Image>().color = selectedColor;
 
@@ -80,8 +80,8 @@ public class OptionsController : MonoBehaviour
             int price = inventory[charIndex].character.price;
             int char_id = int.Parse(inventory[charIndex].character.char_id);
 
-            Debug.Log("SELECTED CHAR: " + name);
-            Debug.Log("CHAR INDEX:" + charIndex);
+            //Debug.Log("SELECTED CHAR: " + name);
+            //Debug.Log("CHAR INDEX:" + charIndex);
             GameObject selected = GameObject.Find(name);
 
             if (purchased)
@@ -113,7 +113,7 @@ public class OptionsController : MonoBehaviour
 
             else
             {
-                Debug.Log("NOT PURCHASED !!");
+                //Debug.Log("NOT PURCHASED !!");
                 unlockPanel.SetActive(true);
                 isUnlockPanelActive = true;
 
@@ -138,7 +138,7 @@ public class OptionsController : MonoBehaviour
                     priceText.text = price.ToString();
 
                     unlockButton = Instantiate(unlockButton, unlockPanel.transform);
-                    unlockButton.onClick.AddListener(delegate { UnlockMonster(char_id, price, NetworkController.Instance.playerModel.coins); });
+                    unlockButton.onClick.AddListener(delegate { UnlockMonster(char_id, price, NetworkManager.instance.playerModel.coins); });
                 }
 
                 else
@@ -154,7 +154,7 @@ public class OptionsController : MonoBehaviour
                     priceText.text = price.ToString();
 
                     unlockButton.onClick.RemoveAllListeners();
-                    unlockButton.onClick.AddListener(delegate { UnlockMonster(char_id, price, NetworkController.Instance.playerModel.coins); });
+                    unlockButton.onClick.AddListener(delegate { UnlockMonster(char_id, price, NetworkManager.instance.playerModel.coins); });
                 }
                 //Invoke("TakeSS", 3f);
             }
@@ -171,11 +171,12 @@ public class OptionsController : MonoBehaviour
 
     public void UnlockMonster(int char_id, int price, int playerCoins)
     {
-        //int playerTempPrice = NetworkController.Instance.playerModel.coins;
-        Debug.Log("PLAYER COINS:" + playerCoins);
+        //int playerTempPrice = NetworkController.instance.playerModel.coins;
+        //Debug.Log("PLAYER COINS:" + playerCoins);
+        unlockButton.interactable = false;
         if (price > playerCoins)
         {
-            Debug.Log("Yo, you don't have enough money for this shit !!");
+            //Debug.Log("Yo, you don't have enough money for this shit !!");
             NoMoneyText.gameObject.SetActive(true);
             NoMoneyText.text = "Yo, you don't have enough";
 
@@ -210,7 +211,8 @@ public class OptionsController : MonoBehaviour
         SoundManager.Instance.MusicSource.Stop();
         SoundManager.Instance.PlayMusic("GameSound");
         PlayerCoin.GetComponent<Animator>().SetTrigger("fixed");
-        NetworkController.Instance.StartCoroutine(NetworkController.Instance.UnlockMonster(char_id));
+        NetworkManager.instance.inventoryNeeded = true;
+        NetworkManager.instance.StartCoroutine(NetworkManager.instance.UnlockMonster(char_id));
         isUnlockPanelActive = false;
 
     }
@@ -236,7 +238,7 @@ public class OptionsController : MonoBehaviour
             }
             catch (System.FormatException e)
             {
-                Debug.Log(inventory[i].character.img.Length);
+                //Debug.Log(inventory[i].character.img.Length);
                 dataImage = System.Convert.FromBase64String(inventory[i].character.img);
                 mytexture = new Texture2D(1, 1);
                 mytexture.LoadImage(dataImage);
@@ -275,7 +277,8 @@ public class OptionsController : MonoBehaviour
 
     public void loadScene(string sceneName)
     {
-        MenuCtrl.Instance.loadScene(sceneName);
+        NetworkManager.instance.inventoryNeeded = false;
+        MenuCtrl.instance.loadScene(sceneName);
     }
 
 
