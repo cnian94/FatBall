@@ -20,6 +20,8 @@ public class GameMaster : MonoBehaviour
 
     public TimerScript timerScript;
 
+    public Text IngameResult ;
+
     private MonstersSpawnerControl spawnerControl;
     private SpikeSpawnerControl spikeSpawner;
     private JokerSpawnerControl jokerSpawnerControl;
@@ -38,11 +40,18 @@ public class GameMaster : MonoBehaviour
     public int eatedEnemy = 0;
     public int eatedJoker = 0;
 
-    public int finalScore;
+    
 
     public int MonsterSpawnLimit;
 
     public int numOfStrawberry;
+
+    int pointFromJokers;
+    int pointFromEnemy;
+    //string[] time_score;
+    float time_score;
+    int pointFromTime ;
+    public int finalScore; 
 
 
 
@@ -92,6 +101,14 @@ public class GameMaster : MonoBehaviour
     void Update()
     {
         jokerTimeLeft -= Time.deltaTime;
+        pointFromJokers = eatedJoker * 5;
+        pointFromEnemy = -eatedEnemy;
+        //time_score = timerScript.time_text.text.Split(':');
+        //time_score = float.Parse(timerScript.minutes) * 60 + float.Parse(timerScript.seconds);
+        //pointFromTime = int.Parse(time_score[0]) * 60 + int.Parse(time_score[1].Split('.')[0]);
+        finalScore = (int)timerScript.t + pointFromJokers + pointFromEnemy;
+        IngameResult.text = finalScore.ToString();
+
 
         if (jokerTimeLeft <= 0f)
         {
@@ -179,12 +196,14 @@ public class GameMaster : MonoBehaviour
 
     public void CalculateScore()
     {
-        int pointFromJokers = eatedJoker * 5;
-        int pointFromEnemy = -eatedEnemy;
-        string[] time_score = timerScript.time_text.text.Split(':');
-        int pointFromTime = int.Parse(time_score[0]) * 60 + int.Parse(time_score[1].Split('.')[0]);
-        finalScore = pointFromTime + pointFromJokers + pointFromEnemy;
-        //Debug.Log("pointFromJokers:" + pointFromJokers);
+        pointFromJokers = eatedJoker * 5;
+        pointFromEnemy = -eatedEnemy;
+        //time_score = timerScript.time_text.text.Split(':');
+        //pointFromTime = int.Parse(time_score[0]) * 60 + int.Parse(time_score[1].Split('.')[0]);
+        //finalScore = pointFromTime + pointFromJokers + pointFromEnemy;
+        //time_score = int.Parse(timerScript.minutes) * 60 + int.Parse(timerScript.seconds);
+        finalScore = (int)timerScript.t + pointFromJokers + pointFromEnemy;
+        //Debug.Log("poi1ntFromJokers:" + pointFromJokers);
         //Debug.Log("pointFromEnemy:" + pointFromEnemy);
         //Debug.Log("pointFromTime:" + pointFromTime);
         //Debug.Log("FINAL SCORE:" + finalScore);

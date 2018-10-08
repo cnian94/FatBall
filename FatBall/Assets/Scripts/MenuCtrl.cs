@@ -90,6 +90,10 @@ public class MenuCtrl : MonoBehaviour
         {
             SoundManager.Instance.PlayMusic("GameSound");
         }
+        if (SoundManager.Instance.MusicSource.mute == true)
+        {
+            soundButton.GetComponent<Image>().sprite = soundOffSprite;
+        }
     }
 
 }

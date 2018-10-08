@@ -16,7 +16,10 @@ public class TimerScript : MonoBehaviour
 
     public string result;
 
-    private float t;
+    public float t;
+
+    public string minutes;
+    public string seconds;
 
 
     void Start()
@@ -28,7 +31,9 @@ public class TimerScript : MonoBehaviour
     {
         if (finished)
         {
+            GameMaster.gm.IngameResult.gameObject.SetActive(false);
             time_text.text = result;
+            Debug.Log("Finish" + result);
             startTime = 0f;
         }
 
@@ -36,10 +41,10 @@ public class TimerScript : MonoBehaviour
         {
             t = Time.timeSinceLevelLoad - startTime;
 
-            string minutes = ((int)t / 60).ToString();
-            string seconds = (t % 60).ToString("f2");
+            //minutes = ((int)t / 60).ToString();
+            //seconds = (t % 60).ToString("f2");
 
-            time_text.text = minutes + ":" + seconds;
+            //time_text.text = minutes + ":" + seconds;
         }
     }
 
