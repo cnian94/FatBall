@@ -24,8 +24,7 @@ public class NetworkManager : MonoBehaviour
 
     //public static NetworkManager _instance = null;
 
-    public LoadingProgress progressBarPre;
-    public LoadingProgress progressBar;
+    //public GameObject ProgressBar;
 
     private AsyncOperation asyncLoad;
 
@@ -34,6 +33,8 @@ public class NetworkManager : MonoBehaviour
 
     public PlayerModel playerModel;
     public InventoryList inventoryList;
+
+    public GameObject ProgressBar;
 
 
     private string REGISTER_URL = "https://fatball.herokuapp.com/api/register";
@@ -58,13 +59,13 @@ public class NetworkManager : MonoBehaviour
     {
         if (_instance != null && _instance != this)
         {
-            Debug.Log("NOT NULL");
+            //Debug.Log("NOT NULL");
             Destroy(gameObject);
         }
         else
         {
             //PlayerPrefs.DeleteAll();
-            Debug.Log("NULL");
+            //Debug.Log("NULL");
             _instance = this;
             RandomAdLimit = Random.Range(2, 5);
             DontDestroyOnLoad(this);
@@ -185,8 +186,10 @@ public class NetworkManager : MonoBehaviour
         else
         {
             Debug.Log("INVENTORY NOT NEEDED !!");
-            //_instance.progressBar.gameObject.SetActive(false);
-            _instance.progressBar.SetValue(Mathf.Clamp01(100f));
+            //_instance.ProgressBar.SetValue(Mathf.Clamp01(100f));
+            GameObject progressBar = GameObject.FindGameObjectWithTag("ProgressBar");
+            progressBar.GetComponent<LoadingProgress>().SetValue(Mathf.Clamp01(100f));
+            progressBar.gameObject.SetActive(false);
             yield return new WaitForSeconds(0.1f);
             _instance.inventoryFetchedEvent.Invoke();
             yield return null;
@@ -198,14 +201,16 @@ public class NetworkManager : MonoBehaviour
     private IEnumerator WaitForInventory(UnityWebRequest request)
     {
 
-        Debug.Log("Trying the bundle download");
+        //Debug.Log("Trying the bundle download");
         _instance.asyncLoad = request.SendWebRequest();
         //yield return null;
 
         while (!asyncLoad.isDone)
         {
             //Debug.Log("D PROGRESS: " + request.downloadProgress);
-            _instance.progressBar.SetValue(Mathf.Clamp01(request.downloadProgress / 0.9f));
+            //_instance.ProgressBar.SetValue(Mathf.Clamp01(request.downloadProgress / 0.9f));
+            GameObject progressBar = GameObject.FindGameObjectWithTag("ProgressBar");
+            progressBar.GetComponent<LoadingProgress>().SetValue(Mathf.Clamp01(request.downloadProgress / 0.9f));
             yield return null;
         }
 
@@ -219,6 +224,12 @@ public class NetworkManager : MonoBehaviour
             _instance.inventoryFetchedEvent.Invoke();
 
 
+
+            if (SceneManager.GetActiveScene().name == "OptionsScene")
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+
             /*_instance.inventoryList = InventoryList.CreateFromJSON(request.downloadHandler.text);
             //Debug.Log("D PROGRESS: " + request.downloadProgress);
 
@@ -230,12 +241,6 @@ public class NetworkManager : MonoBehaviour
                 //Debug.Log("COINS: " + playerModel.coins.ToString());
                 _instance.PlayerCoinText.text = _instance.playerModel.coins.ToString();
             }*/
-
-
-            if (SceneManager.GetActiveScene().name == "OptionsScene")
-            {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-            }
 
         }
     }
@@ -287,7 +292,8 @@ public class NetworkManager : MonoBehaviour
                 //Debug.Log("RESPONSE: " + request.downloadHandler.text);
                 PlayerPrefs.SetString("player", request.downloadHandler.text);
                 _instance.playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
-                GameMaster.gm.gameOverUI.gameObject.SetActive(true);
+                //Debug.Log("CHAR COLOR: " + GameMaster.gm.charColor);
+                SoundManager.Instance.Play("Explosion");
             }
 
             else

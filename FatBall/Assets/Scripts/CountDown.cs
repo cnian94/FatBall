@@ -8,6 +8,8 @@ public class CountDown : MonoBehaviour {
     public Sprite sprite_one;
     public Sprite sprite_two;
     public Sprite sprite_three;
+    public Image Tilt_phone;
+    public Text Tilt_text;
 
     private float startTime;
 
@@ -40,6 +42,8 @@ public class CountDown : MonoBehaviour {
 
         if (Time.timeSinceLevelLoad >= 3)
         {
+            //Destroy(Tilt_phone.gameObject);
+            //Destroy(Tilt_text.gameObject);
             gameObject.SetActive(false);
         }
 

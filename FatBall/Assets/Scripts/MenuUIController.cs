@@ -10,11 +10,15 @@ public class MenuUIController : MonoBehaviour
     public GameObject notMemberPanel;
     public GameObject memberPanel;
     public GameObject connectionPanel;
+    public GameObject ProgressBar;
+    public Text TipText;
 
     public Text PlayerCoinText;
 
     public Text nickname;
     public Text takenText;
+
+    private string[] Tips = { "Beer is your friend", "Don't touch spikes", "Mushroom is the shield", "Conquer that heart", "Eat healthy", "No, not the cake","Tilt to play" };
 
     private void Awake()
     {
@@ -49,7 +53,7 @@ public class MenuUIController : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "MenuScene")
         {
             //NetworkManager.instance.progressBar.gameObject.SetActive(false);??
-            NetworkManager.instance.progressBar.gameObject.SetActive(false);
+            ProgressBar.gameObject.SetActive(false);
             notMemberPanel.gameObject.SetActive(false);
             memberPanel.gameObject.SetActive(true);
             //Debug.Log("COINS: " + playerModel.coins.ToString());
@@ -61,6 +65,8 @@ public class MenuUIController : MonoBehaviour
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+        int index = Random.Range(0, Tips.Length);
+        TipText.text += "PS: " + Tips[index];
     }
 
 
@@ -81,7 +87,8 @@ public class MenuUIController : MonoBehaviour
         else
         {
             NetworkManager.instance.playerModel = JsonUtility.FromJson<PlayerModel>(PlayerPrefs.GetString("player"));
-            NetworkManager.instance.progressBar = Instantiate(NetworkManager.instance.progressBarPre, gameObject.transform.GetChild(0).transform);
+            //ProgressBar = Instantiate(NetworkManager.instance.ProgressBar, gameObject.transform.GetChild(0).transform);
+            ProgressBar.gameObject.SetActive(true);
             NetworkManager.instance.StartCoroutine(NetworkManager.instance.CheckDeviceIsRegistered());
         }
     }
@@ -90,7 +97,8 @@ public class MenuUIController : MonoBehaviour
     {
         NetworkManager.instance.device_id = SystemInfo.deviceUniqueIdentifier;
         NetworkManager.instance.playerModel = new PlayerModel(NetworkManager.instance.device_id, nickname.text);
-        NetworkManager.instance.progressBar = Instantiate(NetworkManager.instance.progressBarPre, gameObject.transform.GetChild(0).transform);
+        //NetworkManager.instance.ProgressBar = Instantiate(NetworkManager.instance.ProgressBar, gameObject.transform.GetChild(0).transform);
+        ProgressBar.gameObject.SetActive(true);
         NetworkManager.instance.StartCoroutine(NetworkManager.instance.Register());
     }
 }

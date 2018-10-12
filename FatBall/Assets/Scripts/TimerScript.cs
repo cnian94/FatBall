@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.Events;
+
 
 
 public class TimerScript : MonoBehaviour
@@ -20,22 +22,17 @@ public class TimerScript : MonoBehaviour
 
     public string minutes;
     public string seconds;
+    private Color textcolor;
 
 
     void Start()
     {
         startTime = Time.timeSinceLevelLoad;
+        GameMaster.gm.FinishEvent.AddListener(Finish);
     }
 
     void Update()
     {
-        if (finished)
-        {
-            GameMaster.gm.IngameResult.gameObject.SetActive(false);
-            time_text.text = result;
-            Debug.Log("Finish" + result);
-            startTime = 0f;
-        }
 
         if (!finished  && Time.timeSinceLevelLoad >= 3)
         {
@@ -51,6 +48,17 @@ public class TimerScript : MonoBehaviour
     public void Finish()
     {
         finished = true;
+        Color charcolor = GameMaster.gm.charColor;
+        charcolor.a = 0;
+        textcolor = new Color (1, 1, 1, 1) - charcolor;
+        Debug.Log("TextColor" + textcolor);
+        GameMaster.gm.IngameResult.gameObject.SetActive(false);
+        time_text.text = result;
+        time_text.color = textcolor;
+        GameMaster.gm.ResultPanel.GetComponent<Image>().color = GameMaster.gm.charColor;
+        GameMaster.gm.gameOverUI.gameObject.SetActive(true);
+        //Debug.Log("Finish" + result);
+        startTime = 0f;
     }
 
 }

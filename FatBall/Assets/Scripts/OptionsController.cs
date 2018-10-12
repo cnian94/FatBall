@@ -8,6 +8,8 @@ using UnityEngine.EventSystems;
 public class OptionsController : MonoBehaviour
 {
 
+    public GameObject ProgressBar;
+
     public GameObject Player;
 
     public Text PlayerCoinText;
@@ -16,9 +18,6 @@ public class OptionsController : MonoBehaviour
 
     public GameObject charOptionsPanel;
     public GameObject charOptionsContent;
-
-    //public GameObject themeOptionsPanel;
-    //public GameObject themeOptionsContent;
 
     public GameObject unlockPanel;
     public Button unlockButton;
@@ -35,6 +34,7 @@ public class OptionsController : MonoBehaviour
     public Image selectedImage;
     public Text monsterName;
     public Image charToUnlockImage;
+    public Button UnlockPanelCloseBtn;
 
     public InventoryItem[] inventory;
     public List<Sprite> PlayerSprites = new List<Sprite>();
@@ -114,7 +114,7 @@ public class OptionsController : MonoBehaviour
             else
             {
                 //Debug.Log("NOT PURCHASED !!");
-                unlockPanel.SetActive(true);
+                unlockPanel.gameObject.SetActive(true);
                 isUnlockPanelActive = true;
 
                 if (!isUnlockCreated)
@@ -163,7 +163,7 @@ public class OptionsController : MonoBehaviour
 
     public void CloseUnlockPanel()
     {
-        unlockPanel.SetActive(false);
+        unlockPanel.gameObject.SetActive(false);
         isUnlockPanelActive = false;
         NoMoneyText.gameObject.SetActive(false);
     }
@@ -184,6 +184,7 @@ public class OptionsController : MonoBehaviour
 
         else
         {
+            UnlockPanelCloseBtn.gameObject.SetActive(false);
             StartCoroutine(DecreasePlayerCoin(price, 3, char_id));
         }
     }
@@ -211,8 +212,10 @@ public class OptionsController : MonoBehaviour
         SoundManager.Instance.MusicSource.Stop();
         SoundManager.Instance.PlayMusic("GameSound");
         PlayerCoin.GetComponent<Animator>().SetTrigger("fixed");
+        ProgressBar.gameObject.SetActive(true);
         NetworkManager.instance.inventoryNeeded = true;
         NetworkManager.instance.StartCoroutine(NetworkManager.instance.UnlockMonster(char_id));
+        unlockPanel.gameObject.SetActive(false);
         isUnlockPanelActive = false;
 
     }

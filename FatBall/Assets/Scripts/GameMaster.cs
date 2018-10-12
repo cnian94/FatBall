@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using ChartboostSDK;
+using System.Linq;
+using UnityEngine.Events;
 
 public class GameMaster : MonoBehaviour
 {
@@ -18,9 +21,11 @@ public class GameMaster : MonoBehaviour
     public GameObject gamePausedUI;
     public GameObject PauseButton;
 
+    public GameObject ResultPanel;
+
     public TimerScript timerScript;
 
-    public Text IngameResult ;
+    public Text IngameResult;
 
     private MonstersSpawnerControl spawnerControl;
     private SpikeSpawnerControl spikeSpawner;
@@ -40,7 +45,7 @@ public class GameMaster : MonoBehaviour
     public int eatedEnemy = 0;
     public int eatedJoker = 0;
 
-    
+
 
     public int MonsterSpawnLimit;
 
@@ -50,9 +55,12 @@ public class GameMaster : MonoBehaviour
     int pointFromEnemy;
     //string[] time_score;
     float time_score;
-    int pointFromTime ;
-    public int finalScore; 
+    int pointFromTime;
+    public int finalScore;
 
+    public Color charColor;
+
+    public UnityEvent FinishEvent;
 
 
 
@@ -93,9 +101,7 @@ public class GameMaster : MonoBehaviour
             gm = GameObject.FindGameObjectWithTag("GM").GetComponent<GameMaster>();
             SoundManager.Instance.Play("Start");
             gm.StartCoroutine(gm.SpawnPlayer());
-
         }
-
     }
 
     void Update()
@@ -143,12 +149,75 @@ public class GameMaster : MonoBehaviour
         }
     }
 
+    int FindDominantChannel(float r, float g, float b)
+    {
+        float max3 = Mathf.Max(r, Mathf.Max(g, b));
+        if (max3 == r)
+        {
+            return 0;
+        }
+
+        if (max3 == g)
+        {
+            return 1;
+        }
+
+        if (max3 == b)
+        {
+            return 2;
+        }
+
+        return -1;
+    }
+
+    public static Color GetMostUsedColor(Texture2D bitMap)
+    {
+        var colorIncidence = new Dictionary<Color, int>();
+        for (var x = 0; x < bitMap.width; x++)
+        {
+            for (var y = 0; y < bitMap.height; y++)
+            {
+                var pixelColor = bitMap.GetPixel(x, y);
+                if (colorIncidence.Keys.Contains<Color>(pixelColor))
+                {
+                    colorIncidence[pixelColor]++;
+                }
+                if (!colorIncidence.Keys.Contains<Color>(pixelColor) && pixelColor != new Color(0, 0, 0, 0) && pixelColor != new Color(1, 1, 1, 1))
+                {
+
+                    if (pixelColor.r >= 0.5f || pixelColor.g >= 0.5f || pixelColor.b >= 0.5f)
+                    {
+                        if (pixelColor.r >= 0.7f && pixelColor.g >= 0.7f && pixelColor.b >= 0.7f)
+                        {
+                            //colorIncidence.Add(pixelColor, 1);
+                        }
+                        else
+                        {
+                            colorIncidence.Add(pixelColor, 1);
+                        }
+                    }
+                }
+
+            }
+        }
+        //Debug.Log("VALUE: " + colorIncidence.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value).First().Value);
+        return colorIncidence.OrderByDescending(x => x.Value).ToDictionary(x => x.Key, x => x.Value).First().Key;
+
+    }
+
     public Sprite GetSelectedCharSprite(int index)
     {
 
         byte[] dataImage = System.Convert.FromBase64String(NetworkManager.instance.inventoryList.inventory[index].character.img);
         Texture2D mytexture = new Texture2D(1, 1);
         mytexture.LoadImage(dataImage);
+
+        Color[] MyPixel = mytexture.GetPixels();
+        //Debug.Log("AVARAGE COLOR: " + GetAverageColor(mytexture));
+        //charColor = GetColorFromArray(MyPixel, 100, 200);
+        //charColor = GetAverageColor(mytexture);
+        //Debug.Log("AVARAGE COLOR: " + GetMostUsedColor(mytexture));
+        charColor = GetMostUsedColor(mytexture);
 
         Sprite charSprite = Sprite.Create(mytexture, new Rect(0.0f, 0.0f, mytexture.width, mytexture.height), new Vector2(0.5f, 0.5f));
         return charSprite;
@@ -182,7 +251,6 @@ public class GameMaster : MonoBehaviour
     public void KillPlayer(GameObject player)
     {
         Destroy(player);
-        SoundManager.Instance.Play("Explosion");
         CalculateScore();
         if (NetworkManager.instance.PlayCounter == NetworkManager.instance.RandomAdLimit)
         {
@@ -218,6 +286,7 @@ public class GameMaster : MonoBehaviour
                                          "Life Span = " + pointFromTime + System.Environment.NewLine +
                                          "---------------------------------------" + System.Environment.NewLine +
                                          "Total: " + finalScore;
+            FinishEvent.Invoke();
 
         }
 
@@ -230,6 +299,7 @@ public class GameMaster : MonoBehaviour
                              "Life Span = " + pointFromTime + System.Environment.NewLine +
                              "--------------------------------" + System.Environment.NewLine +
                              "Total: " + finalScore;
+            FinishEvent.Invoke();
         }
     }
 
@@ -281,7 +351,7 @@ public class GameMaster : MonoBehaviour
                 jokerSpawnerControl.num_of_jokers++;
             }
 
-            if(numOfStrawberry < 2 && jokerSpawnerControl.jokers[jokerSpawnerControl.randomJoker].CompareTag("GrapeFruitJoker"))
+            if (numOfStrawberry < 2 && jokerSpawnerControl.jokers[jokerSpawnerControl.randomJoker].CompareTag("GrapeFruitJoker"))
             {
                 //Debug.Log("COND 2");
                 numOfStrawberry++;
@@ -290,7 +360,7 @@ public class GameMaster : MonoBehaviour
                 jokerSpawnerControl.num_of_jokers++;
             }
 
-            if(!jokerSpawnerControl.jokers[jokerSpawnerControl.randomJoker].CompareTag("GrapeFruitJoker"))
+            if (!jokerSpawnerControl.jokers[jokerSpawnerControl.randomJoker].CompareTag("GrapeFruitJoker"))
             {
                 //Debug.Log("COND 3");
                 jokerSpawnerControl.joker = Instantiate(jokerSpawnerControl.jokers[jokerSpawnerControl.randomJoker], randomPoint, Quaternion.identity);
@@ -403,7 +473,5 @@ public class GameMaster : MonoBehaviour
             }
         }
     }
-
-
 
 }

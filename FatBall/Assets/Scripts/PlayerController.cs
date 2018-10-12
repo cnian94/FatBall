@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
     private bool isMoving = false;
 
 
+
     void Awake()
     {
         moveSpeed = Screen.width / 0.5f; //Joker Control 106 dan sonrasını da değiştir
@@ -265,11 +266,13 @@ public class PlayerController : MonoBehaviour
                     if (!isColliding)
                     {
                         isColliding = true;
+                        Handheld.Vibrate();
                         GameMaster.gm.KillPlayer(gameObject);
-                        GameObject.Find("Timer").SendMessage("Finish");
-                        Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
-                        Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
-                        Destroy(Explosion, 3);
+                        //GameMaster.gm.FinishEvent.Invoke();
+                        //GameObject.Find("Timer").SendMessage("Finish");
+                        //Explosion = Instantiate(Explosion, transform.position, Quaternion.identity);
+                        //Explosion.transform.localScale = new Vector3(gameObject.transform.localScale.x, gameObject.transform.localScale.y, gameObject.transform.localScale.z);
+                        //Destroy(Explosion, 3);
                     }
                     break;
 

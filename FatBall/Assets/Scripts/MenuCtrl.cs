@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using ChartboostSDK;
 
 public class MenuCtrl : MonoBehaviour
 {
@@ -94,6 +95,8 @@ public class MenuCtrl : MonoBehaviour
         {
             soundButton.GetComponent<Image>().sprite = soundOffSprite;
         }
+
+        Debug.Log(CBSettings.getAndroidAppId());
     }
 
 }
