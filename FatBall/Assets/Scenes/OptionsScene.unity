@@ -2197,6 +2197,7 @@ MonoBehaviour:
   PlayerCoinText: {fileID: 1370654290}
   PlayerCoin: {fileID: 1645669516}
   NoMoneyText: {fileID: 222633507}
+  backButton: {fileID: 105387424}
   charOptionsPanel: {fileID: 1839606399}
   charOptionsContent: {fileID: 2030586793}
   unlockPanel: {fileID: 627567689}

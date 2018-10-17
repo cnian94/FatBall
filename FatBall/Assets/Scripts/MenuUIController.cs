@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using ChartboostSDK;
 
 public class MenuUIController : MonoBehaviour
 {
@@ -49,6 +50,7 @@ public class MenuUIController : MonoBehaviour
     {
         //NetworkManager.instance.inventoryList = InventoryList.CreateFromJSON(text);
         //Debug.Log("D PROGRESS: " + request.downloadProgress);
+        //Debug.Log("isInitialized: " + Chartboost.isInitialized());
 
         if (SceneManager.GetActiveScene().name == "MenuScene")
         {
@@ -66,7 +68,8 @@ public class MenuUIController : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
         int index = Random.Range(0, Tips.Length);
-        TipText.text += "PS: " + Tips[index];
+        //TipText.text += "PS: " + Tips[index];
+        TipText.text += Chartboost.isInitialized();
     }
 
 

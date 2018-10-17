@@ -9,13 +9,16 @@ public class CharModel {
     public string char_id;
     public string char_name;
     public int price;
+    public string attr;
     public string img;
 
-    public CharModel(string char_id, string char_name, int price, string img)
+
+    public CharModel(string char_id, string char_name, int price, string attr, string img)
     {
         this.char_id = char_id;
         this.char_name = char_name;
         this.price = price;
+        this.attr = attr;
         this.img = img;
     }
 

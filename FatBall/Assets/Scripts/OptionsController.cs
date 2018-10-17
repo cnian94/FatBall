@@ -15,6 +15,7 @@ public class OptionsController : MonoBehaviour
     public Text PlayerCoinText;
     public Image PlayerCoin;
     public Text NoMoneyText;
+    public Button backButton;
 
     public GameObject charOptionsPanel;
     public GameObject charOptionsContent;
@@ -35,6 +36,7 @@ public class OptionsController : MonoBehaviour
     public Text monsterName;
     public Image charToUnlockImage;
     public Button UnlockPanelCloseBtn;
+
 
     public InventoryItem[] inventory;
     public List<Sprite> PlayerSprites = new List<Sprite>();
@@ -116,6 +118,7 @@ public class OptionsController : MonoBehaviour
                 //Debug.Log("NOT PURCHASED !!");
                 unlockPanel.gameObject.SetActive(true);
                 isUnlockPanelActive = true;
+                backButton.gameObject.SetActive(false);
 
                 if (!isUnlockCreated)
                 {

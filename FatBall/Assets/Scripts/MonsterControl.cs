@@ -23,6 +23,8 @@ public class MonsterControl : MonoBehaviour
     public bool isColliding = false;
     //private int hitCount = 0;
 
+    public float monsterDivider = 5;
+
 
 
     public void SetIsMonsterMovementAllowed(bool val)
@@ -63,6 +65,9 @@ public class MonsterControl : MonoBehaviour
         temp.y = randomScale;
 
         transform.localScale = temp;
+
+        monsterDivider = monsterDivider + ((int.Parse(NetworkManager.instance.inventoryList.inventory[PlayerPrefs.GetInt("selectedChar")].character.attr.Split(',')[2]) - 1));
+        //Debug.Log("monsterDivider" + monsterDivider);
     }
 
     IEnumerator MoveMonster()
@@ -124,7 +129,7 @@ public class MonsterControl : MonoBehaviour
                             isColliding = true;
                             //Debug.Log("boyut10" + gameObject.transform.localScale.x / 10);
                             //Debug.Log("boyut8" + gameObject.transform.localScale.x / 8);
-                            Vector3 targetScale = new Vector3(col.gameObject.transform.localScale.x + gameObject.transform.localScale.x / 10, col.gameObject.transform.localScale.y + gameObject.transform.localScale.y / 10, gameObject.transform.localScale.z);
+                            Vector3 targetScale = new Vector3(col.gameObject.transform.localScale.x + gameObject.transform.localScale.x / monsterDivider, col.gameObject.transform.localScale.y + gameObject.transform.localScale.y / monsterDivider , gameObject.transform.localScale.z);
                             SoundManager.Instance.Play("Enemy");
                             spawnerControl.num_of_monsters--;
                             GameMaster.gm.SpawnAMonster();

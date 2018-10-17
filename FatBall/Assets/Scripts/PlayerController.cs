@@ -27,11 +27,13 @@ public class PlayerController : MonoBehaviour
     private bool isColliding = false;
     private bool isMoving = false;
 
+    public float jokerDivider = 21;
+
 
 
     void Awake()
     {
-        moveSpeed = Screen.width / 0.5f; //Joker Control 106 dan sonrasını da değiştir
+        //moveSpeed = Screen.width / 0.35f; //Joker Control 127 dan sonrasını da değiştir
         tempScale = transform.localScale;
         tempScale.x = GetPlayerScaleX();
         tempScale.y = GetPlayerScaleX();
@@ -49,6 +51,8 @@ public class PlayerController : MonoBehaviour
         rb = this.GetComponent<Rigidbody2D>();
 
         CalibrateAccelerometer();
+        jokerDivider = jokerDivider - ((int.Parse(NetworkManager.instance.inventoryList.inventory[PlayerPrefs.GetInt("selectedChar")].character.attr.Split(',')[1]) - 1));
+        //Debug.Log("JokerDivider" + jokerDivider);
     }
 
     //Method for calibration 
@@ -74,7 +78,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //rb.AddForce(movement); //tilt control açar
+        rb.AddForce(movement); //tilt control açar
     }
 
 
@@ -98,15 +102,15 @@ public class PlayerController : MonoBehaviour
         Vector3 position = gameObject.transform.position;
 
 
-        //_InputDir = FixAcceleration(Input.acceleration); //tilt control açar
-        //movement = new Vector2(_InputDir.x, _InputDir.y) * moveSpeed;  //tilt control açar
+        _InputDir = FixAcceleration(Input.acceleration); //tilt control açar
+        movement = new Vector2(_InputDir.x, _InputDir.y) * moveSpeed;  //tilt control açar
 
 
 
 
 
 
-        if (isMoving) //dokunmatik oynamak için 
+        /*if (isMoving) //dokunmatik oynamak için 
         {
             currentDistanceToTouchPos = (touchPosition - transform.position).magnitude;
         }
@@ -160,7 +164,7 @@ public class PlayerController : MonoBehaviour
         if (isMoving)
         {
             previousDistanceToTouchPos = (touchPosition - transform.position).magnitude;
-        }  //buraya kadar dokunmatik oynamak için
+        }*/  //buraya kadar dokunmatik oynamak için
 
 
     }
@@ -229,11 +233,11 @@ public class PlayerController : MonoBehaviour
 
         else
         {
-            Vector3 targetScale = new Vector3(gameObject.transform.localScale.x - gameObject.transform.localScale.x / 16, gameObject.transform.localScale.y - gameObject.transform.localScale.y / 16, gameObject.transform.localScale.z);
+            Vector3 targetScale = new Vector3(gameObject.transform.localScale.x - gameObject.transform.localScale.x / jokerDivider, gameObject.transform.localScale.y - gameObject.transform.localScale.y / jokerDivider, gameObject.transform.localScale.z);
             if (bubble)
             {
                 bubbleScale = bubble.transform.localScale;
-                bubbleTargetScale = new Vector3(bubbleScale.x - bubbleScale.x / 8, bubbleScale.y - bubbleScale.y / 8, bubbleScale.z);
+                bubbleTargetScale = new Vector3(bubbleScale.x - bubbleScale.x / (jokerDivider/2), bubbleScale.y - bubbleScale.y / (jokerDivider / 2), bubbleScale.z);
             }
 
             while (time > 0f)
