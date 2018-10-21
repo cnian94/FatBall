@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 using UnityEngine.Events;
 
 
@@ -59,6 +58,14 @@ public class TimerScript : MonoBehaviour
         GameMaster.gm.gameOverUI.gameObject.SetActive(true);
         //Debug.Log("Finish" + result);
         startTime = 0f;
+        if (NetworkManager.instance.PlayCounter == NetworkManager.instance.RandomAdLimit)
+        {
+            //AdsManager.instance.ShowRandomdAd();
+            GameMaster.gm.ChartBoost.GetComponent<CharBoostManager>().ShowVideo("Game Over");
+            NetworkManager.instance.PlayCounter = 0;
+            NetworkManager.instance.RandomAdLimit = Random.Range(2, 5);
+        }
+
     }
 
 }

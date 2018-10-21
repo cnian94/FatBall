@@ -11,6 +11,7 @@ public class PlayerModel
     public string nickname;
     public int highscore;
     public int coins;
+    public string one_signal_id;
 
     public PlayerModel(string device_id, string nickname)
     {
@@ -18,11 +19,12 @@ public class PlayerModel
         this.nickname = nickname;
     }
 
-    public PlayerModel(string device_id, string nickname, int highscore, int coins) : this(device_id, nickname)
+    public PlayerModel(string device_id,  string nickname, int highscore, int coins) : this(device_id, nickname)
     {
         this.highscore = highscore;
         this.coins = coins;
     }
+
 
     public override string ToString()
     {

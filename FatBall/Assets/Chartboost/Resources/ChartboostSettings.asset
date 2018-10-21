@@ -17,7 +17,7 @@ MonoBehaviour:
   androidAppSecret: aa99a6bbf9f873e06426d665a243a2907c318873
   amazonAppId: 
   amazonAppSecret: 
-  isLoggingEnabled: 0
+  isLoggingEnabled: 1
   androidPlatformLabels:
   - Google Play
   - Amazon

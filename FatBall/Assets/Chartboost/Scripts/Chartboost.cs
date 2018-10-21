@@ -869,6 +869,7 @@ namespace ChartboostSDK {
 		}
 
 		public static Chartboost CreateWithAppId(string appId, string appSignature) {
+            Debug.Log("APPPPP IDDDD : " + appId);
 			CBSettings.setAppId(appId, appSignature);
 			return Create();
 		}

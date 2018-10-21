@@ -24,11 +24,19 @@ public class OptionsController : MonoBehaviour
     public Button unlockButton;
     public Text priceText;
 
+    public GameObject SelectPanel;
+    public Button SelectButton;
+
+    public Image CharToSelectImage;
+    public Text CharNameText;
+
     public Button charBtn;
     public Button themeBtn;
 
     public Button charDeskButtonPrefab;
     private Button charDesk;
+
+    public Text monsterNamePre;
 
     public Image charImage;
     public Image lockImage;
@@ -36,7 +44,6 @@ public class OptionsController : MonoBehaviour
     public Text monsterName;
     public Image charToUnlockImage;
     public Button UnlockPanelCloseBtn;
-
 
     public InventoryItem[] inventory;
     public List<Sprite> PlayerSprites = new List<Sprite>();
@@ -46,6 +53,11 @@ public class OptionsController : MonoBehaviour
 
     private bool isUnlockPanelActive;
     private bool isUnlockCreated;
+
+    Image attr1;
+    Image attr2;
+    Image attr3;
+
 
 
     private void Awake()
@@ -84,11 +96,21 @@ public class OptionsController : MonoBehaviour
 
             //Debug.Log("SELECTED CHAR: " + name);
             //Debug.Log("CHAR INDEX:" + charIndex);
-            GameObject selected = GameObject.Find(name);
 
             if (purchased)
             {
-                if (!GameObject.Find("CharSelectedImage"))
+                backButton.gameObject.SetActive(false);
+                SelectPanel.gameObject.SetActive(true);
+
+                CharToSelectImage.sprite = charSprite;
+                CharToSelectImage.name = "CharToSelect";
+                SelectButton.onClick.AddListener(delegate { EquipChar(charIndex, name); });
+
+                CharNameText.text = name;
+
+                StartCoroutine(SetAttributesAnimation(0.5f, charIndex));
+
+                /*if (!GameObject.Find("CharSelectedImage"))
                 {
                     selectedImage = Instantiate(selectedImage, selected.transform);
                     selectedImage.name = "CharSelectedImage";
@@ -109,7 +131,7 @@ public class OptionsController : MonoBehaviour
                     //DestroyImmediate(Player.GetComponent<PolygonCollider2D>(), true);
                     //Player.AddComponent<PolygonCollider2D>();
                     //Player.GetComponent<PolygonCollider2D>().isTrigger = true;
-                }
+                }*/
 
             }
 
@@ -124,23 +146,25 @@ public class OptionsController : MonoBehaviour
                 {
                     isUnlockCreated = true;
                     charToUnlockImage.sprite = charSprite;
-                    charToUnlockImage = Instantiate(charToUnlockImage, unlockPanel.transform);
+                    //charToUnlockImage = Instantiate(charToUnlockImage, unlockPanel.transform);
                     charToUnlockImage.name = "CharToUnlock";
 
 
-                    monsterName = Instantiate(monsterName, unlockPanel.transform);
-                    monsterName.GetComponent<RectTransform>().offsetMin = new Vector2(monsterName.GetComponent<RectTransform>().offsetMin.x, 80);
-                    monsterName.GetComponent<RectTransform>().offsetMax = new Vector2(monsterName.GetComponent<RectTransform>().offsetMax.x, 30);
-                    monsterName.GetComponent<RectTransform>().sizeDelta = new Vector2(370, monsterName.GetComponent<RectTransform>().sizeDelta.y);
-                    monsterName.fontSize = 70;
+                    //monsterName = Instantiate(monsterName, unlockPanel.transform);
+                    //monsterName.GetComponent<RectTransform>().offsetMin = new Vector2(monsterName.GetComponent<RectTransform>().offsetMin.x, 80);
+                    //monsterName.GetComponent<RectTransform>().offsetMax = new Vector2(monsterName.GetComponent<RectTransform>().offsetMax.x, 30);
+                    //monsterName.GetComponent<RectTransform>().sizeDelta = new Vector2(370, monsterName.GetComponent<RectTransform>().sizeDelta.y);
+                    //monsterName.fontSize = 70;
                     monsterName.text = name;
 
+                    StartCoroutine(SetAttributesAnimation(0.5f, charIndex));
+                    //SetAttributes(charIndex);
 
 
-                    priceText = Instantiate(priceText, unlockPanel.transform);
+                    //priceText = Instantiate(priceText, unlockPanel.transform);
                     priceText.text = price.ToString();
 
-                    unlockButton = Instantiate(unlockButton, unlockPanel.transform);
+                    //unlockButton = Instantiate(unlockButton, unlockPanel.transform);
                     unlockButton.onClick.AddListener(delegate { UnlockMonster(char_id, price, NetworkManager.instance.playerModel.coins); });
                 }
 
@@ -148,11 +172,14 @@ public class OptionsController : MonoBehaviour
                 {
                     charToUnlockImage.sprite = charSprite;
 
-                    monsterName.GetComponent<RectTransform>().offsetMin = new Vector2(monsterName.GetComponent<RectTransform>().offsetMin.x, 80);
-                    monsterName.GetComponent<RectTransform>().offsetMax = new Vector2(monsterName.GetComponent<RectTransform>().offsetMax.x, 30);
-                    monsterName.GetComponent<RectTransform>().sizeDelta = new Vector2(370, monsterName.GetComponent<RectTransform>().sizeDelta.y);
-                    monsterName.fontSize = 70;
+                    //monsterName.GetComponent<RectTransform>().offsetMin = new Vector2(monsterName.GetComponent<RectTransform>().offsetMin.x, 80);
+                    //monsterName.GetComponent<RectTransform>().offsetMax = new Vector2(monsterName.GetComponent<RectTransform>().offsetMax.x, 30);
+                    //monsterName.GetComponent<RectTransform>().sizeDelta = new Vector2(370, monsterName.GetComponent<RectTransform>().sizeDelta.y);
+                    //monsterName.fontSize = 70;
                     monsterName.text = name;
+
+                    StartCoroutine(SetAttributesAnimation(0.5f, charIndex));
+                    //SetAttributes(charIndex);
 
                     priceText.text = price.ToString();
 
@@ -164,11 +191,90 @@ public class OptionsController : MonoBehaviour
         }
     }
 
-    public void CloseUnlockPanel()
+    IEnumerator SetAttributesAnimation(float time, int charIndex)
     {
-        unlockPanel.gameObject.SetActive(false);
-        isUnlockPanelActive = false;
-        NoMoneyText.gameObject.SetActive(false);
+        float animationTime = 0f;
+        string[] attributes = inventory[charIndex].character.attr.Split(',');
+        float x = (int.Parse(attributes[0]) / 10f / time);
+        float y = (int.Parse(attributes[1]) / 10f / time);
+        float z = (int.Parse(attributes[2]) / 10f / time);
+
+        attr1 = GameObject.FindGameObjectWithTag("Attr1").GetComponent<Image>();
+        attr2 = GameObject.FindGameObjectWithTag("Attr2").GetComponent<Image>();
+        attr3 = GameObject.FindGameObjectWithTag("Attr3").GetComponent<Image>();
+
+
+        while (animationTime < time)
+        {
+            animationTime += Time.deltaTime;
+            Debug.Log("ANIMATION TIME: " + animationTime);
+            //countdownSprite.fillAmount = animationTime / time;
+            attr1.fillAmount = animationTime * time * x / time;
+            attr2.fillAmount = animationTime * time * y / time;
+            attr3.fillAmount = animationTime * time * z / time;
+            yield return null;
+        }
+    }
+
+
+    public void CloseUnlockPanel(int panelIndex) // Unlock panel --> 0 ,  SelectPanel --> 1
+    {
+        if (panelIndex == 0)
+        {
+            unlockPanel.gameObject.SetActive(false);
+            isUnlockPanelActive = false;
+            NoMoneyText.gameObject.SetActive(false);
+            backButton.gameObject.SetActive(true);
+            attr1.fillAmount = 0;
+            attr2.fillAmount = 0;
+            attr3.fillAmount = 0;
+        }
+
+        if (panelIndex == 1)
+        {
+            SelectPanel.gameObject.SetActive(false);
+            backButton.gameObject.SetActive(true);
+            attr1.fillAmount = 0;
+            attr2.fillAmount = 0;
+            attr3.fillAmount = 0;
+        }
+
+    }
+
+    public void EquipChar(int charIndex, string name)
+    {
+        SelectPanel.gameObject.SetActive(false);
+        backButton.gameObject.SetActive(true);
+        attr1.fillAmount = 0;
+        attr2.fillAmount = 0;
+        attr3.fillAmount = 0;
+
+        GameObject selected = GameObject.Find(name);
+
+        if (!NetworkManager.instance.isCharSelected)
+        {
+            selectedImage = Instantiate(selectedImage, selected.transform);
+            selectedImage.name = "CharSelectedImage";
+            PlayerPrefs.SetInt("selectedChar", charIndex);
+            NetworkManager.instance.isCharSelected = true;
+
+            //Player.GetComponent<SpriteRenderer>().sprite = charSprite;
+            //DestroyImmediate(Player.GetComponent<PolygonCollider2D>(), true);
+            //Player.AddComponent<PolygonCollider2D>();
+            //Player.GetComponent<PolygonCollider2D>().isTrigger = true;
+        }
+
+        if (NetworkManager.instance.isCharSelected)
+        {
+            selectedImage.transform.SetParent(selected.transform, false);
+            PlayerPrefs.SetInt("selectedChar", charIndex);
+            NetworkManager.instance.isCharSelected = true;
+
+            //Player.GetComponent<SpriteRenderer>().sprite = charSprite;
+            //DestroyImmediate(Player.GetComponent<PolygonCollider2D>(), true);
+            //Player.AddComponent<PolygonCollider2D>();
+            //Player.GetComponent<PolygonCollider2D>().isTrigger = true;
+        }
     }
 
 
@@ -261,21 +367,34 @@ public class OptionsController : MonoBehaviour
             charImage.GetComponent<Image>().sprite = charSprite;
 
 
-            monsterName = Instantiate(monsterName, charDesk.transform);
-            monsterName.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.6f);
-            monsterName.GetComponent<Text>().fontSize = 26;
-            monsterName.text = inventory[i].character.char_name;
-
+            monsterNamePre = Instantiate(monsterNamePre, charDesk.transform);
+            monsterNamePre.name = "MonsterNamePreText";
+            //monsterNamePre.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.6f);
+            monsterNamePre.text = inventory[i].character.char_name;
+            bool selected = false;
             if (!inventory[i].purchased)
             {
                 lockImage = Instantiate(lockImage, charDesk.transform);
                 charDesk.GetComponent<Image>().color = new Color(0.407f, 0.407f, 0.407f, 0.439f);
+                selected = true;
             }
 
-            if (i == PlayerPrefs.GetInt("selectedChar"))
+            if (i == PlayerPrefs.GetInt("selectedChar") && inventory[i].purchased)
             {
+                Debug.Log("selectedCharIndex: " + PlayerPrefs.GetInt("selectedChar") + "   " + inventory[PlayerPrefs.GetInt("selectedChar")].character.char_name);
                 selectedImage = Instantiate(selectedImage, charDesk.transform);
                 selectedImage.name = "CharSelectedImage";
+                NetworkManager.instance.isCharSelected = true;
+            }
+
+            if (i == inventory.Length - 1 && !selected)
+            {
+                Debug.Log("CANNOT FOUND SELECTED !!");
+                lockImage = Instantiate(lockImage, charDesk.transform);
+                charDesk.GetComponent<Image>().color = new Color(0.407f, 0.407f, 0.407f, 0.439f);
+                selected = true;
+                PlayerPrefs.SetInt("selectedChar", 0);
+                NetworkManager.instance.isCharSelected = true;
             }
         }
     }

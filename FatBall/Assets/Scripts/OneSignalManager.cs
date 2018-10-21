@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class OneSignalManager : MonoBehaviour
 {
+    public static UnityEvent notificationEvent;
+    public static NotificationDataModel dataModel;
 
     // Use this for initialization
     void Start()
@@ -16,11 +19,24 @@ public class OneSignalManager : MonoBehaviour
 
         OneSignal.inFocusDisplayType = OneSignal.OSInFocusDisplayOption.Notification;
 
+
     }
 
     // Gets called when the player opens the notification.
     private static void HandleNotificationOpened(OSNotificationOpenedResult result)
     {
+        Dictionary<string, object> additional_data = result.notification.payload.additionalData;
+        Debug.Log("ADDITIONAL DATA: " + additional_data);
+        Debug.Log("ADDITIONAL DATA STRING: " + additional_data);
+        Debug.Log("DATA: " + additional_data["data"]);
+        dataModel = JsonUtility.FromJson<NotificationDataModel>(JsonUtility.ToJson(additional_data));
+        Debug.Log("DATA MODEL: " + dataModel);
+        if(dataModel.type == 0)
+        {
+            notificationEvent.Invoke();
+        }
+
+
 
     }
 

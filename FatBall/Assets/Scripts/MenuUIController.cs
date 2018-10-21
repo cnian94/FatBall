@@ -10,6 +10,7 @@ public class MenuUIController : MonoBehaviour
 
     public GameObject notMemberPanel;
     public GameObject memberPanel;
+    public GameObject winnerPanel;
     public GameObject connectionPanel;
     public GameObject ProgressBar;
     public Text TipText;
@@ -32,6 +33,14 @@ public class MenuUIController : MonoBehaviour
         NetworkManager.instance.inventoryFetchedEvent.AddListener(SetMemberPanelActive);
         NetworkManager.instance.registerEvent.AddListener(SetNotMemberPanelActive);
         Check();
+        OneSignalManager.notificationEvent.AddListener(SetWinnerPanel);
+    }
+
+    void SetWinnerPanel()
+    {
+        TipText.text = "şcdgnajspgnas";
+        memberPanel.gameObject.SetActive(false);
+        winnerPanel.gameObject.SetActive(true);
     }
 
     void SetNotMemberPanelActive(bool taken)
@@ -69,7 +78,8 @@ public class MenuUIController : MonoBehaviour
         }
         int index = Random.Range(0, Tips.Length);
         //TipText.text += "PS: " + Tips[index];
-        TipText.text += Chartboost.isInitialized();
+        //TipText.text += Chartboost.isInitialized();
+        //TipText.text = NetworkManager.instance.playerModel.one_signal_id;
     }
 
 

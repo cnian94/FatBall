@@ -96,7 +96,6 @@ public class MenuCtrl : MonoBehaviour
             soundButton.GetComponent<Image>().sprite = soundOffSprite;
         }
 
-        Debug.Log(CBSettings.getAndroidAppId());
     }
 
 }

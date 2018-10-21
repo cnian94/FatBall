@@ -27,6 +27,9 @@ TagManager:
   - Danger
   - ProgressBar
   - ChartBoost
+  - Attr1
+  - Attr2
+  - Attr3
   layers:
   - Default
   - TransparentFX

@@ -16,13 +16,18 @@ public class CharBoostManager : MonoBehaviour
     private bool showInterstitial = true;
     private bool showRewardedVideo = true;
 
+
+    void OnEnable()
+    {
+        SetupDelegates();
+    }
+
     // Use this for initialization
     void Start()
     {
-        //CBExternal.initWithAppId("5bbca73af6c3ac0bae5e662d", "aa99a6bbf9f873e06426d665a243a2907c318873");
-        //CBExternal.initWithAppId("5bbc7f78feded60b036af338", "e677d2a6f91e0afeff34f429b69b9f383be6b8c0");
-        //CBExternal.initWithAppId("5bc727ce83f7f90b99ed89a5", "1b64a239293835737902d0f2553190b8c241d3fd");
         //Chartboost.setAutoCacheAds(autocache);
+        Debug.Log("CACHING INTERSTITIAL !!");
+        CacheInterstitial("Game Over");
     }
 
     // Update is called once per frame
@@ -112,6 +117,7 @@ public class CharBoostManager : MonoBehaviour
 
     void didCacheInterstitial(CBLocation location)
     {
+        Debug.Log("HEY BURAYA BAK !!!!");
         Debug.Log("didCacheInterstitial: " + location);
     }
 
@@ -188,15 +194,15 @@ public class CharBoostManager : MonoBehaviour
 
     public void CacheInterstitial(string location)
     {
-        CBLocation newLocation = CBLocation.locationFromName(location);
-        Chartboost.cacheInterstitial(newLocation);
+        //CBLocation newLocation = CBLocation.locationFromName(location);
+        Chartboost.cacheInterstitial(CBLocation.GameOver);
     }
 
     public void ShowVideo(string location)
     {
-        CBLocation newLocation = CBLocation.locationFromName(location);
-        Debug.Log("hasInterstitial: " + Chartboost.hasInterstitial(newLocation));
-        Chartboost.showInterstitial(newLocation);
+        //CBLocation newLocation = CBLocation.locationFromName(location);
+        Debug.Log("hasInterstitial at " + CBLocation.GameOver + " : " + Chartboost.hasInterstitial(CBLocation.GameOver));
+        Chartboost.showInterstitial(CBLocation.GameOver);
 
     }
 

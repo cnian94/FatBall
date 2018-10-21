@@ -64,7 +64,7 @@ public class GameMaster : MonoBehaviour
 
     public UnityEvent FinishEvent;
 
-    private GameObject ChartBoost;
+    public GameObject ChartBoost;
 
 
 
@@ -235,10 +235,13 @@ public class GameMaster : MonoBehaviour
         CancelInvoke("PlayStartSound");
         Vector3 randomPoint = new Vector3(Random.Range(Screen.width / 6, Screen.width - (Screen.width / 6)), Random.Range(Screen.height / 3, Screen.height - (Screen.height / 3)), 1);
 
+        Debug.Log("SELECTED CHAR: " + PlayerPrefs.GetInt("selectedChar"));
         player.GetComponent<SpriteRenderer>().sprite = GetSelectedCharSprite(PlayerPrefs.GetInt("selectedChar"));
+        DestroyImmediate(player.GetComponent<PolygonCollider2D>(), true);
         DestroyImmediate(player.GetComponent<PolygonCollider2D>(), true);
         player.AddComponent<PolygonCollider2D>();
         player.GetComponent<PolygonCollider2D>().isTrigger = true;
+        player.AddComponent<PolygonCollider2D>();
         player = Instantiate(player, randomPoint, Quaternion.identity);
         moveSpeedDivider = moveSpeedDivider - ((int.Parse(NetworkManager.instance.inventoryList.inventory[PlayerPrefs.GetInt("selectedChar")].character.attr.Split(',')[0]) - 4) * 0.05f);
         float moveSpeed = Screen.width / (moveSpeedDivider);
@@ -254,10 +257,11 @@ public class GameMaster : MonoBehaviour
         StartCoroutine(IncreaseMonsterLimit());
         StartCoroutine(ExtendSpike());
         StartCoroutine(ReduceSpikeExtendTime());
-        if (NetworkManager.instance.PlayCounter == NetworkManager.instance.RandomAdLimit)
+        /*if (NetworkManager.instance.PlayCounter == NetworkManager.instance.RandomAdLimit)
         {
+            Debug.Log("CACHING INTERSTITIAL !!");
             ChartBoost.GetComponent<CharBoostManager>().CacheInterstitial("Game Over");
-        }
+        }*/
         //StartCoroutine(TakeSs());
     }
 
@@ -265,13 +269,6 @@ public class GameMaster : MonoBehaviour
     {
         Destroy(player);
         CalculateScore();
-        if (NetworkManager.instance.PlayCounter == NetworkManager.instance.RandomAdLimit)
-        {
-            //AdsManager.instance.ShowRandomdAd();
-            ChartBoost.GetComponent<CharBoostManager>().ShowVideo("Game Over");
-            NetworkManager.instance.PlayCounter = 0;
-            NetworkManager.instance.RandomAdLimit = Random.Range(2, 5);
-        }
         //Debug.Log("Enemyeated" + eatedEnemy);
         //Debug.Log("Jokereated" + eatedJoker);
     }

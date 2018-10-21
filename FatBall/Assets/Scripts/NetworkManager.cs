@@ -54,6 +54,9 @@ public class NetworkManager : MonoBehaviour
 
     public bool inventoryNeeded = true;
 
+    public bool isCharSelected = false;
+
+
 
     private void Awake()
     {
@@ -105,12 +108,38 @@ public class NetworkManager : MonoBehaviour
                 PlayerPrefs.SetString("player", request.downloadHandler.text);
                 PlayerPrefs.SetInt("selectedChar", 0);
                 _instance.playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
+                OSPermissionSubscriptionState one_signal_state = OneSignal.GetPermissionSubscriptionState();
+                _instance.playerModel.one_signal_id = one_signal_state.subscriptionStatus.userId;
+                Debug.Log("NEW ONE SIGNAL APP ID: " + _instance.playerModel.one_signal_id);
+                StartCoroutine(SetOneSignalId());
                 _instance.StartCoroutine(_instance.GetInventory());
                 //Debug.Log("NICKNAME NOT TAKEN !!");
                 //Debug.Log("RESPONSE:"+ request.downloadHandler.text);
                 //Debug.Log("PLAYER RESPONSE:" + JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text).ToString());
 
             }
+        }
+    }
+
+    public IEnumerator SetOneSignalId()
+    {
+        string json = JsonUtility.ToJson(playerModel);
+        Debug.Log("JSON:" + json);
+        var request = new UnityWebRequest(PLAYER_URL, "PUT");
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        yield return request.SendWebRequest();
+
+        if (request.error != null)
+        {
+            Debug.Log("Erro: " + request.error);
+        }
+        else
+        {
+            PlayerPrefs.SetString("player", request.downloadHandler.text);
+            _instance.playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
         }
     }
 
@@ -142,6 +171,14 @@ public class NetworkManager : MonoBehaviour
             }
 
             _instance.playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
+            if (_instance.playerModel.one_signal_id == null || _instance.playerModel.one_signal_id == "")
+            {
+                Debug.Log("ONE SIGNAL APP ID IS NULL !!");
+                OSPermissionSubscriptionState one_signal_state = OneSignal.GetPermissionSubscriptionState();
+                _instance.playerModel.one_signal_id = one_signal_state.subscriptionStatus.userId;
+                Debug.Log("NEW ONE SIGNAL APP ID: " + _instance.playerModel.one_signal_id);
+                StartCoroutine(SetOneSignalId());
+            }
 
             _instance.StartCoroutine(_instance.GetInventory());
         }
@@ -177,7 +214,7 @@ public class NetworkManager : MonoBehaviour
     {
         if (inventoryNeeded)
         {
-            Debug.Log("INVENTORY NEEDED !!"); 
+            Debug.Log("INVENTORY NEEDED !!");
             var request = new UnityWebRequest(INVENTORY_URL + playerModel.device_id, "GET");
             request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
             yield return _instance.StartCoroutine(WaitForInventory(request));
