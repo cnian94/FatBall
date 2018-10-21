@@ -52,6 +52,8 @@ public class NetworkManager : MonoBehaviour
 
     public UnityEvent inventoryFetchedEvent;
 
+    public UnityEvent notificationEvent;
+
     public bool inventoryNeeded = true;
 
     public bool isCharSelected = false;

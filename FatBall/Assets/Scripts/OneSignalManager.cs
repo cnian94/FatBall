@@ -1,11 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class OneSignalManager : MonoBehaviour
 {
-    public static UnityEvent notificationEvent;
     public static NotificationDataModel dataModel;
 
     // Use this for initialization
@@ -26,14 +26,21 @@ public class OneSignalManager : MonoBehaviour
     private static void HandleNotificationOpened(OSNotificationOpenedResult result)
     {
         Dictionary<string, object> additional_data = result.notification.payload.additionalData;
-        Debug.Log("ADDITIONAL DATA: " + additional_data);
-        Debug.Log("ADDITIONAL DATA STRING: " + additional_data);
-        Debug.Log("DATA: " + additional_data["data"]);
+        Debug.Log("ADDITIONAL DATA KEYS: " + additional_data.Keys);
+        Debug.Log("TYPE: " + additional_data["type"]);
+
         dataModel = JsonUtility.FromJson<NotificationDataModel>(JsonUtility.ToJson(additional_data));
-        Debug.Log("DATA MODEL: " + dataModel);
-        if(dataModel.type == 0)
+        Debug.Log("DATA MODEL: " + dataModel.type);
+        object zero = 0;
+        object type;
+        additional_data.TryGetValue("type", out type);
+        
+        Debug.Log("Final data:" + Convert.ToInt32(type));
+        Debug.Log("Type OF Final data:" + Convert.ToInt32(type).GetType());
+        if (Convert.ToInt32(type) == 0)
         {
-            notificationEvent.Invoke();
+            Debug.Log("Type is 0 !!");
+            NetworkManager.instance.notificationEvent.Invoke();
         }
 
 

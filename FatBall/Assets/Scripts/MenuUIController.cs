@@ -32,13 +32,15 @@ public class MenuUIController : MonoBehaviour
     {
         NetworkManager.instance.inventoryFetchedEvent.AddListener(SetMemberPanelActive);
         NetworkManager.instance.registerEvent.AddListener(SetNotMemberPanelActive);
+        NetworkManager.instance.notificationEvent.AddListener(SetWinnerPanel);
         Check();
-        OneSignalManager.notificationEvent.AddListener(SetWinnerPanel);
+
     }
 
     void SetWinnerPanel()
     {
-        TipText.text = "şcdgnajspgnas";
+        Debug.Log("Openning Winner Panel !!");
+        TipText.text = "winner";
         memberPanel.gameObject.SetActive(false);
         winnerPanel.gameObject.SetActive(true);
     }
