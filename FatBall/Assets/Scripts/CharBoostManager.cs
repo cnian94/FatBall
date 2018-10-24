@@ -98,16 +98,19 @@ public class CharBoostManager : MonoBehaviour
     void didFailToLoadInterstitial(CBLocation location, CBImpressionError error)
     {
         Debug.Log(string.Format("didFailToLoadInterstitial: {0} at location {1}", error, location));
+        SoundManager.Instance.MusicSource.Play();
     }
 
     void didDismissInterstitial(CBLocation location)
     {
         Debug.Log("didDismissInterstitial: " + location);
+        SoundManager.Instance.MusicSource.Play();
     }
 
     void didCloseInterstitial(CBLocation location)
     {
         Debug.Log("didCloseInterstitial: " + location);
+        SoundManager.Instance.MusicSource.Play();
     }
 
     void didClickInterstitial(CBLocation location)

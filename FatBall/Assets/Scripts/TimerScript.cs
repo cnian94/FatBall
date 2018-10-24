@@ -59,6 +59,7 @@ public class TimerScript : MonoBehaviour
         startTime = 0f;
         if (NetworkManager.instance.PlayCounter == NetworkManager.instance.RandomAdLimit)
         {
+            SoundManager.Instance.MusicSource.Stop();
             //AdsManager.instance.ShowRandomdAd();
             GameMaster.gm.ChartBoost.GetComponent<CharBoostManager>().ShowVideo("Game Over");
             NetworkManager.instance.PlayCounter = 0;

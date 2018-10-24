@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class WinnerPanelController : MonoBehaviour {
 
+    public InputField mail;
     public Dropdown dropDown;
     private List<string> countries;
 	// Use this for initialization
@@ -17,6 +18,19 @@ public class WinnerPanelController : MonoBehaviour {
     {
         dropDown.ClearOptions();
         dropDown.AddOptions(countries);
+    }
+
+    public void Close()
+    {
+        
+        NetworkManager.instance.winnerCredsEvent.Invoke(0);
+    }
+
+    public void Send()
+    {
+        NetworkManager.instance.playerModel.mail = mail.text;
+        NetworkManager.instance.playerModel.store = countries[dropDown.value];
+        NetworkManager.instance.StartCoroutine(NetworkManager.instance.SetWinnerCreds());
     }
 
 }

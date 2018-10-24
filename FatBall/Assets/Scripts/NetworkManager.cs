@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
+using System;
 
 public class NetworkManager : MonoBehaviour
 {
@@ -51,12 +52,18 @@ public class NetworkManager : MonoBehaviour
     public class RegisterEvent : UnityEngine.Events.UnityEvent<bool> { }
     public RegisterEvent registerEvent;
 
+    public UnityEvent notMemberEvent;
+
     public UnityEvent inventoryFetchedEvent;
 
     public UnityEvent notificationEvent;
-    public bool isNotification = false;
+    //public bool isNotification = false;
 
     public UnityEvent coinBoardFetched;
+
+    [System.Serializable]
+    public class WinnerCredsEvent : UnityEngine.Events.UnityEvent<int> { }
+    public WinnerCredsEvent winnerCredsEvent;
 
     public bool inventoryNeeded = true;
 
@@ -76,7 +83,7 @@ public class NetworkManager : MonoBehaviour
             //PlayerPrefs.DeleteAll();
             //Debug.Log("NULL");
             _instance = this;
-            RandomAdLimit = Random.Range(2, 5);
+            RandomAdLimit = UnityEngine.Random.Range(2, 5);
             DontDestroyOnLoad(this);
         }
 
@@ -164,30 +171,42 @@ public class NetworkManager : MonoBehaviour
 
         if (request.error != null)
         {
-            //Debug.Log("Erro: " + request.error);
+            Debug.Log("Erro: " + request.error);
         }
         else
         {
-            //Debug.Log("DEVICE IS ALREADY REGISTERED: " + request.responseCode);
-            PlayerPrefs.SetString("player", request.downloadHandler.text);
+            Debug.Log("RESPONSEEEE: " + request.downloadHandler.text);
 
-            if (PlayerPrefs.GetInt("selectedChar") == 0)
+            if (request.downloadHandler.text.Length == 1)
             {
-                PlayerPrefs.SetInt("selectedChar", 0);
+                if (Convert.ToInt32(request.downloadHandler.text) == 0)
+                {
+                    PlayerPrefs.DeleteKey("player");
+                    _instance.notMemberEvent.Invoke();
+                }
             }
-
-            _instance.playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
-            Debug.Log("PLAYER MODEL: " + _instance.playerModel.ToString());
-            if (_instance.playerModel.one_signal_id == null || _instance.playerModel.one_signal_id == "")
+            else
             {
-                Debug.Log("ONE SIGNAL APP ID IS NULL !!");
-                OSPermissionSubscriptionState one_signal_state = OneSignal.GetPermissionSubscriptionState();
-                _instance.playerModel.one_signal_id = one_signal_state.subscriptionStatus.userId;
-                Debug.Log("NEW ONE SIGNAL APP ID: " + _instance.playerModel.one_signal_id);
-                StartCoroutine(SetOneSignalId());
-            }
+                PlayerPrefs.SetString("player", request.downloadHandler.text);
 
-            _instance.StartCoroutine(_instance.GetInventory());
+                if (PlayerPrefs.GetInt("selectedChar") == 0)
+                {
+                    PlayerPrefs.SetInt("selectedChar", 0);
+                }
+
+                _instance.playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
+                Debug.Log("PLAYER MODEL: " + _instance.playerModel.ToString());
+                if (_instance.playerModel.one_signal_id == null || _instance.playerModel.one_signal_id == "")
+                {
+                    Debug.Log("ONE SIGNAL APP ID IS NULL !!");
+                    OSPermissionSubscriptionState one_signal_state = OneSignal.GetPermissionSubscriptionState();
+                    _instance.playerModel.one_signal_id = one_signal_state.subscriptionStatus.userId;
+                    Debug.Log("NEW ONE SIGNAL APP ID: " + _instance.playerModel.one_signal_id);
+                    StartCoroutine(SetOneSignalId());
+                }
+
+                _instance.StartCoroutine(_instance.GetInventory());
+            }
         }
     }
 
@@ -370,4 +389,30 @@ public class NetworkManager : MonoBehaviour
             }
         }
     }
+
+    public IEnumerator SetWinnerCreds()
+    {
+        string json = JsonUtility.ToJson(_instance.playerModel);
+        Debug.Log("Winner Creds JSON:" + json);
+        var request = new UnityWebRequest(PLAYER_URL, "PUT");
+        byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+        request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+        yield return request.SendWebRequest();
+
+        if (request.error != null)
+        {
+            //Debug.Log("Erro: " + request.error);
+        }
+        else
+        {
+            //Debug.Log("RESPONSE: " + request.downloadHandler.text);
+            PlayerPrefs.SetString("player", request.downloadHandler.text);
+            _instance.playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
+            _instance.winnerCredsEvent.Invoke(1);
+        }
+    }
+
+
 }
