@@ -9,6 +9,8 @@ using UnityEngine.SceneManagement;
 public class LeaderboardController : MonoBehaviour
 {
 
+    public Dropdown boardDropDown;
+
     public GameObject leaderBoardPanel;
     public GameObject leaderBoardContent;
 
@@ -24,8 +26,33 @@ public class LeaderboardController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        CreateRandomLeaderboard();
+        NetworkManager.instance.coinBoardFetched.AddListener(SetCoinBoard);
+        CreateRandomLeaderboard(0);
         StartCoroutine(ScrollToMyScore(0.5f));
+    }
+
+    void SetCoinBoard()
+    {
+        foreach (Transform child in leaderBoardContent.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        CreateRandomLeaderboard(1);
+        StartCoroutine(ScrollToMyScore(0.5f));
+    }
+
+    public void OnLeaderBoardChanged(int value)
+    {
+        Debug.Log("Value: " + value);
+        if(value == 0)
+        {
+            NetworkManager.instance.StartCoroutine(NetworkManager.instance.GetLeaderBoard());
+        }
+
+        if(value == 1)
+        {
+            NetworkManager.instance.StartCoroutine(NetworkManager.instance.GetCoinBoard());
+        }
     }
 
     IEnumerator ScrollToMyScore(float time)
@@ -43,7 +70,7 @@ public class LeaderboardController : MonoBehaviour
         }
     }
 
-    void CreateRandomLeaderboard()
+    void CreateRandomLeaderboard(int type)
     {
         PlayerModel[] players = NetworkManager.instance.leaderboard.players;
 
@@ -51,7 +78,16 @@ public class LeaderboardController : MonoBehaviour
         {
             PlayerPanel = Instantiate(PlayerPanelPrefab, leaderBoardContent.transform);
             PlayerPanel.transform.GetChild(0).GetComponent<Text>().text = (i+1) + ". " + players[i].nickname;
-            PlayerPanel.transform.GetChild(1).GetComponent<Text>().text = players[i].highscore.ToString();
+            if(type == 0)
+            {
+                PlayerPanel.transform.GetChild(1).GetComponent<Text>().text = players[i].highscore.ToString();
+            }
+
+            if(type == 1)
+            {
+                PlayerPanel.transform.GetChild(1).GetComponent<Text>().text = players[i].weekly_coins.ToString();
+            }
+
             PlayerPanel.name = players[i].nickname;
 
             if (players[i].device_id == NetworkManager.instance.playerModel.device_id)
@@ -73,10 +109,5 @@ public class LeaderboardController : MonoBehaviour
         //SoundManager.instance.MusicSource.Pause();
         MenuCtrl.instance.loadScene(sceneName);
     }
-
-    private void Update()
-    {
-    }
-
 
 }

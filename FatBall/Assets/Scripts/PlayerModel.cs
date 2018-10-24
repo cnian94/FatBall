@@ -11,6 +11,9 @@ public class PlayerModel
     public string nickname;
     public int highscore;
     public int coins;
+    public int weekly_coins;
+    public string mail;
+    public string store;
     public string one_signal_id;
 
     public PlayerModel(string device_id, string nickname)
@@ -19,7 +22,7 @@ public class PlayerModel
         this.nickname = nickname;
     }
 
-    public PlayerModel(string device_id,  string nickname, int highscore, int coins) : this(device_id, nickname)
+    public PlayerModel(string device_id, string nickname, int highscore, int coins) : this(device_id, nickname)
     {
         this.highscore = highscore;
         this.coins = coins;
@@ -31,7 +34,10 @@ public class PlayerModel
         return "device_id:" + this.device_id + System.Environment.NewLine
              + "nickname:" + this.nickname + System.Environment.NewLine
              + "highscore:" + this.highscore + System.Environment.NewLine
-             + "coins:" + this.coins + System.Environment.NewLine;
+             + "coins:" + this.coins + System.Environment.NewLine
+             + "weekly_coins:" + this.weekly_coins + System.Environment.NewLine
+             + "mail:" + this.mail + System.Environment.NewLine
+             + "store:" + this.store;
     }
 }
 

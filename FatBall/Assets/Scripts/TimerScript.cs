@@ -50,7 +50,6 @@ public class TimerScript : MonoBehaviour
         Color charcolor = GameMaster.gm.charColor;
         charcolor.a = 0;
         textcolor = new Color (1, 1, 1, 1) - charcolor;
-        Debug.Log("TextColor" + textcolor);
         GameMaster.gm.IngameResult.gameObject.SetActive(false);
         time_text.text = result;
         time_text.color = textcolor;

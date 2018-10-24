@@ -291,6 +291,7 @@ public class GameMaster : MonoBehaviour
             //Debug.Log("New high score !!");
             NetworkManager.instance.playerModel.highscore = finalScore;
             NetworkManager.instance.playerModel.coins = NetworkManager.instance.playerModel.coins + finalScore;
+            NetworkManager.instance.playerModel.weekly_coins = NetworkManager.instance.playerModel.weekly_coins + finalScore;
             NetworkManager.instance.StartCoroutine(NetworkManager.instance.SetHighScore());
             timerScript.result = "Healthy Food X " + eatedJoker + " = " + pointFromJokers + System.Environment.NewLine +
                                          "Junk Food X " + eatedEnemy + " = " + pointFromEnemy + System.Environment.NewLine +
@@ -304,6 +305,7 @@ public class GameMaster : MonoBehaviour
         else
         {
             NetworkManager.instance.playerModel.coins = NetworkManager.instance.playerModel.coins + finalScore;
+            NetworkManager.instance.playerModel.weekly_coins = NetworkManager.instance.playerModel.weekly_coins + finalScore;
             NetworkManager.instance.StartCoroutine(NetworkManager.instance.SetHighScore());
             timerScript.result = "Healthy Food X " + eatedJoker + " = " + pointFromJokers + System.Environment.NewLine +
                              "Junk Food X " + eatedEnemy + " = " + pointFromEnemy + System.Environment.NewLine +

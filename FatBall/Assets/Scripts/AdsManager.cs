@@ -56,6 +56,7 @@ public class AdsManager : MonoBehaviour
             case ShowResult.Finished:
                 Debug.Log("Finished !!");
                 NetworkManager.instance.playerModel.coins = NetworkManager.instance.playerModel.coins + GameMaster.gm.finalScore;
+                NetworkManager.instance.playerModel.weekly_coins = NetworkManager.instance.playerModel.weekly_coins + GameMaster.gm.finalScore;
                 NetworkManager.instance.StartCoroutine(NetworkManager.instance.SetHighScore(true));
                 break;
 

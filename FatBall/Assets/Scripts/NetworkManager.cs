@@ -41,6 +41,7 @@ public class NetworkManager : MonoBehaviour
     private string CHECK_URL = "https://fatball.herokuapp.com/api/check";
     private string PLAYER_URL = "https://fatball.herokuapp.com/api/player";
     private string LEADERBOARD_URL = "https://fatball.herokuapp.com/api/leaderboard";
+    private string COINBOARD_URL = "https://fatball.herokuapp.com/api/coinboard";
     private string INVENTORY_URL = "https://fatball.herokuapp.com/api/inventory?id=";
 
     public int RandomAdLimit;
@@ -53,6 +54,9 @@ public class NetworkManager : MonoBehaviour
     public UnityEvent inventoryFetchedEvent;
 
     public UnityEvent notificationEvent;
+    public bool isNotification = false;
+
+    public UnityEvent coinBoardFetched;
 
     public bool inventoryNeeded = true;
 
@@ -125,7 +129,7 @@ public class NetworkManager : MonoBehaviour
 
     public IEnumerator SetOneSignalId()
     {
-        string json = JsonUtility.ToJson(playerModel);
+        string json = JsonUtility.ToJson(_instance.playerModel);
         Debug.Log("JSON:" + json);
         var request = new UnityWebRequest(PLAYER_URL, "PUT");
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
@@ -173,6 +177,7 @@ public class NetworkManager : MonoBehaviour
             }
 
             _instance.playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
+            Debug.Log("PLAYER MODEL: " + _instance.playerModel.ToString());
             if (_instance.playerModel.one_signal_id == null || _instance.playerModel.one_signal_id == "")
             {
                 Debug.Log("ONE SIGNAL APP ID IS NULL !!");
@@ -206,6 +211,28 @@ public class NetworkManager : MonoBehaviour
             _instance.leaderboard = LeaderBoardList.CreateFromJSON(request.downloadHandler.text);
             //Debug.Log("LEADERBOARD:" + leaderboard.players.Length);
             SceneManager.LoadScene("LeaderBoardScene");
+        }
+    }
+
+    public IEnumerator GetCoinBoard()
+    {
+        var request = new UnityWebRequest(COINBOARD_URL, "GET");
+        request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        yield return _instance.StartCoroutine(_instance.WaitForCoinboard(request));
+    }
+
+    private IEnumerator WaitForCoinboard(UnityWebRequest request)
+    {
+        yield return request.SendWebRequest();
+        if (request.error != null)
+        {
+            //Debug.Log("Erro: " + request.error);
+        }
+        else
+        {
+            _instance.leaderboard = LeaderBoardList.CreateFromJSON(request.downloadHandler.text);
+            coinBoardFetched.Invoke();
+            //SceneManager.LoadScene("LeaderBoardScene");
         }
     }
 
@@ -287,7 +314,7 @@ public class NetworkManager : MonoBehaviour
 
     public IEnumerator UnlockMonster(int char_id)
     {
-        UnlockModel unlockModel = new UnlockModel(playerModel.device_id, char_id);
+        UnlockModel unlockModel = new UnlockModel(_instance.playerModel.device_id, char_id);
         string json = JsonUtility.ToJson(unlockModel);
         //Debug.Log("JSON:" + json);
         var request = new UnityWebRequest(INVENTORY_URL, "POST");
@@ -311,8 +338,8 @@ public class NetworkManager : MonoBehaviour
 
     public IEnumerator SetHighScore(bool doubled = false)
     {
-        string json = JsonUtility.ToJson(playerModel);
-        //Debug.Log("JSON:" + json);
+        string json = JsonUtility.ToJson(_instance.playerModel);
+        Debug.Log("HighScore JSON:" + json);
         var request = new UnityWebRequest(PLAYER_URL, "PUT");
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);

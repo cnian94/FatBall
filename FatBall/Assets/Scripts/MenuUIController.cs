@@ -30,9 +30,9 @@ public class MenuUIController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        NetworkManager.instance.notificationEvent.AddListener(SetWinnerPanel);
         NetworkManager.instance.inventoryFetchedEvent.AddListener(SetMemberPanelActive);
         NetworkManager.instance.registerEvent.AddListener(SetNotMemberPanelActive);
-        NetworkManager.instance.notificationEvent.AddListener(SetWinnerPanel);
         Check();
 
     }
@@ -47,41 +47,47 @@ public class MenuUIController : MonoBehaviour
 
     void SetNotMemberPanelActive(bool taken)
     {
-        if (taken)
+        if (!NetworkManager.instance.isNotification)
         {
-            takenText.text = "already taken !!";
-        }
-        else
-        {
-            //do nothing
+            if (taken)
+            {
+                takenText.text = "already taken !!";
+            }
+            else
+            {
+                //do nothing
+            }
         }
     }
 
     void SetMemberPanelActive()
     {
-        //NetworkManager.instance.inventoryList = InventoryList.CreateFromJSON(text);
-        //Debug.Log("D PROGRESS: " + request.downloadProgress);
-        //Debug.Log("isInitialized: " + Chartboost.isInitialized());
-
-        if (SceneManager.GetActiveScene().name == "MenuScene")
+        TipText.text += "PS: " + NetworkManager.instance.isNotification;
+        if (!NetworkManager.instance.isNotification)
         {
-            //NetworkManager.instance.progressBar.gameObject.SetActive(false);??
-            ProgressBar.gameObject.SetActive(false);
-            notMemberPanel.gameObject.SetActive(false);
-            memberPanel.gameObject.SetActive(true);
-            //Debug.Log("COINS: " + playerModel.coins.ToString());
-            PlayerCoinText.text = NetworkManager.instance.playerModel.coins.ToString();
+            //NetworkManager.instance.inventoryList = InventoryList.CreateFromJSON(text);
+            //Debug.Log("D PROGRESS: " + request.downloadProgress);
+            //Debug.Log("isInitialized: " + Chartboost.isInitialized());
+
+            if (SceneManager.GetActiveScene().name == "MenuScene")
+            {
+                //NetworkManager.instance.progressBar.gameObject.SetActive(false);??
+                ProgressBar.gameObject.SetActive(false);
+                notMemberPanel.gameObject.SetActive(false);
+                memberPanel.gameObject.SetActive(true);
+                //Debug.Log("COINS: " + playerModel.coins.ToString());
+                PlayerCoinText.text = NetworkManager.instance.playerModel.coins.ToString();
+            }
+
+
+            if (SceneManager.GetActiveScene().name == "OptionsScene" && NetworkManager.instance.inventoryNeeded)
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+            int index = Random.Range(0, Tips.Length);
+            //TipText.text += "PS: " + Tips[index];
         }
 
-
-        if (SceneManager.GetActiveScene().name == "OptionsScene" && NetworkManager.instance.inventoryNeeded)
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        }
-        int index = Random.Range(0, Tips.Length);
-        //TipText.text += "PS: " + Tips[index];
-        //TipText.text += Chartboost.isInitialized();
-        //TipText.text = NetworkManager.instance.playerModel.one_signal_id;
     }
 
 
