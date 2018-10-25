@@ -282,7 +282,6 @@ public class OptionsController : MonoBehaviour
     {
         //int playerTempPrice = NetworkController.instance.playerModel.coins;
         //Debug.Log("PLAYER COINS:" + playerCoins);
-        unlockButton.interactable = false;
         if (price > playerCoins)
         {
             //Debug.Log("Yo, you don't have enough money for this shit !!");
@@ -293,6 +292,7 @@ public class OptionsController : MonoBehaviour
 
         else
         {
+            unlockButton.interactable = false;
             UnlockPanelCloseBtn.gameObject.SetActive(false);
             StartCoroutine(DecreasePlayerCoin(price, 3, char_id));
         }
