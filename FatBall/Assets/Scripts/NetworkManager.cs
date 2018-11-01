@@ -108,7 +108,7 @@ public class NetworkManager : MonoBehaviour
         {
 
             TakenModel taken = JsonUtility.FromJson<TakenModel>(request.downloadHandler.text);
-            Debug.Log("TAKEN MODEL:" + taken.taken);
+            //Debug.Log("TAKEN MODEL:" + taken.taken);
 
             if (taken.taken)
             {
@@ -123,7 +123,7 @@ public class NetworkManager : MonoBehaviour
                 _instance.playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
                 OSPermissionSubscriptionState one_signal_state = OneSignal.GetPermissionSubscriptionState();
                 _instance.playerModel.one_signal_id = one_signal_state.subscriptionStatus.userId;
-                Debug.Log("NEW ONE SIGNAL APP ID: " + _instance.playerModel.one_signal_id);
+                //Debug.Log("NEW ONE SIGNAL APP ID: " + _instance.playerModel.one_signal_id);
                 StartCoroutine(SetOneSignalId());
                 _instance.StartCoroutine(_instance.GetInventory());
                 //Debug.Log("NICKNAME NOT TAKEN !!");
@@ -137,7 +137,7 @@ public class NetworkManager : MonoBehaviour
     public IEnumerator SetOneSignalId()
     {
         string json = JsonUtility.ToJson(_instance.playerModel);
-        Debug.Log("JSON:" + json);
+        //Debug.Log("JSON:" + json);
         var request = new UnityWebRequest(PLAYER_URL, "PUT");
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
@@ -147,7 +147,7 @@ public class NetworkManager : MonoBehaviour
 
         if (request.error != null)
         {
-            Debug.Log("Erro: " + request.error);
+            //Debug.Log("Erro: " + request.error);
         }
         else
         {
@@ -171,11 +171,11 @@ public class NetworkManager : MonoBehaviour
 
         if (request.error != null)
         {
-            Debug.Log("Erro: " + request.error);
+            //Debug.Log("Erro: " + request.error);
         }
         else
         {
-            Debug.Log("RESPONSEEEE: " + request.downloadHandler.text);
+            //Debug.Log("RESPONSEEEE: " + request.downloadHandler.text);
 
             if (request.downloadHandler.text.Length == 1)
             {
@@ -189,19 +189,14 @@ public class NetworkManager : MonoBehaviour
             {
                 PlayerPrefs.SetString("player", request.downloadHandler.text);
 
-                if (PlayerPrefs.GetInt("selectedChar") == 0)
-                {
-                    PlayerPrefs.SetInt("selectedChar", 0);
-                }
-
                 _instance.playerModel = JsonUtility.FromJson<PlayerModel>(request.downloadHandler.text);
-                Debug.Log("PLAYER MODEL: " + _instance.playerModel.ToString());
+                //Debug.Log("PLAYER MODEL: " + _instance.playerModel.ToString());
                 if (_instance.playerModel.one_signal_id == null || _instance.playerModel.one_signal_id == "")
                 {
-                    Debug.Log("ONE SIGNAL APP ID IS NULL !!");
+                    //Debug.Log("ONE SIGNAL APP ID IS NULL !!");
                     OSPermissionSubscriptionState one_signal_state = OneSignal.GetPermissionSubscriptionState();
                     _instance.playerModel.one_signal_id = one_signal_state.subscriptionStatus.userId;
-                    Debug.Log("NEW ONE SIGNAL APP ID: " + _instance.playerModel.one_signal_id);
+                    //Debug.Log("NEW ONE SIGNAL APP ID: " + _instance.playerModel.one_signal_id);
                     StartCoroutine(SetOneSignalId());
                 }
 
@@ -262,7 +257,7 @@ public class NetworkManager : MonoBehaviour
     {
         if (inventoryNeeded)
         {
-            Debug.Log("INVENTORY NEEDED !!");
+            //Debug.Log("INVENTORY NEEDED !!");
             var request = new UnityWebRequest(INVENTORY_URL + playerModel.device_id, "GET");
             request.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
             yield return _instance.StartCoroutine(WaitForInventory(request));
@@ -270,7 +265,7 @@ public class NetworkManager : MonoBehaviour
 
         else
         {
-            Debug.Log("INVENTORY NOT NEEDED !!");
+            //Debug.Log("INVENTORY NOT NEEDED !!");
             //_instance.ProgressBar.SetValue(Mathf.Clamp01(100f));
             GameObject progressBar = GameObject.FindGameObjectWithTag("ProgressBar");
             progressBar.GetComponent<LoadingProgress>().SetValue(Mathf.Clamp01(100f));
@@ -306,6 +301,10 @@ public class NetworkManager : MonoBehaviour
         else
         {
             _instance.inventoryList = InventoryList.CreateFromJSON(request.downloadHandler.text);
+            if (PlayerPrefs.GetInt("selectedChar") == 0 || !_instance.inventoryList.inventory[PlayerPrefs.GetInt("selectedChar")].purchased)
+            {
+                PlayerPrefs.SetInt("selectedChar", 0);
+            }
             _instance.inventoryFetchedEvent.Invoke();
 
 
@@ -358,7 +357,7 @@ public class NetworkManager : MonoBehaviour
     public IEnumerator SetHighScore(bool doubled = false)
     {
         string json = JsonUtility.ToJson(_instance.playerModel);
-        Debug.Log("HighScore JSON:" + json);
+        //Debug.Log("HighScore JSON:" + json);
         var request = new UnityWebRequest(PLAYER_URL, "PUT");
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);
@@ -393,7 +392,7 @@ public class NetworkManager : MonoBehaviour
     public IEnumerator SetWinnerCreds()
     {
         string json = JsonUtility.ToJson(_instance.playerModel);
-        Debug.Log("Winner Creds JSON:" + json);
+        //Debug.Log("Winner Creds JSON:" + json);
         var request = new UnityWebRequest(PLAYER_URL, "PUT");
         byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
         request.uploadHandler = (UploadHandler)new UploadHandlerRaw(bodyRaw);

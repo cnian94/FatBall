@@ -31,6 +31,14 @@ public class LeaderboardController : MonoBehaviour
         StartCoroutine(ScrollToMyScore(0.5f));
     }
 
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            SceneManager.LoadScene(0);
+        }
+    }
+
     void SetCoinBoard()
     {
         foreach (Transform child in leaderBoardContent.transform)
@@ -43,7 +51,7 @@ public class LeaderboardController : MonoBehaviour
 
     public void OnLeaderBoardChanged(int value)
     {
-        Debug.Log("Value: " + value);
+        //Debug.Log("Value: " + value);
         if(value == 0)
         {
             NetworkManager.instance.StartCoroutine(NetworkManager.instance.GetLeaderBoard());

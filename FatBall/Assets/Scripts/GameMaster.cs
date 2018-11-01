@@ -87,14 +87,14 @@ public class GameMaster : MonoBehaviour
     IEnumerator TakeSs()
     {
         int no = 1;
-        string name = "gameIpadthree" + no + ".png";
+        string name = "gameIpad" + no + ".png";
 
         while (true)
         {
             yield return new WaitForSeconds(5);
             ScreenCapture.CaptureScreenshot(name);
             no++;
-            name = "gameIpadthree" + no + ".png";
+            name = "gameIpad" + no + ".png";
         }
     }
 
@@ -235,7 +235,7 @@ public class GameMaster : MonoBehaviour
         CancelInvoke("PlayStartSound");
         Vector3 randomPoint = new Vector3(Random.Range(Screen.width / 6, Screen.width - (Screen.width / 6)), Random.Range(Screen.height / 3, Screen.height - (Screen.height / 3)), 1);
 
-        Debug.Log("SELECTED CHAR: " + PlayerPrefs.GetInt("selectedChar"));
+        //Debug.Log("SELECTED CHAR: " + PlayerPrefs.GetInt("selectedChar"));
         player.GetComponent<SpriteRenderer>().sprite = GetSelectedCharSprite(PlayerPrefs.GetInt("selectedChar"));
         DestroyImmediate(player.GetComponent<PolygonCollider2D>(), true);
         DestroyImmediate(player.GetComponent<PolygonCollider2D>(), true);

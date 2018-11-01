@@ -80,6 +80,14 @@ public class OptionsController : MonoBehaviour
         //Invoke("TakeSS", 3f);
     }
 
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            SceneManager.LoadScene(0);
+        }
+    }
+
     void TakeSS()
     {
         ScreenCapture.CaptureScreenshot("inventoryIpad_char.png");
@@ -166,6 +174,7 @@ public class OptionsController : MonoBehaviour
 
                     //unlockButton = Instantiate(unlockButton, unlockPanel.transform);
                     unlockButton.onClick.AddListener(delegate { UnlockMonster(char_id, price, NetworkManager.instance.playerModel.coins); });
+                    //Invoke("TakeSS", 3f);
                 }
 
                 else
@@ -207,7 +216,7 @@ public class OptionsController : MonoBehaviour
         while (animationTime < time)
         {
             animationTime += Time.deltaTime;
-            Debug.Log("ANIMATION TIME: " + animationTime);
+            //Debug.Log("ANIMATION TIME: " + animationTime);
             //countdownSprite.fillAmount = animationTime / time;
             attr1.fillAmount = animationTime * time * x / time;
             attr2.fillAmount = animationTime * time * y / time;
@@ -381,7 +390,7 @@ public class OptionsController : MonoBehaviour
 
             if (i == PlayerPrefs.GetInt("selectedChar") && inventory[i].purchased)
             {
-                Debug.Log("selectedCharIndex: " + PlayerPrefs.GetInt("selectedChar") + "   " + inventory[PlayerPrefs.GetInt("selectedChar")].character.char_name);
+                //Debug.Log("selectedCharIndex: " + PlayerPrefs.GetInt("selectedChar") + "   " + inventory[PlayerPrefs.GetInt("selectedChar")].character.char_name);
                 selectedImage = Instantiate(selectedImage, charDesk.transform);
                 selectedImage.name = "CharSelectedImage";
                 NetworkManager.instance.isCharSelected = true;
@@ -389,7 +398,7 @@ public class OptionsController : MonoBehaviour
 
             if (i == inventory.Length - 1 && !selected)
             {
-                Debug.Log("CANNOT FOUND SELECTED !!");
+                //Debug.Log("CANNOT FOUND SELECTED !!");
                 lockImage = Instantiate(lockImage, charDesk.transform);
                 charDesk.GetComponent<Image>().color = new Color(0.407f, 0.407f, 0.407f, 0.439f);
                 selected = true;

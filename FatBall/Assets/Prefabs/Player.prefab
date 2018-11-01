@@ -22,8 +22,8 @@ GameObject:
   - component: {fileID: 212612876536565322}
   - component: {fileID: 50716418575964324}
   - component: {fileID: 114669522633332174}
-  - component: {fileID: 60158399674841632}
-  - component: {fileID: 60277313673297190}
+  - component: {fileID: 60232540894230744}
+  - component: {fileID: 60467102547867272}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -64,7 +64,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!60 &60158399674841632
+--- !u!60 &60232540894230744
 PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,7 +127,7 @@ PolygonCollider2D:
       - {x: 0.48, y: -1.1999999}
       - {x: 0.74, y: -1.16}
       - {x: 0.87, y: -1.1}
---- !u!60 &60277313673297190
+--- !u!60 &60467102547867272
 PolygonCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -249,6 +249,6 @@ SpriteRenderer:
   m_Size: {x: 4.8, y: 4.8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0

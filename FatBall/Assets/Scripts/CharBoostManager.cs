@@ -26,7 +26,7 @@ public class CharBoostManager : MonoBehaviour
     void Start()
     {
         //Chartboost.setAutoCacheAds(autocache);
-        Debug.Log("CACHING INTERSTITIAL !!");
+        //Debug.Log("CACHING INTERSTITIAL !!");
         CacheInterstitial("Game Over");
     }
 
@@ -92,107 +92,107 @@ public class CharBoostManager : MonoBehaviour
 
     void didInitialize(bool status)
     {
-        Debug.Log(string.Format("didInitialize: {0}", status));
+        //Debug.Log(string.Format("didInitialize: {0}", status));
     }
 
     void didFailToLoadInterstitial(CBLocation location, CBImpressionError error)
     {
-        Debug.Log(string.Format("didFailToLoadInterstitial: {0} at location {1}", error, location));
+        //Debug.Log(string.Format("didFailToLoadInterstitial: {0} at location {1}", error, location));
         SoundManager.Instance.MusicSource.Play();
     }
 
     void didDismissInterstitial(CBLocation location)
     {
-        Debug.Log("didDismissInterstitial: " + location);
+        //Debug.Log("didDismissInterstitial: " + location);
         SoundManager.Instance.MusicSource.Play();
     }
 
     void didCloseInterstitial(CBLocation location)
     {
-        Debug.Log("didCloseInterstitial: " + location);
+        //Debug.Log("didCloseInterstitial: " + location);
         SoundManager.Instance.MusicSource.Play();
     }
 
     void didClickInterstitial(CBLocation location)
     {
-        Debug.Log("didClickInterstitial: " + location);
+        //Debug.Log("didClickInterstitial: " + location);
     }
 
     void didCacheInterstitial(CBLocation location)
     {
-        Debug.Log("HEY BURAYA BAK !!!!");
-        Debug.Log("didCacheInterstitial: " + location);
+        //Debug.Log("HEY BURAYA BAK !!!!");
+        //Debug.Log("didCacheInterstitial: " + location);
     }
 
     bool shouldDisplayInterstitial(CBLocation location)
     {
         // return true if you want to allow the interstitial to be displayed
-        Debug.Log("shouldDisplayInterstitial @" + location + " : " + showInterstitial);
+        //Debug.Log("shouldDisplayInterstitial @" + location + " : " + showInterstitial);
         return showInterstitial;
     }
 
     void didDisplayInterstitial(CBLocation location)
     {
-        Debug.Log("didDisplayInterstitial: " + location);
+        //Debug.Log("didDisplayInterstitial: " + location);
     }
 
     void didFailToRecordClick(CBLocation location, CBClickError error)
     {
-        Debug.Log(string.Format("didFailToRecordClick: {0} at location: {1}", error, location));
+        //Debug.Log(string.Format("didFailToRecordClick: {0} at location: {1}", error, location));
     }
 
     void didFailToLoadRewardedVideo(CBLocation location, CBImpressionError error)
     {
-        Debug.Log(string.Format("didFailToLoadRewardedVideo: {0} at location {1}", error, location));
+        //Debug.Log(string.Format("didFailToLoadRewardedVideo: {0} at location {1}", error, location));
     }
 
     void didDismissRewardedVideo(CBLocation location)
     {
-        Debug.Log("didDismissRewardedVideo: " + location);
+        //Debug.Log("didDismissRewardedVideo: " + location);
     }
 
     void didCloseRewardedVideo(CBLocation location)
     {
-        Debug.Log("didCloseRewardedVideo: " + location);
+        //Debug.Log("didCloseRewardedVideo: " + location);
     }
 
     void didClickRewardedVideo(CBLocation location)
     {
-        Debug.Log("didClickRewardedVideo: " + location);
+        //Debug.Log("didClickRewardedVideo: " + location);
     }
 
     void didCacheRewardedVideo(CBLocation location)
     {
-        Debug.Log("didCacheRewardedVideo: " + location);
+        //Debug.Log("didCacheRewardedVideo: " + location);
     }
 
     bool shouldDisplayRewardedVideo(CBLocation location)
     {
-        Debug.Log("shouldDisplayRewardedVideo @" + location + " : " + showRewardedVideo);
+        //Debug.Log("shouldDisplayRewardedVideo @" + location + " : " + showRewardedVideo);
         return showRewardedVideo;
     }
 
     void didCompleteRewardedVideo(CBLocation location, int reward)
     {
-        Debug.Log(string.Format("didCompleteRewardedVideo: reward {0} at location {1}", reward, location));
+        //Debug.Log(string.Format("didCompleteRewardedVideo: reward {0} at location {1}", reward, location));
     }
 
     void didDisplayRewardedVideo(CBLocation location)
     {
-        Debug.Log("didDisplayRewardedVideo: " + location);
+        //Debug.Log("didDisplayRewardedVideo: " + location);
     }
 
     void didPauseClickForConfirmation()
     {
 #if UNITY_IPHONE
-		Debug.Log("didPauseClickForConfirmation called");
+		//Debug.Log("didPauseClickForConfirmation called");
 		activeAgeGate = true;
 #endif
     }
 
     void willDisplayVideo(CBLocation location)
     {
-        Debug.Log("willDisplayVideo: " + location);
+        //Debug.Log("willDisplayVideo: " + location);
     }
 
     public void CacheInterstitial(string location)
@@ -204,7 +204,7 @@ public class CharBoostManager : MonoBehaviour
     public void ShowVideo(string location)
     {
         //CBLocation newLocation = CBLocation.locationFromName(location);
-        Debug.Log("hasInterstitial at " + CBLocation.GameOver + " : " + Chartboost.hasInterstitial(CBLocation.GameOver));
+        //Debug.Log("hasInterstitial at " + CBLocation.GameOver + " : " + Chartboost.hasInterstitial(CBLocation.GameOver));
         Chartboost.showInterstitial(CBLocation.GameOver);
 
     }

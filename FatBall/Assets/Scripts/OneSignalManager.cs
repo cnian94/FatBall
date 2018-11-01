@@ -33,10 +33,10 @@ public class OneSignalManager : MonoBehaviour
         object type;
         additional_data.TryGetValue("type", out type);
         
-        Debug.Log("Final data:" + Convert.ToInt32(type));
+        //Debug.Log("Final data:" + Convert.ToInt32(type));
         if (Convert.ToInt32(type) == 0)
         {
-            Debug.Log("Type is 0 !!");
+            //Debug.Log("Type is 0 !!");
             NetworkManager.instance.notificationEvent.Invoke();
         }
     }

@@ -40,6 +40,14 @@ public class MenuUIController : MonoBehaviour
         Check();
     }
 
+    private void Update()
+    {
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
+
     void NotMember()
     {
         notMemberPanel.gameObject.SetActive(true);
@@ -75,7 +83,7 @@ public class MenuUIController : MonoBehaviour
     void SetWinnerPanel()
     {
         ProgressBar.gameObject.SetActive(false);
-        Debug.Log("Openning Winner Panel !!");
+        //Debug.Log("Openning Winner Panel !!");
         memberPanel.gameObject.SetActive(false);
         winnerPanel.gameObject.SetActive(true);
     }
@@ -122,7 +130,7 @@ public class MenuUIController : MonoBehaviour
 
     private void Check()
     {
-        Debug.Log("CHECKINGGG !!");
+        //Debug.Log("CHECKINGGG !!");
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
         //this.playerModel = new PlayerModel("3323e9048b337f17b71d49e4ac5925e951ada236", "cano", 197, 3747);
         //PlayerPrefs.SetString("player",JsonUtility.ToJson(playerModel));
@@ -130,7 +138,7 @@ public class MenuUIController : MonoBehaviour
 
         if (PlayerPrefs.GetString("player") == null || PlayerPrefs.GetString("player").Equals(""))
         {
-            Debug.Log("PLAYER NULL !!");
+            //Debug.Log("PLAYER NULL !!");
             notMemberPanel.gameObject.SetActive(true); //burayı kapat
             //memberPanel.gameObject.SetActive(false);
             //memberPanel.SetActive(true); //bunu yaz
@@ -138,8 +146,8 @@ public class MenuUIController : MonoBehaviour
 
         else
         {
-            Debug.Log("PLAYER NOT NULL !!");
-            Debug.Log("PLAYERRR: " + PlayerPrefs.GetString("player"));
+            //Debug.Log("PLAYER NOT NULL !!");
+            //Debug.Log("PLAYERRR: " + PlayerPrefs.GetString("player"));
             //PlayerModel player = new PlayerModel(SystemInfo.deviceUniqueIdentifier, "TEST");
             NetworkManager.instance.playerModel = JsonUtility.FromJson<PlayerModel>(PlayerPrefs.GetString("player"));
             ProgressBar.gameObject.SetActive(true);
