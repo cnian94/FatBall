@@ -308,6 +308,7 @@ public class OptionsController : MonoBehaviour
     }
 
     float currCountdownValue;
+    //buralardan bakarak animasyon yap 
     public IEnumerator DecreasePlayerCoin(float price, float countdownValue, int char_id)
     {
         PlayerCoin.GetComponent<Animator>().SetTrigger("purchased");

@@ -5,7 +5,7 @@ using UnityEngine;
 public class JokerSpawnerControl : MonoBehaviour {
 
     public Transform[] spawnPoints;
-    public GameObject[] jokers;
+    public GameObject[] jokers;  //normalde public int[] jokers yazmak gerekmez mi ? Jokerweights ile nasıl bağladık ?
     public int randomSpawnPoint, randomJoker;
 
     public GameObject joker;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class JokerControl : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class JokerControl : MonoBehaviour
     private Vector3 movement;
     private float timeLeft;
 
+    
 
     public JokerSpawnerControl JokerSpawnerControl;
     public static float max_distance_from_view = 200f;
@@ -165,6 +167,8 @@ public class JokerControl : MonoBehaviour
                     Invoke("RevertJokerEffect", 5.0f); //5sn sonra efekt gider. Yukarda revert var. Revert aşağıda olsa daha doğru olmaz mı ?
                     GameMaster.gm.eatedJoker++;
                     GameMaster.gm.numOfStrawberry--;
+                    GameMaster.gm.comboCounter++;
+                    GameMaster.gm.star.GetComponent<Animator>().SetTrigger("Combo");
 
 
                 }
@@ -179,6 +183,8 @@ public class JokerControl : MonoBehaviour
                     playerControl.moveSpeed = playerControl.moveSpeed / 1.2f;
                     Invoke("RevertJokerEffect", 5.0f);
                     GameMaster.gm.eatedJoker++;
+                    GameMaster.gm.comboCounter++;
+                    GameMaster.gm.star.GetComponent<Animator>().SetTrigger("Combo");
                 }
 
                 if (gameObject.CompareTag("RadishJoker") && !GameMaster.gm.isBubbleCatched && !isColliding) //beni biraz aştı :D her yerde var
@@ -192,6 +198,8 @@ public class JokerControl : MonoBehaviour
                     bubble.SendMessage("SetIsBubbleEffectActive", true);
                     Invoke("RevertJokerEffect", 8.0f); //8 saniye sürüyor
                     GameMaster.gm.eatedJoker++;
+                    GameMaster.gm.comboCounter++;
+                    GameMaster.gm.star.GetComponent<Animator>().SetTrigger("Combo");
 
                 }
 
@@ -203,6 +211,8 @@ public class JokerControl : MonoBehaviour
                     spawnerControl.num_of_jokers--;
                     target.SendMessage("StartWaneEffect", gameObject.tag);
                     GameMaster.gm.eatedJoker++;
+                    GameMaster.gm.comboCounter++;
+                    GameMaster.gm.star.GetComponent<Animator>().SetTrigger("Combo");
                 }
 
                 if (gameObject.CompareTag("Reset") && !isColliding)
@@ -222,6 +232,8 @@ public class JokerControl : MonoBehaviour
                     monstersSpawnerControl.num_of_monsters = 0; //üsttekinin aynısı geçerli.
                     spawnerControl.num_of_jokers--;
                     GameMaster.gm.eatedJoker++;
+                    GameMaster.gm.comboCounter++;
+                    GameMaster.gm.star.GetComponent<Animator>().SetTrigger("Combo");
 
                     if (temp >= GameMaster.gm.MonsterSpawnLimit)
                     {
@@ -238,6 +250,8 @@ public class JokerControl : MonoBehaviour
                     spawnerControl.num_of_jokers--;
                     target.SendMessage("StartWaneEffect", gameObject.tag);
                     GameMaster.gm.eatedJoker++;
+                    GameMaster.gm.comboCounter++;
+                    GameMaster.gm.star.GetComponent<Animator>().SetTrigger("Combo");
                 }
 
                 if (gameObject.CompareTag("CherryJoker") && !isColliding)
@@ -248,6 +262,8 @@ public class JokerControl : MonoBehaviour
                     spawnerControl.num_of_jokers--;
                     target.SendMessage("StartWaneEffect", gameObject.tag);
                     GameMaster.gm.eatedJoker++;
+                    GameMaster.gm.comboCounter++;
+                    GameMaster.gm.star.GetComponent<Animator>().SetTrigger("Combo");
                 }
                 break;
         }

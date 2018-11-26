@@ -137,6 +137,7 @@ public class MonsterControl : MonoBehaviour
                             Vector3[] scales = { col.gameObject.transform.localScale, targetScale };
                             col.gameObject.SendMessage("StartGetFatEffect", scales);
                             GameMaster.gm.eatedEnemy++;
+                            GameMaster.gm.comboCounter = 0;
                         }
                     }
                 }

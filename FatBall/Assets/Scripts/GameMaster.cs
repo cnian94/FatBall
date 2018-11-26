@@ -25,6 +25,8 @@ public class GameMaster : MonoBehaviour
 
     public TimerScript timerScript;
 
+    public Image star;
+
     public Text IngameResult;
 
     private MonstersSpawnerControl spawnerControl;
@@ -44,6 +46,7 @@ public class GameMaster : MonoBehaviour
 
     public int eatedEnemy = 0;
     public int eatedJoker = 0;
+    public int comboCounter = 0;
 
     public float moveSpeedDivider = 0.65f;
 
@@ -117,9 +120,9 @@ public class GameMaster : MonoBehaviour
         //time_score = timerScript.time_text.text.Split(':');
         //time_score = float.Parse(timerScript.minutes) * 60 + float.Parse(timerScript.seconds);
         //pointFromTime = int.Parse(time_score[0]) * 60 + int.Parse(time_score[1].Split('.')[0]);
+        pointFromTime = (int)timerScript.t;
         finalScore = (int)timerScript.t + pointFromJokers + pointFromEnemy;
         IngameResult.text = finalScore.ToString();
-
 
         if (jokerTimeLeft <= 0f)
         {
@@ -277,6 +280,7 @@ public class GameMaster : MonoBehaviour
     {
         pointFromJokers = eatedJoker * 5;
         pointFromEnemy = -eatedEnemy;
+        pointFromTime = (int)timerScript.t;
         //time_score = timerScript.time_text.text.Split(':');
         //pointFromTime = int.Parse(time_score[0]) * 60 + int.Parse(time_score[1].Split('.')[0]);
         //finalScore = pointFromTime + pointFromJokers + pointFromEnemy;
